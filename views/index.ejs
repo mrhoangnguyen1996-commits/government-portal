@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CỔNG THÔNG TIN ĐIỆN TỬ CHÍNH PHỦ</title>
+    <title>CỔNG THÔNG TIN ĐIỆN TỬ CHÍNH PHỦ - GIẢ LẬP ROLEPLAY</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -28,307 +28,329 @@
         .bar-chart-fill { height: 100%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 3px; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <header class="bg-[#0a0f1d] border-b border-slate-800 px-6 py-3.5 flex flex-wrap justify-between items-center shadow-lg relative">
-        <div class="flex items-center space-x-4">
-            <div class="relative flex items-center justify-center">
-                <div class="absolute inset-0 bg-amber-500/20 blur-md rounded-full animate-pulse"></div>
-                <div class="bg-gradient-to-br from-amber-400 to-amber-600 p-2.5 rounded-xl text-black border border-amber-300 shadow-lg z-10">
-                    <i class="fa-solid fa-building-columns text-2xl"></i>
+    <div class="flex-1">
+        <header class="bg-[#0a0f1d] border-b border-slate-800 px-6 py-3.5 flex flex-wrap justify-between items-center shadow-lg relative">
+            <div class="flex items-center space-x-4">
+                <div class="relative flex items-center justify-center">
+                    <div class="absolute inset-0 bg-amber-500/20 blur-md rounded-full animate-pulse"></div>
+                    <div class="bg-gradient-to-br from-amber-400 to-amber-600 p-2.5 rounded-xl text-black border border-amber-300 shadow-lg z-10">
+                        <i class="fa-solid fa-building-columns text-2xl"></i>
+                    </div>
+                    <div class="absolute -bottom-1 -right-1 bg-red-600 text-[8px] font-black text-white px-1 rounded-md border border-black animate-bounce">RP</div>
                 </div>
-                <div class="absolute -bottom-1 -right-1 bg-red-600 text-[8px] font-black text-white px-1 rounded-md border border-black animate-bounce">QG</div>
+                <div>
+                    <span class="text-[10px] tracking-widest text-amber-500 uppercase font-extrabold font-mono-tech">Roblox Gaming Roleplay Community Platform</span>
+                    <h1 class="text-xl font-black text-white tracking-tight drop-shadow-sm flex items-center gap-2">CỔNG LIÊN THÔNG GIẢ LẬP <span class="text-[11px] font-mono bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">v4.1.0-RP</span></h1>
+                </div>
             </div>
-            <div>
-                <span class="text-[10px] tracking-widest text-amber-500 uppercase font-extrabold font-mono-tech">National E-Government Service Platform</span>
-                <h1 class="text-xl font-black text-white tracking-tight drop-shadow-sm flex items-center gap-2">CỔNG LIÊN THÔNG QUỐC GIA <span class="text-[11px] font-mono bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">v4.1.0</span></h1>
+
+            <div class="flex items-center space-x-4 text-xs">
+                <div class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-800 font-mono text-amber-400 font-bold tracking-widest shadow-inner shadow-black" id="clock">00:00:00</div>
+                <div class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-800 flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span id="security-txt" class="font-extrabold text-[11px] tracking-wider uppercase text-emerald-400"><%= state.securityLevel %></span>
+                </div>
+                <div id="auth-panel"></div>
             </div>
+        </header>
+
+        <div class="marquee-container py-2 flex items-center">
+            <div class="bg-red-950 text-red-400 border border-red-900/60 font-black text-[9px] px-2 py-0.5 rounded uppercase tracking-wider mx-3 z-10 shadow-md">Thông báo khẩn</div>
+            <div class="marquee-content" id="live-marquee"><%= state.tickerMessage %></div>
         </div>
 
-        <div class="flex items-center space-x-4 text-xs">
-            <div class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-800 font-mono text-amber-400 font-bold tracking-widest shadow-inner shadow-black" id="clock">00:00:00</div>
-            <div class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-800 flex items-center gap-2">
-                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
-                <span id="security-txt" class="font-extrabold text-[11px] tracking-wider uppercase text-emerald-400"><%= state.securityLevel %></span>
-            </div>
-            <div id="auth-panel"></div>
-        </div>
-    </header>
+        <nav class="bg-[#0a0f1d]/80 border-b border-slate-800/80 px-6 flex space-x-1.5 backdrop-blur-md">
+            <button onclick="tab('tab-news')" id="btn-tab-news" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-amber-500 text-amber-500 transition-all"><i class="fa-solid fa-newspaper mr-1"></i> Trung Tâm Ấn Bản</button>
+            <button onclick="tab('tab-id')" id="btn-tab-id" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-address-card mr-1"></i> Tra cứu định danh</button>
+            <button onclick="tab('tab-services')" id="btn-tab-services" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-file-invoice-dollar mr-1"></i> Nộp Đơn Thủ Tục</button>
+            <button onclick="tab('tab-officer')" id="btn-tab-officer" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-emerald-500 hover:text-emerald-400 hidden"><i class="fa-solid fa-user-shield mr-1"></i> Bàn Làm Việc Bộ Ngành</button>
+            <button onclick="tab('tab-admin')" id="btn-tab-admin" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-purple-400 hover:text-purple-300 hidden"><i class="fa-solid fa-crown mr-1"></i> Phòng Giám Sát Tối Cao</button>
+        </nav>
 
-    <div class="marquee-container py-2 flex items-center">
-        <div class="bg-red-950 text-red-400 border border-red-900/60 font-black text-[9px] px-2 py-0.5 rounded uppercase tracking-wider mx-3 z-10 shadow-md">Thông báo khẩn</div>
-        <div class="marquee-content" id="live-marquee"><%= state.tickerMessage %></div>
+        <main class="p-6 max-w-[1650px] w-full mx-auto space-y-6">
+            
+            <section id="tab-news" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-4">
+                    <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2"><i class="fa-solid fa-scroll text-amber-500"></i> Văn Bản Chỉ Thị / Sắc Lệnh Từ Bộ Chỉ Huy</h2>
+                    <div id="news-feed" class="space-y-3"></div>
+                </div>
+                <div class="space-y-4">
+                    <h2 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation animate-pulse"></i> Cơ Sở Dữ Liệu Đối Tượng Truy Nã Quốc Gia</h2>
+                    <div id="wanted-feed" class="space-y-3"></div>
+                </div>
+            </section>
+
+            <section id="tab-id" class="hidden max-w-2xl mx-auto bg-[#0a0f1d] border border-slate-800 p-6 rounded-2xl shadow-xl">
+                <h2 class="text-xs font-black text-center text-white uppercase tracking-widest mb-4"><i class="fa-solid fa-shield-halved text-amber-500"></i> Cơ Sở Dữ Liệu Căn Cước Dân Sự Quốc Gia</h2>
+                <div class="flex gap-2 mb-4">
+                    <input type="text" id="id-search" placeholder="Nhập tên tài khoản cư dân (Ví dụ: Nguyen_Manh_Hoang)..." class="flex-1 bg-slate-900 border border-slate-700 px-3 py-2 text-sm rounded-lg text-white focus:outline-none focus:border-amber-500 font-mono">
+                    <button onclick="searchCitizen()" class="bg-amber-500 hover:bg-amber-600 text-black px-5 text-xs font-black uppercase rounded-lg transition-all">Truy xuất dữ liệu</button>
+                </div>
+                <div id="id-result"></div>
+            </section>
+
+            <section id="tab-services" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl space-y-4 shadow-lg">
+                    <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-file-pen text-amber-500"></i> Tạo Hồ Sơ Trực Tuyến Đa Dạng</h3>
+                    <form onsubmit="submitForm(event)" class="space-y-3.5 text-xs">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-gray-400 font-bold mb-1 uppercase tracking-wider">Tên Tài Khoản Hệ Thống (Họ_Tên)</label>
+                                <input type="text" id="app-sender" required placeholder="Nguyen_Manh_Hoang" class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-lg text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 font-bold mb-1 uppercase tracking-wider">Loại Giấy Tờ / Thủ Tục Đăng Ký</label>
+                                <select id="app-docType" class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-lg text-white font-bold text-amber-400">
+                                    <option value="CĂN CƯỚC CÔNG DÂN">Căn Cước Công Dân Gắn Chíp (Làm mới/Cấp đổi)</option>
+                                    <option value="GIẤY PHÉP SỬ DỤNG CÔNG CỤ HỖ TRỢ">Giấy Phép Sử Dụng Vũ Khí / Công Cụ Hỗ Trợ</option>
+                                    <option value="HỘ CHIẾU QUỐC TẾ">Hộ Chiếu Quốc Tế (Visa Xuất Nhập Cảnh)</option>
+                                    <option value="GIẤY PHÉP KINH DOANH DOANH NGHIỆP">Giấy Phép Thành Lập / Kinh Doanh Doanh Nghiệp</option>
+                                    <option value="ĐĂNG KÝ KẾT HÔN / KHAI SINH">Đăng Ký Kết Hôn / Giấy Khai Sinh Cư Dân</option>
+                                    <option value="CHỨNG CHỈ HÀNH NGHỀ CHUYÊN MÔN">Chứng Chỉ Hành Nghề Chuyên Môn Đặc Chủng</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 font-bold mb-1 uppercase tracking-wider">Cơ Quan Tiếp Nhận Thẩm Định</label>
+                            <select id="app-agency" class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-lg text-white font-bold">
+                                <option value="CÔNG AN">BỘ CÔNG AN (Hồ sơ Căn cước, Giao thông, An ninh)</option>
+                                <option value="QUÂN ĐỘI">BỘ CHỈ HUY QUÂN SỰ TRƯỞNG</option>
+                                <option value="UBND PHƯỜNG">ỦY BAN NHÂN DÂN CẤP PHƯỜNG / THÀNH PHỐ</option>
+                                <option value="TOÀ ÁN">TÒA ÁN NHÂN DÂN TỐI CAO</option>
+                                <option value="NGÂN HÀNG">NGÂN HÀNG TRUNG ƯƠNG QUỐC GIA</option>
+                                <option value="BỆNH VIỆN">BỆNH VIỆN QUỐC GIA LIÊN THÔNG</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 font-bold mb-1 uppercase tracking-wider">Trình Bày Nội Dung Chi Tiết Lý Do Gửi Đơn</label>
+                            <textarea id="app-content" rows="4" required placeholder="Ghi rõ thông tin yêu cầu giải quyết..." class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-lg text-white focus:border-amber-500 focus:outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 font-black text-black py-3 rounded-lg uppercase tracking-widest hover:brightness-110 shadow-lg">Gửi Hồ Sơ Lên Hệ Thống Quốc Gia</button>
+                    </form>
+                </div>
+
+                <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl flex flex-col h-full min-h-[480px] shadow-lg">
+                    <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-satellite-dish text-sky-400 animate-pulse"></i> Kiểm Tra Tiến Độ & Đàm Thoại Trực Tuyến</h3>
+                    <div class="flex gap-2 my-3">
+                        <input type="text" id="track-id" placeholder="Nhập mã đơn thư cần tra cứu (Ví dụ: HS-1001)..." class="flex-1 bg-slate-900 border border-slate-700 px-3 py-2 text-xs rounded-lg text-white font-mono focus:outline-none">
+                        <button onclick="trackApplication()" class="bg-sky-600 hover:bg-sky-700 text-white px-5 text-xs font-black rounded-lg transition-all">Truy vấn đơn</button>
+                    </div>
+                    <div id="track-details" class="flex-1 flex flex-col justify-between hidden space-y-3"></div>
+                    <div id="track-empty" class="text-center py-16 text-slate-500 text-xs flex-1 flex flex-col justify-center items-center"><i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-700"></i> Nhập chính xác mã số đơn hành chính của bạn để mở luồng đàm thoại với cán bộ nghiệp vụ trực ban.</div>
+                </div>
+            </section>
+
+            <section id="tab-officer" class="hidden grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <div class="xl:col-span-2 space-y-5">
+                    
+                    <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl shadow-md">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-folder-closed"></i> Hồ Sơ Hành Administrative Chờ Duyệt Lĩnh Vực</h3>
+                            <span id="office-badge" class="text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-800">Cơ Quan Tiếp Nhận</span>
+                        </div>
+                        <div class="overflow-x-auto text-xs">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-900 text-slate-400 font-bold uppercase text-[9px] tracking-wider">
+                                    <tr>
+                                        <th class="p-3">Mã Hồ Sơ</th>
+                                        <th class="p-3">Tài Khoản</th>
+                                        <th class="p-3">Loại Giấy Tờ</th>
+                                        <th class="p-3">Trạng Thái</th>
+                                        <th class="p-3 text-right">Hành Động</th>
+                                    </tr>
+                                 Clyde</th>
+                                </tr>
+                                </thead>
+                                <tbody id="officer-table" class="divide-y divide-slate-800"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl space-y-3.5 shadow-lg">
+                        <h3 class="text-xs font-black text-teal-400 uppercase tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2"><i class="fa-solid fa-user-plus"></i> Nghiệp Vụ Cán Bộ: Số Hóa & Khai Sinh Dữ Liệu Định Danh Cư Dân</h3>
+                        <form onsubmit="registerResidentByOfficer(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-gray-400 mb-1">Tài Khoản Định Danh (Họ_Tên)</label>
+                                <input type="text" id="res-user" required placeholder="Nguyen_Manh_Hoang" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Họ Và Tên Khai Sinh</label>
+                                <input type="text" id="res-name" required placeholder="Nguyễn Mạnh Hoàng" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Ngày Tháng Năm Sinh</label>
+                                <input type="text" id="res-dob" required placeholder="18/05/1996" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Giới Tính</label>
+                                <select id="res-gender" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-bold">
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Nguyên Quán / Nơi Sinh</label>
+                                <input type="text" id="res-pob" required placeholder="Lâm Đồng, Việt Nam" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Nghề Nghiệp / Công Tác</label>
+                                <input type="text" id="res-job" required placeholder="Chuyên Viên Cung Ứng Vật Tư" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-gray-400 mb-1">Giấy Phép / Chứng Chỉ Sở Hữu (Cách nhau bằng dấu phẩy)</label>
+                                <input type="text" id="res-licenses" placeholder="Bằng Lái Xe Hạng B2, Giấy phép công cụ hỗ trợ" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Tình Trạng Tư Pháp Quốc Gia</label>
+                                <select id="res-status" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-black text-emerald-400">
+                                    <option value="Dân Cư Hợp Pháp - Lý Lịch Trong Sạch">Dân Cư Hợp Pháp - Lý Lịch Sạch</option>
+                                    <option value="Đang Thuộc Diện Theo Dõi Đặc Biệt">Diện Theo Dõi Đặc Biệt</option>
+                                    <option value="Đối Tượng Tình Nghi Hình Sự Khẩn Cấp">Đối Tượng Tình Nghi Hình Sự</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="md:col-span-3 bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-black py-2.5 rounded-lg uppercase tracking-wider hover:brightness-110 shadow-md transition-all">Lưu Thông Tin Định Định Vào Máy Chủ Quốc Gia</button>
+                        </form>
+                    </div>
+
+                    <div id="leader-publish-zone" class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl space-y-3.5 shadow-xl hidden">
+                        <h3 class="text-xs font-black text-amber-500 uppercase tracking-widest border-b border-slate-800 pb-1.5 flex items-center gap-2"><i class="fa-solid fa-gavel text-xl"></i> Quyền Hạn Lãnh Đạo Cao Cấp: Chỉ Huy Hệ Thống Toàn Quốc</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-gray-400 mb-1">Loại Hình Văn Bản</label>
+                                <select id="pub-type" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-bold">
+                                    <option value="QUYẾT ĐỊNH">QUYẾT ĐỊNH BAN HÀNH SẮC LỆNH</option>
+                                    <option value="THÔNG BÁO KHẨN">THÔNG BÁO KHẨN CẤP AN NINH</option>
+                                    <option value="TRUY NÃ">LỆNH TRUY NÃ BỊ CAN HÌNH SỰ</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-gray-400 mb-1">Tiêu Đề Văn Bản / Họ Tên Đối Tượng Bị Truy Nã</label>
+                                <input type="text" id="pub-title" placeholder="Nhập tên đối tượng hoặc tiêu đề nội dung..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                            <div class="md:col-span-2">
+                                <label class="block text-gray-400 mb-1">Nội dung văn bản chỉ thị chi tiết / Tội danh cụ thể đối tượng</label>
+                                <textarea id="pub-content" rows="2" placeholder="Nhập chi tiết..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white focus:outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Cập nhật nội dung Chữ chạy động LED</label>
+                                <div class="flex gap-1.5">
+                                    <textarea id="pub-ticker" rows="2" placeholder="Nhập dòng chữ chạy..." class="flex-1 bg-slate-900 border border-slate-700 p-2 rounded-lg text-white text-[11px] focus:outline-none"></textarea>
+                                    <button onclick="updateTicker()" class="bg-amber-500 text-black px-2.5 rounded-lg font-black text-[11px] uppercase hover:bg-amber-600">Lưu LED</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="publishDocument()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-black text-xs font-black py-2.5 rounded-lg uppercase tracking-widest hover:brightness-110 shadow-lg">Ký Duyệt Phát Hành Văn Bản / Lệnh Toàn Quốc</button>
+                        
+                        <div class="mt-4 pt-4 border-t border-slate-800">
+                            <h4 class="text-[11px] font-black uppercase text-slate-400 mb-2"><i class="fa-solid fa-box-archive text-purple-400"></i> Kho Lưu Trữ Hồ Sơ Bảo Mật (Lãnh Đạo độc quyền xem)</h4>
+                            <div id="leader-archive-list" class="space-y-2 max-h-[160px] overflow-y-auto"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl flex flex-col h-full min-h-[580px] shadow-lg">
+                    <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-stamp text-emerald-400"></i> Phòng Thẩm Định & Đóng Dấu Số Hóa</h3>
+                    <div id="officer-desk-active" class="flex-1 flex flex-col justify-between hidden mt-3 space-y-3.5"></div>
+                    <div id="officer-desk-empty" class="text-center py-24 text-slate-500 text-xs flex-1 flex flex-col justify-center items-center"><i class="fa-solid fa-stamp text-4xl mb-3 text-slate-700"></i> Vui lòng lựa chọn hồ sơ từ danh sách để thẩm định, phê duyệt và đóng hồ sơ chuyển lên trung ương lưu trữ.</div>
+                </div>
+            </section>
+
+            <section id="tab-admin" class="hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono-tech">
+                    <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
+                        <div><p class="text-slate-400 font-bold uppercase tracking-wider text-[11px]">Nhân sự ban ngành hoạt động</p><p id="st-staff" class="text-2xl font-black text-emerald-400 mt-1">0</p></div>
+                        <div class="bg-emerald-950 p-2.5 rounded-xl border border-emerald-800 text-emerald-400"><i class="fa-solid fa-users-gear text-xl"></i></div>
+                    </div>
+                    <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
+                        <div><p class="text-slate-400 font-bold uppercase tracking-wider text-[11px]">Trạng thái an ninh Quốc gia</p>
+                            <select onchange="setSecurity(this.value)" id="adm-sec" class="bg-slate-900 border border-slate-700 rounded-lg p-1.5 mt-1.5 text-white font-black text-xs tracking-wide text-amber-500">
+                                <option value="AN TOÀN">AN TOÀN / BÌNH THƯỜNG</option>
+                                <option value="CAO ĐIỂM">CAO ĐIỂM TUẦN TRA ĐÊM</option>
+                                <option value="KHẨN CẤP">TÌNH TRẠNG KHẨN CẤP QUỐC GIA</option>
+                            </select>
+                        </div>
+                        <div class="bg-amber-950 p-2.5 rounded-xl border border-amber-900 text-amber-400"><i class="fa-solid fa-shield-cat text-xl"></i></div>
+                    </div>
+                    <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
+                        <div><p class="text-slate-400 font-bold uppercase tracking-wider text-[11px]">Tổng số hồ sơ đang lưu kho</p><p id="st-files" class="text-2xl font-black text-purple-400 mt-1">0</p></div>
+                        <div class="bg-purple-950 p-2.5 rounded-xl border border-purple-900 text-purple-400"><i class="fa-solid fa-box-archive text-xl"></i></div>
+                    </div>
+                </div>
+
+                <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4">
+                    <h3 class="text-xs font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-chart-column text-amber-500"></i> Biểu Đồ Thống Kê Hiệu Suất Và Đánh Giá Tín Nghiệm Nhân Sự Bộ Ngành</h3>
+                    <div id="admin-analytics-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                </div>
+
+                <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl shadow-lg space-y-3">
+                    <h3 class="text-xs font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-vault text-purple-400"></i> Kho Lưu Trữ Điện Tử Quốc Gia Tối Cao (Admin Tổng Quản Lý)</h3>
+                    <div id="admin-vault-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 text-xs"></div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl space-y-3.5 text-xs shadow-lg">
+                        <h3 class="text-xs font-black text-purple-400 uppercase tracking-wider border-b border-slate-800 pb-2"><i class="fa-solid fa-id-card-clip"></i> Bổ Nhiệm & Cấp Chứng Thư Nhân Sự Mới</h3>
+                        <form onsubmit="provisionAccount(event)" class="space-y-2.5">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label class="text-gray-400 block mb-1">Tên Đăng Nhập</label><input type="text" id="p-user" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-mono"></div>
+                                <div><label class="text-gray-400 block mb-1">Mật Mã</label><input type="password" id="p-pass" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white"></div>
+                            </div>
+                            <div><label class="text-gray-400 block mb-1">Họ Tên / Cấp Bậc Chức Danh</label><input type="text" id="p-name" required placeholder="Thượng Tá Nguyễn Văn B" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white"></div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-gray-400 block mb-1">Quyền Hạn Hệ Thống</label>
+                                    <select id="p-role" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-bold">
+                                        <option value="CÁN BỘ">CÁN BỘ TIẾP NHẬN</option>
+                                        <option value="LÃNH ĐẠO">LÃNH ĐẠO ĐƠN VỊ</option>
+                                        <option value="THANH TRA">THANH TRA CHÍNH PHỦ</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-gray-400 block mb-1">Đơn Vị Ban Ngành</label>
+                                    <select id="p-agency" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-bold">
+                                        <option value="CÔNG AN">CÔNG AN</option>
+                                        <option value="QUÂN ĐỘI">QUÂN ĐỘI</option>
+                                        <option value="UBND PHƯỜNG">UBND PHƯỜNG</option>
+                                        <option value="TOÀ ÁN">TOÀ ÁN</option>
+                                        <option value="NGÂN HÀNG">NGÂN HÀNG</option>
+                                        <option value="BỆNH VIỆN">BỆNH VIỆN</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-purple-600 text-white font-black py-2.5 rounded-lg uppercase tracking-wider hover:bg-purple-700 transition-all shadow-md">Kích Hoạt Tài Khoản</button>
+                        </form>
+                    </div>
+
+                    <div class="xl:col-span-2 bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl flex flex-col h-full shadow-lg">
+                        <h3 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-terminal mr-1 text-xs animate-pulse"></i> Trung Tâm Giám Sát Hành Vi & Nhật Ký Log Hệ Thống Quốc Gia</h3>
+                        <div id="admin-system-logs" class="flex-1 space-y-2 mt-3 font-mono text-[11px] overflow-y-auto max-h-[280px] bg-black/60 p-3 rounded-xl border border-slate-900 shadow-inner"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
-    <nav class="bg-[#0a0f1d]/80 border-b border-slate-800/80 px-6 flex space-x-1.5 backdrop-blur-md">
-        <button onclick="tab('tab-news')" id="btn-tab-news" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-amber-500 text-amber-500 transition-all"><i class="fa-solid fa-newspaper mr-1"></i> Trung Tâm Ấn Bản</button>
-        <button onclick="tab('tab-id')" id="btn-tab-id" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-address-card mr-1"></i> Tra cứu định danh</button>
-        <button onclick="tab('tab-services')" id="btn-tab-services" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-file-invoice-dollar mr-1"></i> Nộp Đơn Thủ Tục</button>
-        <button onclick="tab('tab-officer')" id="btn-tab-officer" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-emerald-500 hover:text-emerald-400 hidden"><i class="fa-solid fa-user-shield mr-1"></i> Bàn Làm Việc Bộ Ngành</button>
-        <button onclick="tab('tab-admin')" id="btn-tab-admin" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-purple-400 hover:text-purple-300 hidden"><i class="fa-solid fa-crown mr-1"></i> Phòng Giám Sát Tối Cao</button>
-    </nav>
-
-    <main class="flex-1 p-6 max-w-[1650px] w-full mx-auto space-y-6">
-        
-        <section id="tab-news" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 space-y-4">
-                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2"><i class="fa-solid fa-scroll text-amber-500"></i> Văn Bản Chỉ Thị / Sắc Lệnh Từ Bộ Chỉ Huy</h2>
-                <div id="news-feed" class="space-y-3"></div>
+    <footer class="mt-12 bg-[#060a14] border-t-2 border-red-900/60 py-6 px-6 text-center shadow-inner relative overflow-hidden">
+        <div class="absolute inset-0 bg-red-950/5 pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto space-y-2 relative z-10">
+            <div class="flex justify-center items-center gap-2 text-red-500 font-black tracking-widest text-[11px] uppercase">
+                <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i> CẢNH BÁO BẢO MẬT & ĐIỀU KHOẢN PHÁP LÝ <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i>
             </div>
-            <div class="space-y-4">
-                <h2 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation animate-pulse"></i> Cơ Sở Dữ Liệu Đối Tượng Truy Nã Quốc Gia</h2>
-                <div id="wanted-feed" class="space-y-3"></div>
+            <p class="text-xs text-red-400/80 font-bold leading-relaxed tracking-wide uppercase">
+                Đây là trang web giả lập không có thực, được xây dựng độc quyền phục vụ cho các kịch bản tương tác nhập vai (Roleplay) giải trí trên nền tảng <span class="text-amber-500">Roblox</span>. 
+            </p>
+            <p class="text-[11px] text-slate-500 leading-relaxed font-medium">
+                Mọi thông tin, dữ liệu căn cước, văn bản số hóa, lệnh truy nã và con dấu điện tử hiển thị trên website này hoàn toàn là hư cấu do người chơi tự nhập và biên soạn, <b class="text-slate-400">không có bất kỳ giá trị pháp lý hay giá trị sử dụng thực tế nào đối với các cơ quan ban ngành, tổ chức chính thống của nước Cộng hòa Xã hội Chủ nghĩa Việt Nam</b>. Nghiêm cấm sử dụng trang web này vào mục đích mạo danh hoặc lừa đảo trục lợi ngoài đời thực.
+            </p>
+            <div class="text-[10px] text-slate-600 font-mono pt-1">
+                &copy; 2026 Gaming Simulator Project. Powered by Co-op Coding Sandbox. All rights reserved.
             </div>
-        </section>
-
-        <section id="tab-id" class="hidden max-w-2xl mx-auto bg-[#0a0f1d] border border-slate-800 p-6 rounded-2xl shadow-xl">
-            <h2 class="text-xs font-black text-center text-white uppercase tracking-widest mb-4"><i class="fa-solid fa-shield-halved text-amber-500"></i> Cơ Sở Dữ Liệu Căn Cước Dân Sự Quốc Gia</h2>
-            <div class="flex gap-2 mb-4">
-                <input type="text" id="id-search" placeholder="Nhập tên tài khoản cư dân (Ví dụ: Nguyen_Manh_Hoang)..." class="flex-1 bg-slate-900 border border-slate-700 px-3 py-2 text-sm rounded-lg text-white focus:outline-none focus:border-amber-500 font-mono">
-                <button onclick="searchCitizen()" class="bg-amber-500 hover:bg-amber-600 text-black px-5 text-xs font-black uppercase rounded-lg transition-all">Truy xuất dữ liệu</button>
-            </div>
-            <div id="id-result"></div>
-        </section>
-
-        <section id="tab-services" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl space-y-4 shadow-lg">
-                <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-file-pen text-amber-500"></i> Tạo Hồ Sơ Trực Tuyến Đa Dạng</h3>
-                <form onsubmit="submitForm(event)" class="space-y-3.5 text-xs">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-gray-400 font-bold mb-1 uppercase tracking-wider">Tên Tài Khoản Hệ Thống (Họ_Tên)</label>
-                            <input type="text" id="app-sender" required placeholder="Nguyen_Manh_Hoang" class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-lg text-white font-mono">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 font-bold mb-1 uppercase tracking-wider">Loại Giấy Tờ / Thủ Tục Đăng Ký</label>
-                            <select id="app-docType" class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-lg text-white font-bold text-amber-400">
-                                <option value="CĂN CƯỚC CÔNG DÂN">Căn Cước Công Dân Gắn Chíp (Làm mới/Cấp đổi)</option>
-                                <option value="GIẤY PHÉP SỬ DỤNG CÔNG CỤ HỖ TRỢ">Giấy Phép Sử Dụng Vũ Khí / Công Cụ Hỗ Trợ</option>
-                                <option value="HỘ CHIẾU QUỐC TẾ">Hộ Chiếu Quốc Tế (Visa Xuất Nhập Cảnh)</option>
-                                <option value="GIẤY PHÉP KINH DOANH DOANH NGHIỆP">Giấy Phép Thành Lập / Kinh Doanh Doanh Nghiệp</option>
-                                <option value="ĐĂNG KÝ KẾT HÔN / KHAI SINH">Đăng Ký Kết Hôn / Giấy Khai Sinh Cư Dân</option>
-                                <option value="CHỨNG CHỈ HÀNH NGHỀ CHUYÊN MÔN">Chứng Chỉ Hành Nghề Chuyên Môn Đặc Chủng</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 font-bold mb-1 uppercase tracking-wider">Cơ Quan Tiếp Nhận Thẩm Định</label>
-                        <select id="app-agency" class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-lg text-white font-bold">
-                            <option value="CÔNG AN">BỘ CÔNG AN (Hồ sơ Căn cước, Giao thông, An ninh)</option>
-                            <option value="QUÂN ĐỘI">BỘ CHỈ HUY QUÂN SỰ TRƯỞNG</option>
-                            <option value="UBND PHƯỜNG">ỦY BAN NHÂN DÂN CẤP PHƯỜNG / THÀNH PHỐ</option>
-                            <option value="TOÀ ÁN">TÒA ÁN NHÂN DÂN TỐI CAO</option>
-                            <option value="NGÂN HÀNG">NGÂN HÀNG TRUNG ƯƠNG QUỐC GIA</option>
-                            <option value="BỆNH VIỆN">BỆNH VIỆN QUỐC GIA LIÊN THÔNG</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 font-bold mb-1 uppercase tracking-wider">Trình Bày Nội Dung Chi Tiết Lý Do Gửi Đơn</label>
-                        <textarea id="app-content" rows="4" required placeholder="Ghi rõ thông tin yêu cầu giải quyết..." class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-lg text-white focus:border-amber-500 focus:outline-none"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 font-black text-black py-3 rounded-lg uppercase tracking-widest hover:brightness-110 shadow-lg">Gửi Hồ Sơ Lên Hệ Thống Quốc Gia</button>
-                </form>
-            </div>
-
-            <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl flex flex-col h-full min-h-[480px] shadow-lg">
-                <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-satellite-dish text-sky-400 animate-pulse"></i> Kiểm Tra Tiến Độ & Đàm Thoại Trực Tuyến</h3>
-                <div class="flex gap-2 my-3">
-                    <input type="text" id="track-id" placeholder="Nhập mã đơn thư cần tra cứu (Ví dụ: HS-1001)..." class="flex-1 bg-slate-900 border border-slate-700 px-3 py-2 text-xs rounded-lg text-white font-mono focus:outline-none">
-                    <button onclick="trackApplication()" class="bg-sky-600 hover:bg-sky-700 text-white px-5 text-xs font-black rounded-lg transition-all">Truy vấn đơn</button>
-                </div>
-                <div id="track-details" class="flex-1 flex flex-col justify-between hidden space-y-3"></div>
-                <div id="track-empty" class="text-center py-16 text-slate-500 text-xs flex-1 flex flex-col justify-center items-center"><i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-700"></i> Nhập chính xác mã số đơn hành chính của bạn để mở luồng đàm thoại với cán bộ nghiệp vụ trực ban.</div>
-            </div>
-        </section>
-
-        <section id="tab-officer" class="hidden grid grid-cols-1 xl:grid-cols-3 gap-6">
-            <div class="xl:col-span-2 space-y-5">
-                
-                <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl shadow-md">
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-folder-closed"></i> Hồ Sơ Hành Chính Chờ Duyệt Lĩnh Vực</h3>
-                        <span id="office-badge" class="text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-800">Cơ Quan Tiếp Nhận</span>
-                    </div>
-                    <div class="overflow-x-auto text-xs">
-                        <table class="w-full text-left">
-                            <thead class="bg-slate-900 text-slate-400 font-bold uppercase text-[9px] tracking-wider">
-                                <tr>
-                                    <th class="p-3">Mã Hồ Sơ</th>
-                                    <th class="p-3">Tài Khoản</th>
-                                    <th class="p-3">Loại Giấy Tờ</th>
-                                    <th class="p-3">Trạng Thái</th>
-                                    <th class="p-3 text-right">Hành Động</th>
-                                </tr>
-                            </thead>
-                            <tbody id="officer-table" class="divide-y divide-slate-800"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl space-y-3.5 shadow-lg">
-                    <h3 class="text-xs font-black text-teal-400 uppercase tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2"><i class="fa-solid fa-user-plus"></i> Nghiệp Vụ Cán Bộ: Số Hóa & Khai Sinh Dữ Liệu Định Danh Cư Dân</h3>
-                    <form onsubmit="registerResidentByOfficer(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                        <div>
-                            <label class="block text-gray-400 mb-1">Tài Khoản Định Danh (Họ_Tên)</label>
-                            <input type="text" id="res-user" required placeholder="Nguyen_Manh_Hoang" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-mono">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 mb-1">Họ Và Tên Khai Sinh</label>
-                            <input type="text" id="res-name" required placeholder="Nguyễn Mạnh Hoàng" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 mb-1">Ngày Tháng Năm Sinh</label>
-                            <input type="text" id="res-dob" required placeholder="18/05/1996" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 mb-1">Giới Tính</label>
-                            <select id="res-gender" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-bold">
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 mb-1">Nguyên Quán / Nơi Sinh</label>
-                            <input type="text" id="res-pob" required placeholder="Lâm Đồng, Việt Nam" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 mb-1">Nghề Nghiệp / Công Tác</label>
-                            <input type="text" id="res-job" required placeholder="Chuyên Viên Cung Ứng Vật Tư" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-gray-400 mb-1">Giấy Phép / Chứng Chỉ Sở Hữu (Cách nhau bằng dấu phẩy)</label>
-                            <input type="text" id="res-licenses" placeholder="Bằng Lái Xe Hạng B2, Giấy phép công cụ hỗ trợ" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 mb-1">Tình Trạng Tư Pháp Quốc Gia</label>
-                            <select id="res-status" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-black text-emerald-400">
-                                <option value="Dân Cư Hợp Pháp - Lý Lịch Trong Sạch">Dân Cư Hợp Pháp - Lý Lịch Sạch</option>
-                                <option value="Đang Thuộc Diện Theo Dõi Đặc Biệt">Diện Theo Dõi Đặc Biệt</option>
-                                <option value="Đối Tượng Tình Nghi Hình Sự Khẩn Cấp">Đối Tượng Tình Nghi Hình Sự</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="md:col-span-3 bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-black py-2.5 rounded-lg uppercase tracking-wider hover:brightness-110 shadow-md transition-all">Lưu Thông Tin Định Định Vào Máy Chủ Quốc Gia</button>
-                    </form>
-                </div>
-
-                <div id="leader-publish-zone" class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl space-y-3.5 shadow-xl hidden">
-                    <h3 class="text-xs font-black text-amber-500 uppercase tracking-widest border-b border-slate-800 pb-1.5 flex items-center gap-2"><i class="fa-solid fa-gavel text-xl"></i> Quyền Hạn Lãnh Đạo Cao Cấp: Chỉ Huy Hệ Thống Toàn Quốc</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                        <div>
-                            <label class="block text-gray-400 mb-1">Loại Hình Văn Bản</label>
-                            <select id="pub-type" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-bold">
-                                <option value="QUYẾT ĐỊNH">QUYẾT ĐỊNH BAN HÀNH SẮC LỆNH</option>
-                                <option value="THÔNG BÁO KHẨN">THÔNG BÁO KHẨN CẤP AN NINH</option>
-                                <option value="TRUY NÃ">LỆNH TRUY NÃ BỊ CAN HÌNH SỰ</option>
-                            </select>
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-gray-400 mb-1">Tiêu Đề Văn Bản / Họ Tên Đối Tượng Bị Truy Nã</label>
-                            <input type="text" id="pub-title" placeholder="Nhập tên đối tượng hoặc tiêu đề nội dung..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white focus:outline-none">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                        <div class="md:col-span-2">
-                            <label class="block text-gray-400 mb-1">Nội dung văn bản chỉ thị chi tiết / Tội danh cụ thể đối tượng</label>
-                            <textarea id="pub-content" rows="2" placeholder="Nhập chi tiết..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white focus:outline-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 mb-1">Cập nhật nội dung Chữ chạy động LED</label>
-                            <div class="flex gap-1.5">
-                                <textarea id="pub-ticker" rows="2" placeholder="Nhập dòng chữ chạy..." class="flex-1 bg-slate-900 border border-slate-700 p-2 rounded-lg text-white text-[11px] focus:outline-none"></textarea>
-                                <button onclick="updateTicker()" class="bg-amber-500 text-black px-2.5 rounded-lg font-black text-[11px] uppercase hover:bg-amber-600">Lưu LED</button>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="publishDocument()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-black text-xs font-black py-2.5 rounded-lg uppercase tracking-widest hover:brightness-110 shadow-lg">Ký Duyệt Phát Hành Văn Bản / Lệnh Toàn Quốc</button>
-                    
-                    <div class="mt-4 pt-4 border-t border-slate-800">
-                        <h4 class="text-[11px] font-black uppercase text-slate-400 mb-2"><i class="fa-solid fa-box-archive text-purple-400"></i> Kho Lưu Trữ Hồ Sơ Bảo Mật (Lãnh Đạo độc quyền xem)</h4>
-                        <div id="leader-archive-list" class="space-y-2 max-h-[160px] overflow-y-auto"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl flex flex-col h-full min-h-[580px] shadow-lg">
-                <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-stamp text-emerald-400"></i> Phòng Thẩm Định & Đóng Dấu Số Hóa</h3>
-                <div id="officer-desk-active" class="flex-1 flex flex-col justify-between hidden mt-3 space-y-3.5"></div>
-                <div id="officer-desk-empty" class="text-center py-24 text-slate-500 text-xs flex-1 flex flex-col justify-center items-center"><i class="fa-solid fa-stamp text-4xl mb-3 text-slate-700"></i> Vui lòng lựa chọn hồ sơ từ danh sách để thẩm định, phê duyệt và đóng hồ sơ chuyển lên trung ương lưu trữ.</div>
-            </div>
-        </section>
-
-        <section id="tab-admin" class="hidden space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono-tech">
-                <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
-                    <div><p class="text-slate-400 font-bold uppercase tracking-wider text-[11px]">Nhân sự ban ngành hoạt động</p><p id="st-staff" class="text-2xl font-black text-emerald-400 mt-1">0</p></div>
-                    <div class="bg-emerald-950 p-2.5 rounded-xl border border-emerald-800 text-emerald-400"><i class="fa-solid fa-users-gear text-xl"></i></div>
-                </div>
-                <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
-                    <div><p class="text-slate-400 font-bold uppercase tracking-wider text-[11px]">Trạng thái an ninh Quốc gia</p>
-                        <select onchange="setSecurity(this.value)" id="adm-sec" class="bg-slate-900 border border-slate-700 rounded-lg p-1.5 mt-1.5 text-white font-black text-xs tracking-wide text-amber-500">
-                            <option value="AN TOÀN">AN TOÀN / BÌNH THƯỜNG</option>
-                            <option value="CAO ĐIỂM">CAO ĐIỂM TUẦN TRA ĐÊM</option>
-                            <option value="KHẨN CẤP">TÌNH TRẠNG KHẨN CẤP QUỐC GIA</option>
-                        </select>
-                    </div>
-                    <div class="bg-amber-950 p-2.5 rounded-xl border border-amber-900 text-amber-400"><i class="fa-solid fa-shield-cat text-xl"></i></div>
-                </div>
-                <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
-                    <div><p class="text-slate-400 font-bold uppercase tracking-wider text-[11px]">Tổng số hồ sơ đang lưu kho</p><p id="st-files" class="text-2xl font-black text-purple-400 mt-1">0</p></div>
-                    <div class="bg-purple-950 p-2.5 rounded-xl border border-purple-900 text-purple-400"><i class="fa-solid fa-box-archive text-xl"></i></div>
-                </div>
-            </div>
-
-            <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4">
-                <h3 class="text-xs font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-chart-column text-amber-500"></i> Biểu Đồ Thống Kê Hiệu Suất Và Đánh Giá Tín Nhiệm Nhân Sự Bộ Ngành</h3>
-                <div id="admin-analytics-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
-            </div>
-
-            <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl shadow-lg space-y-3">
-                <h3 class="text-xs font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-vault text-purple-400"></i> Kho Lưu Trữ Điện Tử Quốc Gia Tối Cao (Admin Tổng Quản Lý)</h3>
-                <div id="admin-vault-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 text-xs"></div>
-            </div>
-
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl space-y-3.5 text-xs shadow-lg">
-                    <h3 class="text-xs font-black text-purple-400 uppercase tracking-wider border-b border-slate-800 pb-2"><i class="fa-solid fa-id-card-clip"></i> Bổ Nhiệm & Cấp Chứng Thư Nhân Sự Mới</h3>
-                    <form onsubmit="provisionAccount(event)" class="space-y-2.5">
-                        <div class="grid grid-cols-2 gap-2">
-                            <div><label class="text-gray-400 block mb-1">Tên Đăng Nhập</label><input type="text" id="p-user" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-mono"></div>
-                            <div><label class="text-gray-400 block mb-1">Mật Mã</label><input type="password" id="p-pass" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white"></div>
-                        </div>
-                        <div><label class="text-gray-400 block mb-1">Họ Tên / Cấp Bậc Chức Danh</label><input type="text" id="p-name" required placeholder="Thượng Tá Nguyễn Văn B" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white"></div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="text-gray-400 block mb-1">Quyền Hạn Hệ Thống</label>
-                                <select id="p-role" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-bold">
-                                    <option value="CÁN BỘ">CÁN BỘ TIẾP NHẬN</option>
-                                    <option value="LÃNH ĐẠO">LÃNH ĐẠO ĐƠN VỊ</option>
-                                    <option value="THANH TRA">THANH TRA CHÍNH PHỦ</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-gray-400 block mb-1">Đơn Vị Ban Ngành</label>
-                                <select id="p-agency" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-bold">
-                                    <option value="CÔNG AN">CÔNG AN</option>
-                                    <option value="QUÂN ĐỘI">QUÂN ĐỘI</option>
-                                    <option value="UBND PHƯỜNG">UBND PHƯỜNG</option>
-                                    <option value="TOÀ ÁN">TOÀ ÁN</option>
-                                    <option value="NGÂN HÀNG">NGÂN HÀNG</option>
-                                    <option value="BỆNH VIỆN">BỆNH VIỆN</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full bg-purple-600 text-white font-black py-2.5 rounded-lg uppercase tracking-wider hover:bg-purple-700 transition-all shadow-md">Kích Hoạt Tài Khoản</button>
-                    </form>
-                </div>
-
-                <div class="xl:col-span-2 bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl flex flex-col h-full shadow-lg">
-                    <h3 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-terminal mr-1 text-xs animate-pulse"></i> Trung Tâm Giám Sát Hành Vi & Nhật Ký Log Hệ Thống Quốc Gia</h3>
-                    <div id="admin-system-logs" class="flex-1 space-y-2 mt-3 font-mono text-[11px] overflow-y-auto max-h-[280px] bg-black/60 p-3 rounded-xl border border-slate-900 shadow-inner"></div>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div>
+    </footer>
 
     <div id="login-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center hidden p-4 z-50">
         <div class="bg-[#0a0f1d] border border-slate-800 p-6 rounded-2xl max-w-sm w-full space-y-4 text-xs shadow-2xl relative">
@@ -369,7 +391,7 @@
         function tab(id) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
-            document.querySelectorAll('nav mt-1.5 button', 'nav button').forEach(b => b.className = b.className.replace('border-amber-500 text-amber-500', 'border-transparent text-slate-400'));
+            document.querySelectorAll('nav button').forEach(b => b.className = b.className.replace('border-amber-500 text-amber-500', 'border-transparent text-slate-400'));
             const btn = document.getElementById(`btn-${id}`);
             if(btn) btn.className = btn.className.replace('border-transparent text-slate-400', 'border-amber-500 text-amber-500');
         }
@@ -377,7 +399,6 @@
         function renderAll() {
             document.getElementById('live-marquee').innerText = state.tickerMessage;
 
-            // Render Tin tức sắc lệnh
             const feed = document.getElementById('news-feed');
             feed.innerHTML = '';
             state.announcements.forEach(a => {
@@ -394,7 +415,6 @@
                 `;
             });
 
-            // Truy nã
             const wanted = document.getElementById('wanted-feed');
             wanted.innerHTML = '';
             state.criminalWantedList.forEach(c => {
@@ -408,7 +428,6 @@
                 `;
             });
 
-            // Bàn làm việc cán bộ
             if (activeUser) {
                 document.getElementById('office-badge').innerText = `BAN TIẾP NHẬN: BỘ [${activeUser.agency}] — CHỨC DANH: ${activeUser.displayName} [${activeUser.role}]`;
                 const tbody = document.getElementById('officer-table');
@@ -428,7 +447,6 @@
                     }
                 });
 
-                // Cập nhật Kho lưu trữ dành riêng cho Lãnh Đạo xem thông tin bảo mật
                 const leadArch = document.getElementById('leader-archive-list');
                 if(leadArch) {
                     leadArch.innerHTML = '';
@@ -445,7 +463,6 @@
                 }
             }
 
-            // Đồng bộ dữ liệu Admin
             document.getElementById('st-staff').innerText = Object.keys(state.authorizedPersonnel).length - 1;
             document.getElementById('st-files').innerText = Object.keys(state.archivedApplications).length;
             
@@ -457,7 +474,6 @@
                 });
             }
 
-            // Render kho lưu trữ khổng lồ của Admin
             const adminVault = document.getElementById('admin-vault-list');
             if(adminVault) {
                 adminVault.innerHTML = '';
@@ -474,7 +490,6 @@
                 });
             }
 
-            // Render biểu đồ thanh tín nhiệm nhân viên
             const analytics = document.getElementById('admin-analytics-list');
             analytics.innerHTML = '';
             Object.values(state.authorizedPersonnel).forEach(u => {
@@ -492,7 +507,6 @@
             });
         }
 
-        // CÁN BỘ NHẬP TOÀN BỘ THÔNG TIN CƯ DÂN LÊN HỆ THỐNG
         async function registerResidentByOfficer(e) {
             e.preventDefault();
             const username = document.getElementById('res-user').value.trim();
@@ -504,13 +518,12 @@
             const licenses = document.getElementById('res-licenses').value.trim();
             const status = document.getElementById('res-status').value;
 
-            const res = await fetch('/api/resident/register', {
+            await fetch('/api/resident/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, name, dob, gender, pob, job, licenses, status, officerName: activeUser.displayName })
             });
             
-            // Clear inputs sau khi thêm thành công
             document.getElementById('res-user').value = '';
             document.getElementById('res-name').value = '';
             document.getElementById('res-dob').value = '';
@@ -522,7 +535,6 @@
             await syncState();
         }
 
-        // CÔNG DÂN GỬI ĐƠN HÀNH CHÍNH
         async function submitForm(e) {
             e.preventDefault();
             const sender = document.getElementById('app-sender').value.trim();
@@ -542,7 +554,6 @@
             trackApplication();
         }
 
-        // TRA CỨU HỒ SƠ CÔNG DÂN TIẾN ĐỘ
         function trackApplication() {
             const id = document.getElementById('track-id').value.trim();
             const area = document.getElementById('track-details');
@@ -569,7 +580,7 @@
                     </div>
                 `;
             } else if (app.satisfaction) {
-                satBlock = `<div class="text-center text-[10px] font-black uppercase text-amber-500 bg-slate-900 p-2 rounded-lg border border-slate-800 tracking-wider">Đánh giá hiệu suất: Đơn đạt mức [${app.satisfaction}]</div>`;
+                satBlock = `<div class="text-center text-[10px] font-black uppercase text-amber-500 bg-slate-900 p-2 rounded-lg border border-slate-800 tracking-wider">Đánh giá hiệu suất: [${app.satisfaction}]</div>`;
             }
 
             area.innerHTML = `
@@ -635,10 +646,9 @@
                     </div>
                 `;
             } else {
-                residentProfileHtml = `<div class="bg-red-950/20 border border-red-900/40 p-2.5 text-[10px] text-red-400 text-center rounded-xl font-bold">CẢNH BÁO: Cư dân chưa được nhập dữ liệu định danh lên Máy chủ liên thông.</div>`;
+                residentProfileHtml = `<div class="bg-red-950/20 border border-red-900/40 p-2.5 text-[10px] text-red-400 text-center rounded-xl font-bold">CẢNH BÁO: Cư dân chưa được định danh.</div>`;
             }
 
-            // PHẦN MỚI BỔ SUNG: Hiển thị nút "Đóng hồ sơ & Chuyển lưu trữ" khi người dân đã đánh giá xong
             let actionsHtml = '';
             if (activeUser.role === 'CÁN BỘ' || activeUser.role === 'LÃNH ĐẠO' || activeUser.role === 'ADMIN') {
                 let forwardLeaderBtn = (activeUser.role === 'CÁN BỘ' && app.status !== 'Đã Phê Duyệt' && app.status !== 'Bị Bác Bỏ') ? 
@@ -764,7 +774,7 @@
             if (registry[q]) {
                 let r = registry[q];
                 resArea.innerHTML = `
-                    <div class="mt-4 p-4 bg-slate-900 border border-slate-700 rounded-xl text-xs space-y-2 shadow-inner animate-fadeIn">
+                    <div class="mt-4 p-4 bg-slate-900 border border-slate-700 rounded-xl text-xs space-y-2 shadow-inner">
                         <p class="text-sm font-black text-amber-500 border-b border-slate-800 pb-1">${r.name}</p>
                         <p>Ngày sinh: <b>${r.dob}</b> | Giới tính: <b>${r.gender}</b></p>
                         <p>Nơi sinh quản lý: <b>${r.pob}</b></p>
