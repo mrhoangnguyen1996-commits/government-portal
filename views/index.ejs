@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CỔNG THÔNG TIN ĐIỆN TỬ CHÍNH PHỦ GIẢ LẬP</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #080c14; color: #cbd5e1; }
+        
+        /* Thiết kế nâng cấp các con dấu mộc chuyên nghiệp */
+        .stamp-box { position: relative; font-size: 11px; font-weight: 800; text-transform: uppercase; padding: 6px 12px; border-radius: 6px; border: 2.5px dashed; display: inline-block; text-align: center; letter-spacing: 1px; transform: rotate(-8deg); box-shadow: 0 0 8px rgba(0,0,0,0.5); }
+        .stamp-approved { border-color: #10b981; color: #10b981; background: rgba(16, 185, 129, 0.08); text-shadow: 0 0 2px #10b981; }
+        .stamp-rejected { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.08); text-shadow: 0 0 2px #ef4444; }
+        .stamp-pending { border-color: #f59e0b; color: #f59e0b; background: rgba(245, 158, 11, 0.08); text-shadow: 0 0 2px #f59e0b; }
+        .stamp-forwarded { border-color: #a855f7; color: #a855f7; background: rgba(168, 85, 247, 0.08); text-shadow: 0 0 2px #a855f7; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-[#0f172a] border-b border-slate-800 px-6 py-4 flex flex-wrap justify-between items-center shadow-md">
+        <div class="flex items-center space-x-3">
+            <div class="bg-amber-500 p-2.5 rounded-lg text-black"><i class="fa-solid fa-building-shield text-xl"></i></div>
+            <div>
+                <span class="text-[10px] tracking-widest text-amber-500 uppercase font-bold">Hệ Thống Trực Tuyến Quốc Gia</span>
+                <h1 class="text-lg font-extrabold text-white tracking-tight">CỔNG THÔNG TIN ĐIỆN TỬ CHÍNH PHỦ</h1>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4 text-xs">
+            <div class="bg-slate-900 px-3 py-1.5 rounded border border-slate-800 font-mono text-amber-400 font-bold" id="clock">00:00:00</div>
+            <div class="bg-slate-900 px-3 py-1.5 rounded border border-slate-800 flex items-center gap-2">
+                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="security-txt" class="font-bold text-white uppercase"><%= state.securityLevel %></span>
+            </div>
+            <div id="auth-panel"></div>
+        </div>
+    </header>
+
+    <nav class="bg-[#0f172a] border-b border-slate-800 px-6 flex space-x-2">
+        <button onclick="tab('tab-news')" id="btn-tab-news" class="px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 border-amber-500 text-amber-500">Bản Tin</button>
+        <button onclick="tab('tab-id')" id="btn-tab-id" class="px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white">Tra Cứu Định Danh</button>
+        <button onclick="tab('tab-services')" id="btn-tab-services" class="px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white">Dịch Vụ Hành Chính</button>
+        <button onclick="tab('tab-officer')" id="btn-tab-officer" class="px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white hidden text-emerald-400"><i class="fa-solid fa-user-shield"></i> Bàn Làm Việc Bộ Ngành</button>
+        <button onclick="tab('tab-admin')" id="btn-tab-admin" class="px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white hidden text-purple-400"><i class="fa-solid fa-sliders"></i> Giám Sát Tối Cao</button>
+    </nav>
+
+    <main class="flex-1 p-6 max-w-[1600px] w-full mx-auto">
+        
+        <section id="tab-news" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 space-y-4">
+                <h2 class="text-sm font-black text-slate-400 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-scroll text-amber-500"></i> Văn Bản Chỉ Thị Chính Thức</h2>
+                <div id="news-feed" class="space-y-3"></div>
+            </div>
+            <div class="space-y-4">
+                <h2 class="text-sm font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-triangle-exclamation"></i> Cơ Sở Dữ Liệu Đối Tượng Truy Nã</h2>
+                <div id="wanted-feed" class="space-y-3"></div>
+            </div>
+        </section>
+
+        <section id="tab-id" class="hidden max-w-2xl mx-auto bg-[#0f172a] border border-slate-800 p-6 rounded-xl">
+            <h2 class="text-sm font-bold text-center text-white uppercase tracking-widest mb-4">Hệ Thống Kiểm Tra Căn Cước Dân Sự</h2>
+            <div class="flex gap-2 mb-4">
+                <input type="text" id="id-search" placeholder="Nhập tên tài khoản (Ví dụ: Nguyen_Manh_Hoang)..." class="flex-1 bg-slate-900 border border-slate-700 px-3 py-2 text-sm rounded text-white focus:outline-none">
+                <button onclick="searchCitizen()" class="bg-amber-500 hover:bg-amber-600 text-black px-4 text-xs font-bold uppercase rounded">Truy xuất</button>
+            </div>
+            <div id="id-result"></div>
+        </section>
+
+        <section id="tab-services" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-[#0f172a] border border-slate-800 p-5 rounded-xl space-y-4">
+                <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2">Khởi Tạo Đơn Thư Hành Chính Điện Tử</h3>
+                <form onsubmit="submitForm(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block text-gray-400 font-bold mb-1 uppercase">Tên Tài Khoản Hệ Thống (Họ_Tên)</label>
+                        <input type="text" id="app-sender" required placeholder="Nguyen_Manh_Hoang" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 font-bold mb-1 uppercase">Cơ Quan Tiếp Nhận Đơn Thư</label>
+                        <select id="app-agency" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white">
+                            <option value="CÔNG AN">BỘ CÔNG AN (Căn cước, Giao thông, An ninh)</option>
+                            <option value="QUÂN ĐỘI">BỘ CHỈ HUY QUÂN SỰ</option>
+                            <option value="UBND PHƯỜNG">ỦY BAN NHÂN DÂN CẤP PHƯỜNG</option>
+                            <option value="TOÀ ÁN">TÒA ÁN NHÂN DÂN TỐI CAO</option>
+                            <option value="NGÂN HÀNG">NGÂN HÀNG TRUNG ƯƠNG</option>
+                            <option value="BỆNH VIỆN">BỆNH VIỆN QUỐC GIA</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 font-bold mb-1 uppercase">Nội dung yêu cầu giải quyết thủ tục</label>
+                        <textarea id="app-content" rows="4" required placeholder="Ghi chi tiết lý do và mong muốn..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-amber-500 font-bold text-black py-2.5 rounded uppercase tracking-wider hover:bg-amber-600 transition">Gửi Đơn Lên Hệ Thống</button>
+                </form>
+            </div>
+
+            <div class="bg-[#0f172a] border border-slate-800 p-5 rounded-xl flex flex-col h-full min-h-[450px]">
+                <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2">Tra Cứu Tiến Độ & Tương Tác Với Cán Bộ Phụ Trách</h3>
+                <div class="flex gap-2 my-3">
+                    <input type="text" id="track-id" placeholder="Nhập mã đơn thư (VD: HS-1001)..." class="flex-1 bg-slate-900 border border-slate-700 px-3 py-1.5 text-xs rounded text-white focus:outline-none">
+                    <button onclick="trackApplication()" class="bg-sky-600 text-white px-4 text-xs font-bold rounded">Kiểm tra</button>
+                </div>
+                <div id="track-details" class="flex-1 flex flex-col justify-between hidden"></div>
+                <div id="track-empty" class="text-center py-12 text-slate-500 text-xs flex-1 flex flex-col justify-center items-center"><i class="fa-solid fa-folder-minus text-4xl mb-2"></i> Nhập mã đơn thư để mở cổng tương tác trực ban.</div>
+            </div>
+        </section>
+
+        <section id="tab-officer" class="hidden grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <div class="xl:col-span-2 space-y-4">
+                <div class="bg-[#0f172a] border border-slate-800 p-4 rounded-xl">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-xs font-black text-emerald-400 uppercase tracking-wider"><i class="fa-solid fa-table-list"></i> Danh Sách Hồ Sơ Hành Chính Chờ Thẩm Định Lĩnh Vực</h3>
+                        <span id="office-badge" class="text-[10px] font-bold bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded border border-emerald-800">Cơ Quan</span>
+                    </div>
+                    <div class="overflow-x-auto text-xs">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-900 text-slate-400 font-bold uppercase text-[10px]">
+                                <tr>
+                                    <th class="p-2.5">Mã Đơn</th>
+                                    <th class="p-2.5">Công Dân</th>
+                                    <th class="p-2.5">Nội Dung Đơn Thư</th>
+                                    <th class="p-2.5">Trạng Thái</th>
+                                    <th class="p-2.5 text-right">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="officer-table" class="divide-y divide-slate-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="leader-publish-zone" class="bg-[#0f172a] border border-slate-800 p-4 rounded-xl space-y-3 hidden">
+                    <h3 class="text-xs font-black text-amber-500 uppercase tracking-widest"><i class="fa-solid fa-feather-pointed"></i> Thẩm Quyền Lãnh Đạo: Ban Hành Văn Bản / Quyết Định / Lệnh Truy Nã Quốc Gia</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div>
+                            <label class="block text-gray-400 mb-1">Phân Loại Ấn Bản</label>
+                            <select id="pub-type" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white">
+                                <option value="QUYẾT ĐỊNH">QUYẾT ĐỊNH BAN HÀNH</option>
+                                <option value="THÔNG BÁO KHẨN">THÔNG BÁO KHẨN CẤP</option>
+                                <option value="TRUY NÃ">LỆNH TRUY NÃ HÌNH SỰ SỰ KIỆN</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-gray-400 mb-1">Tiêu Đề Bản Tin / Tên Đối Tượng Truy Nã</label>
+                            <input type="text" id="pub-title" placeholder="Nhập tên đối tượng hoặc tiêu đề..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white">
+                        </div>
+                    </div>
+                    <div class="text-xs">
+                        <label class="block text-gray-400 mb-1">Nội Dung Chi Tiết Văn Bản / Tội Danh Cụ Thể (Chèn URL ảnh ở hàng cuối để hiển thị ảnh)</label>
+                        <textarea id="pub-content" rows="3" placeholder="Nhập văn bản..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white"></textarea>
+                    </div>
+                    <button onclick="publishDocument()" class="bg-amber-500 text-black text-xs font-bold px-4 py-2 rounded uppercase tracking-wider hover:bg-amber-600">Phê Duyệt Phát Hành Toàn Quốc</button>
+                </div>
+            </div>
+
+            <div class="bg-[#0f172a] border border-slate-800 p-4 rounded-xl flex flex-col h-full min-h-[550px]">
+                <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2">Bàn Xử Lý Thẩm Định Đơn Liên Ngành</h3>
+                <div id="officer-desk-active" class="flex-1 flex flex-col justify-between hidden mt-3"></div>
+                <div id="officer-desk-empty" class="text-center py-20 text-slate-500 text-xs flex-1 flex flex-col justify-center items-center"><i class="fa-solid fa-stamp text-4xl mb-2"></i> Chọn một hồ sơ bất kỳ từ danh sách chờ để tiến hành đóng dấu thẩm định và kiểm tra dữ liệu gốc của cư dân.</div>
+            </div>
+        </section>
+
+        <section id="tab-admin" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div class="bg-[#0f172a] border border-slate-800 p-4 rounded-xl flex justify-between items-center">
+                    <div><p class="text-gray-400 uppercase font-bold">Tổng số cán bộ nghiệp vụ</p><p id="st-staff" class="text-lg font-black text-emerald-400">0</p></div>
+                    <i class="fa-solid fa-user-tie text-2xl text-slate-700"></i>
+                </div>
+                <div class="bg-[#0f172a] border border-slate-800 p-4 rounded-xl flex justify-between items-center">
+                    <div><p class="text-gray-400 uppercase font-bold">Tình Trạng An Ninh Hệ Thống</p>
+                        <select onchange="setSecurity(this.value)" id="adm-sec" class="bg-slate-900 border border-slate-700 rounded p-1 mt-1 text-white font-bold">
+                            <option value="AN TOÀN">AN TOÀN / BÌNH THƯỜNG</option>
+                            <option value="CAO ĐIỂM">CAO ĐIỂM BAN ĐÊM</option>
+                            <option value="KHẨN CẤP">KHẨN CẤP TOÀN QUỐC</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-[#0f172a] border border-slate-800 p-5 rounded-xl space-y-3 text-xs">
+                    <h3 class="text-xs font-black text-purple-400 uppercase tracking-wider border-b border-slate-800 pb-2">Định Danh & Phân Quyền Nhân Sự Ban Ngành</h3>
+                    <form onsubmit="provisionAccount(event)" class="space-y-2">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-gray-400 block mb-1">Tên Đăng Nhập</label><input type="text" id="p-user" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white"></div>
+                            <div><label class="text-gray-400 block mb-1">Mật Mã</label><input type="password" id="p-pass" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white"></div>
+                        </div>
+                        <div><label class="text-gray-400 block mb-1">Họ Tên / Chức Danh Hiển Thị</label><input type="text" id="p-name" required placeholder="Thượng Tá Nguyễn Văn B" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white"></div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-gray-400 block mb-1">Quyền Hạn</label>
+                                <select id="p-role" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white">
+                                    <option value="CÁN BỘ">CÁN BỘ TIẾP NHẬN (Xử lý, Duyệt đơn)</option>
+                                    <option value="LÃNH ĐẠO">LÃNH ĐẠO ĐƠN VỊ (Toàn quyền, Đăng tin Sắc lệnh)</option>
+                                    <option value="THANH TRA">THANH TRA CHÍNH PHỦ (Giám sát, Kiểm tra)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-gray-400 block mb-1">Đơn Vị Công Tác</label>
+                                <select id="p-agency" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white">
+                                    <option value="CÔNG AN">CÔNG AN</option>
+                                    <option value="QUÂN ĐỘI">QUÂN ĐỘI</option>
+                                    <option value="UBND PHƯỜNG">UBND PHƯỜNG</option>
+                                    <option value="TOÀ ÁN">TOÀ ÁN</option>
+                                    <option value="NGÂN HÀNG">NGÂN HÀNG</option>
+                                    <option value="BỆNH VIỆN">BỆNH VIỆN</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-purple-600 text-white font-bold py-2 rounded uppercase tracking-wide hover:bg-purple-700">Kích Hoạt Tài Khoản Nghiệp Vụ</button>
+                    </form>
+                </div>
+
+                <div class="bg-[#0f172a] border border-slate-800 p-5 rounded-xl space-y-3">
+                    <h3 class="text-xs font-black text-white uppercase tracking-wider border-b border-slate-800 pb-2">Thống Kê Hiệu Suất & Đánh Giá Từng Nhân Viên/Cơ Quan</h3>
+                    <div id="admin-analytics-list" class="space-y-3 overflow-y-auto max-h-[350px]"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden p-4 z-50">
+        <div class="bg-[#0f172a] border border-slate-800 p-5 rounded-xl max-w-sm w-full space-y-3 text-xs">
+            <h3 class="text-sm font-bold text-center text-white uppercase tracking-widest">Xác Minh Chứng Thư Bộ Ngành</h3>
+            <div><label class="text-gray-400 block mb-1">Tên Đăng Nhập</label><input type="text" id="log-user" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white"></div>
+            <div><label class="text-gray-400 block mb-1">Mật Mã Bảo Mật</label><input type="password" id="log-pass" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white"></div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="closeLogin()" class="w-1/3 bg-slate-800 text-white py-2 rounded uppercase font-bold">Hủy</button>
+                <button onclick="login()" class="w-2/3 bg-amber-500 text-black py-2 rounded uppercase font-bold hover:bg-amber-600">Đăng Nhập</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Đồng bộ Dữ liệu máy chủ Server EJS chuyển giao sang Javascript Client
+        let state = <%- JSON.stringify(state) %>;
+        let registry = <%- JSON.stringify(registry) %>;
+        let activeUser = null;
+        let activeFileId = null;
+
+        function startClock() {
+            setInterval(() => {
+                document.getElementById('clock').innerText = new Date().toLocaleTimeString('vi-VN');
+            }, 1000);
+        }
+
+        async function syncState() {
+            const res = await fetch('/api/state');
+            const data = await res.json();
+            state = data.systemState;
+            registry = data.citizenIdentityRegistry;
+            renderAll();
+        }
+
+        function tab(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('nav button').forEach(b => b.className = b.className.replace('border-amber-500 text-amber-500', 'border-transparent text-slate-400'));
+            const btn = document.getElementById(`btn-${id}`);
+            if(btn) btn.className = btn.className.replace('border-transparent text-slate-400', 'border-amber-500 text-amber-500');
+        }
+
+        function renderAll() {
+            // Render bản tin văn bản hành chính
+            const feed = document.getElementById('news-feed');
+            feed.innerHTML = '';
+            state.announcements.forEach(a => {
+                let imgHtml = '';
+                let plainText = a.content;
+                const match = a.content.match(/\bhttps?:\/\/\S+\.(?:png|jpg|jpeg|gif|webp)\b/i);
+                if (match) {
+                    plainText = plainText.replace(match[0], '');
+                    imgHtml = `<img src="${match[0]}" class="mt-2 rounded max-h-48 object-cover border border-slate-800">`;
+                }
+
+                let deleteBtn = (activeUser && (activeUser.role === 'LÃNH ĐẠO' || activeUser.role === 'ADMIN')) ? 
+                    `<button onclick="deleteNews('${a.id}')" class="text-[10px] text-red-400 hover:underline">Xóa bản tin</button>` : '';
+
+                feed.innerHTML += `
+                    <div class="bg-[#0f172a] border border-slate-800 p-4 rounded-lg relative">
+                        <div class="flex justify-between items-center"><span class="text-[9px] font-bold text-amber-500 uppercase bg-amber-950/40 border border-amber-800/60 px-1.5 py-0.5 rounded">${a.type}</span>${deleteBtn}</div>
+                        <h4 class="text-sm font-bold text-white mt-1">${a.title}</h4>
+                        <p class="text-xs text-slate-400 whitespace-pre-wrap mt-1">${plainText}</p>
+                        ${imgHtml}
+                        <div class="text-[10px] text-slate-500 mt-2 font-mono"><i class="fa-solid fa-clock"></i> Khắc dấu ban hành: ${a.timestamp}</div>
+                    </div>
+                `;
+            });
+
+            // Render danh sách tội phạm truy nã
+            const wanted = document.getElementById('wanted-feed');
+            wanted.innerHTML = '';
+            state.criminalWantedList.forEach(c => {
+                wanted.innerHTML += `
+                    <div class="bg-red-950/10 border border-red-900/40 p-3 rounded-lg">
+                        <p class="text-xs text-red-400 font-bold"><i class="fa-solid fa-bullseye"></i> ĐỐI TƯỢNG: @${c.name}</p>
+                        <p class="text-xs text-slate-300 mt-0.5">Tội danh: ${c.crime}</p>
+                        <p class="text-xs text-yellow-500 font-bold mt-1">Khen thưởng truy tìm: ${c.bounty}</p>
+                    </div>
+                `;
+            });
+
+            // Cập nhật bảng làm việc bộ ngành
+            if (activeUser) {
+                document.getElementById('office-badge').innerText = `PHÒNG: ${activeUser.agency} — CẤP: ${activeUser.role}`;
+                const tbody = document.getElementById('officer-table');
+                tbody.innerHTML = '';
+                
+                Object.values(state.applications).forEach(app => {
+                    if (app.agency === activeUser.agency || activeUser.role === 'ADMIN') {
+                        tbody.innerHTML += `
+                            <tr class="hover:bg-slate-900 border-b border-slate-800 text-xs">
+                                <td class="p-2.5 font-bold font-mono text-amber-500">${app.id}</td>
+                                <td class="p-2.5">@${app.sender}</td>
+                                <td class="p-2.5 truncate max-w-xs">${app.content}</td>
+                                <td class="p-2.5 font-bold">${app.status}</td>
+                                <td class="p-2.5 text-right"><button onclick="selectFile('${app.id}')" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[11px]">Xử Lý</button></td>
+                            </tr>
+                        `;
+                    }
+                });
+            }
+
+            // Đồng bộ Admin Dashboard Metrics
+            document.getElementById('st-staff').innerText = Object.keys(state.authorizedPersonnel).length - 1;
+            const analytics = document.getElementById('admin-analytics-list');
+            analytics.innerHTML = '';
+            
+            let agencies = ["CÔNG AN", "QUÂN ĐỘI", "UBND PHƯỜNG", "TOÀ ÁN", "NGÂN HÀNG", "BỆNH VIỆN"];
+            agencies.forEach(ag => {
+                let agFiles = Object.values(state.applications).filter(a => a.agency === ag);
+                let staffListHtml = '';
+                
+                Object.values(state.authorizedPersonnel).forEach(u => {
+                    if (u.agency === ag) {
+                        staffListHtml += `
+                            <div class="flex justify-between text-[11px] bg-slate-900 p-1 rounded mt-1 border border-slate-800">
+                                <span class="text-slate-300">${u.displayName} (${u.role})</span>
+                                <span class="font-mono text-emerald-400">👍${u.positiveRatings} | 👎${u.negativeRatings}</span>
+                            </div>
+                        `;
+                    }
+                });
+
+                analytics.innerHTML += `
+                    <div class="bg-slate-900/60 p-2 rounded border border-slate-800 text-xs">
+                        <div class="flex justify-between font-bold text-amber-500 border-b border-slate-800 pb-1">
+                            <span>CƠ QUAN: ${ag}</span>
+                            <span>Tổng đơn nhận: ${agFiles.length}</span>
+                        </div>
+                        ${staffListHtml || '<p class="text-[10px] text-slate-600 italic">Chưa bố trí nhân sự cán bộ</p>'}
+                    </div>
+                `;
+            });
+        }
+
+        // CÔNG DÂN GỬI ĐƠN HÀNH CHÍNH
+        async function submitForm(e) {
+            e.preventDefault();
+            const sender = document.getElementById('app-sender').value.trim();
+            const agency = document.getElementById('app-agency').value;
+            const content = document.getElementById('app-content').value.trim();
+
+            const res = await fetch('/api/applications/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sender, agency, content })
+            });
+            const data = await res.json();
+            document.getElementById('app-content').value = '';
+            document.getElementById('track-id').value = data.id;
+            await syncState();
+            trackApplication();
+        }
+
+        // TRA CỨU HỒ SƠ VÀ CHAT HAI CHIỀU CỦA DÂN CƯ
+        function trackApplication() {
+            const id = document.getElementById('track-id').value.trim();
+            const area = document.getElementById('track-details');
+            const empty = document.getElementById('track-empty');
+
+            if (!state.applications[id]) {
+                area.classList.add('hidden'); empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden'); area.classList.remove('hidden');
+            const app = state.applications[id];
+
+            let chatHtml = '';
+            app.logs.forEach(l => {
+                chatHtml += `<div class="bg-slate-900 p-2 rounded border border-slate-800 text-[11px]"><p class="text-[9px] font-bold text-gray-400">${l.sender} • ${l.time}</p><p class="text-white mt-0.5">${l.msg}</p></div>`;
+            });
+
+            let satBlock = '';
+            if ((app.status === 'Đã Phê Duyệt' || app.status === 'Bị Bác Bỏ') && !app.satisfaction) {
+                satBlock = `
+                    <div class="flex gap-2 justify-center py-2 bg-slate-900/60 border border-slate-800 rounded">
+                        <button onclick="sendAction('${id}', 'satisfaction', 'HÀI LÒNG')" class="bg-emerald-600 text-white font-bold px-3 py-1 rounded text-[10px]">HÀI LÒNG</button>
+                        <button onclick="sendAction('${id}', 'satisfaction', 'KHIẾU NẠI')" class="bg-red-600 text-white font-bold px-3 py-1 rounded text-[10px]">KHIẾU NẠI LÊN THANH TRA</button>
+                    </div>
+                `;
+            } else if (app.satisfaction) {
+                satBlock = `<div class="text-center text-[10px] font-bold uppercase text-amber-500 bg-slate-900 p-1.5 rounded border border-slate-800">Phản hồi của bạn (${app.satisfaction}) đã gửi tới cấp Thanh Tra</div>`;
+            }
+
+            area.innerHTML = `
+                <div class="flex-1 overflow-y-auto space-y-3 max-h-[300px]">
+                    <div class="bg-slate-900 p-3 rounded border border-slate-800 flex justify-between items-start">
+                        <div>
+                            <p class="font-bold text-amber-500">${app.id} [${app.agency}]</p>
+                            <p class="text-[11px] text-slate-300 mt-1">Nội dung: "${app.content}"</p>
+                        </div>
+                        <div class="stamp-box ${app.stamp}">${app.status}</div>
+                    </div>
+                    <div class="space-y-2"><p class="text-[10px] uppercase font-bold text-slate-400">Luồng Xử Lý & Đàm Thoại Trực Ban:</p>${chatHtml}</div>
+                </div>
+                <div class="pt-2 border-t border-slate-800 mt-2 space-y-2">
+                    ${satBlock}
+                    <div class="flex gap-2">
+                        <input type="text" id="citizen-chat-msg" placeholder="Nhập câu hỏi thảo luận gửi cán bộ..." class="flex-1 bg-slate-900 border border-slate-700 p-1.5 text-xs text-white rounded">
+                        <button onclick="citizenChat('${app.id}')" class="bg-amber-500 text-black px-4 font-bold text-xs rounded">Gửi</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function citizenChat(id) {
+            const msg = document.getElementById('citizen-chat-msg').value.trim();
+            if (!msg) return;
+            await fetch('/api/applications/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, action: 'chat', msg, officerName: `Công Dân (@${state.applications[id].sender})` })
+            });
+            await syncState();
+            trackApplication();
+        }
+
+        // BÀN LÀM VIỆC CÁN BỘ - TRA CỨU CƯ DÂN ĐỂ NHẬP LIỆU
+        function selectFile(id) {
+            activeFileId = id;
+            document.getElementById('officer-desk-empty').classList.add('hidden');
+            const desk = document.getElementById('officer-desk-active');
+            desk.classList.remove('hidden');
+            renderOfficerDesk();
+        }
+
+        function renderOfficerDesk() {
+            const app = state.applications[activeFileId];
+            const desk = document.getElementById('officer-desk-active');
+
+            let chatHtml = '';
+            app.logs.forEach(l => {
+                chatHtml += `<div class="bg-slate-900 p-2 rounded border border-slate-800 text-[11px]"><p class="text-[9px] font-bold text-gray-400">${l.sender} • ${l.time}</p><p class="text-white mt-0.5">${l.msg}</p></div>`;
+            });
+
+            // Tự động truy xuất dữ liệu gốc dân cư để cán bộ đối chiếu nhập liệu thông tin căn cước
+            let residentProfileHtml = '';
+            if (registry[app.sender]) {
+                let r = registry[app.sender];
+                residentProfileHtml = `
+                    <div class="bg-amber-500/5 border border-amber-500/20 p-3 rounded text-[11px] text-slate-300 space-y-1">
+                        <p class="text-amber-500 font-bold uppercase text-[10px]"><i class="fa-solid fa-database"></i> Dữ liệu Định danh gốc của: @${app.sender}</p>
+                        <p>Họ tên: <b>${r.name}</b> | Ngày sinh: <b>${r.dob}</b> | Giới tính: <b>${r.gender}</b></p>
+                        <p>Nơi sinh: ${r.pob} | Nghề nghiệp: ${r.job}</p>
+                        <p class="text-[10px] text-slate-400">Giấy phép sở hữu: ${r.licenses.join(', ')}</p>
+                        <p class="text-emerald-400 font-bold">Lý lịch an ninh: ${r.status}</p>
+                    </div>
+                `;
+            } else {
+                residentProfileHtml = `<div class="bg-red-950/20 border border-red-900/40 p-2 text-[10px] text-red-400 text-center">Cảnh báo: Tài khoản công dân chưa khai báo hồ sơ định danh gốc trên hệ thống quốc gia.</div>`;
+            }
+
+            let actionsHtml = '';
+            if (activeUser.role === 'CÁN BỘ' || activeUser.role === 'LÃNH ĐẠO' || activeUser.role === 'ADMIN') {
+                actionsHtml = `
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="sendAction('${app.id}', 'status', 'Đã Phê Duyệt', 'stamp-approved')" class="bg-emerald-600 text-white font-bold py-1 rounded text-[11px] uppercase">Phê Duyệt Đơn</button>
+                        <button onclick="sendAction('${app.id}', 'status', 'Bị Bác Bỏ', 'stamp-rejected')" class="bg-red-600 text-white font-bold py-1 rounded text-[11px] uppercase">Bác Bỏ Đơn</button>
+                    </div>
+                    <div>
+                        <select onchange="sendAction('${app.id}', 'forward', '', '', this.value)" class="w-full bg-slate-900 border border-slate-700 p-1.5 text-[11px] text-white rounded">
+                            <option value="">-- Điều chuyển tiếp đơn liên ngành --</option>
+                            <option value="CÔNG AN">BỘ CÔNG AN</option>
+                            <option value="QUÂN ĐỘI">BỘ CHỈ HUY QUÂN SỰ</option>
+                            <option value="UBND PHƯỜNG">ỦY BAN NHÂN DÂN</option>
+                            <option value="TOÀ ÁN">TÒA ÁN NHÂN DÂN TỐI CAO</option>
+                        </select>
+                    </div>
+                `;
+            } else if (activeUser.role === 'THANH TRA') {
+                actionsHtml = `<div class="bg-purple-950/40 text-purple-400 text-[10px] font-bold p-2 text-center border border-purple-900 rounded uppercase">Tài khoản Thanh Tra: Chỉ có quyền giám sát luồng đàm thoại</div>`;
+            }
+
+            desk.innerHTML = `
+                <div class="flex-1 overflow-y-auto space-y-3 max-h-[350px]">
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800 text-[11px]">
+                        <p class="font-bold text-white">HỒ SƠ ĐANG THẨM ĐỊNH: ${app.id}</p>
+                        <p class="text-slate-400 italic mt-1">" ${app.content} "</p>
+                    </div>
+                    ${residentProfileHtml}
+                    <div class="space-y-2 font-bold text-[10px] text-slate-400 uppercase">Lịch sử đàm thoại: ${chatHtml}</div>
+                </div>
+                <div class="pt-2 border-t border-slate-800 mt-2 space-y-2">
+                    ${actionsHtml}
+                    <div class="flex gap-2">
+                        <input type="text" id="officer-chat-msg" placeholder="Nhập chỉ thị, câu hỏi thảo luận..." class="flex-1 bg-slate-900 border border-slate-700 p-1.5 text-xs text-white rounded">
+                        <button onclick="officerChat()" class="bg-emerald-600 text-white px-4 font-bold text-xs rounded">Gửi</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function officerChat() {
+            const msg = document.getElementById('officer-chat-msg').value.trim();
+            if (!msg) return;
+            await fetch('/api/applications/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: activeFileId, action: 'chat', msg, officerName: `${activeUser.displayName} (${activeUser.agency})` })
+            });
+            await syncState();
+            renderOfficerDesk();
+        }
+
+        async function sendAction(id, action, status = '', stamp = '', targetAgency = '') {
+            await fetch('/api/applications/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, action, status, stamp, targetAgency, officerName: activeUser ? activeUser.displayName : 'Hệ thống' })
+            });
+            await syncState();
+            if (activeFileId === id) {
+                if (action === 'forward') { activeFileId = null; document.getElementById('officer-desk-active').classList.add('hidden'); document.getElementById('officer-desk-empty').classList.remove('hidden'); }
+                else { renderOfficerDesk(); }
+            }
+            if (document.getElementById('track-id').value === id) { trackApplication(); }
+        }
+
+        // ĐĂNG TIN VÀ TRUY NÃ (Chỉ dành cho Lãnh Đạo hoặc Admin cấp quyền)
+        async function publishDocument() {
+            const type = document.getElementById('pub-type').value;
+            const title = document.getElementById('pub-title').value.trim();
+            const content = document.getElementById('pub-content').value.trim();
+
+            if(!title || !content) return;
+
+            await fetch('/api/national/publish', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type, title, content, author: activeUser.displayName })
+            });
+            document.getElementById('pub-title').value = '';
+            document.getElementById('pub-content').value = '';
+            await syncState();
+        }
+
+        async function deleteNews(id) {
+            await fetch('/api/national/delete-announcement', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            await syncState();
+        }
+
+        async function setSecurity(level) {
+            await fetch('/api/national/security', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ level }) });
+            await syncState();
+            document.getElementById('security-txt').innerText = level;
+        }
+
+        async function provisionAccount(e) {
+            e.preventDefault();
+            const username = document.getElementById('p-user').value.trim();
+            const password = document.getElementById('p-pass').value;
+            const displayName = document.getElementById('p-name').value.trim();
+            const role = document.getElementById('p-role').value;
+            const agency = document.getElementById('p-agency').value;
+
+            await fetch('/api/officer/provision', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, displayName, role, agency })
+            });
+            document.getElementById('p-user').value = '';
+            document.getElementById('p-pass').value = '';
+            document.getElementById('p-name').value = '';
+            await syncState();
+        }
+
+        // TRA CỨU CĂN CƯỚC CỦA DÂN CƯ
+        function searchCitizen() {
+            const q = document.getElementById('id-search').value.trim();
+            const resArea = document.getElementById('id-result');
+            if (registry[q]) {
+                let r = registry[q];
+                resArea.innerHTML = `
+                    <div class="mt-4 p-4 bg-slate-900 border border-slate-700 rounded text-xs space-y-2">
+                        <p class="text-sm font-bold text-white border-b border-slate-800 pb-1">${r.name}</p>
+                        <p>Ngày sinh: ${r.dob} | Giới tính: ${r.gender}</p>
+                        <p>Nơi sinh: ${r.pob}</p>
+                        <p>Nghề nghiệp: ${r.job}</p>
+                        <p class="text-amber-400">Giấy chứng nhận được cấp: ${r.licenses.join(' — ')}</p>
+                        <p class="text-emerald-400 font-bold">Tình trạng dân sự: ${r.status}</p>
+                    </div>
+                `;
+            } else {
+                resArea.innerHTML = `<p class="mt-4 text-center text-red-400 text-xs font-bold">Không tìm thấy dữ liệu nhân vật cư dân trên máy chủ.</p>`;
+            }
+        }
+
+        // ĐĂNG NHẬP / ĐĂNG XUẤT
+        function openLogin() { document.getElementById('login-modal').classList.remove('hidden'); }
+        function closeLogin() { document.getElementById('login-modal').classList.add('hidden'); }
+        
+        function login() {
+            const u = document.getElementById('log-user').value;
+            const p = document.getElementById('log-pass').value;
+
+            if (state.authorizedPersonnel[u] && state.authorizedPersonnel[u].password === p) {
+                activeUser = state.authorizedPersonnel[u];
+                closeLogin();
+                document.getElementById('btn-tab-officer').classList.remove('hidden');
+                if(activeUser.role === 'ADMIN') document.getElementById('btn-tab-admin').classList.remove('hidden');
+                
+                // Hiển thị khung đăng tin nếu là cấp Lãnh Đạo / Admin
+                if(activeUser.role === 'LÃNH ĐẠO' || activeUser.role === 'ADMIN') {
+                    document.getElementById('leader-publish-zone').classList.remove('hidden');
+                } else {
+                    document.getElementById('leader-publish-zone').classList.add('hidden');
+                }
+
+                renderAuth();
+                renderAll();
+                tab('tab-officer');
+            } else {
+                alert("Mã chứng thư bảo mật bộ ngành không chính xác!");
+            }
+        }
+
+        function logout() {
+            activeUser = null;
+            activeFileId = null;
+            document.getElementById('btn-tab-officer').classList.add('hidden');
+            document.getElementById('btn-tab-admin').classList.add('hidden');
+            document.getElementById('leader-publish-zone').classList.add('hidden');
+            document.getElementById('officer-desk-active').classList.add('hidden');
+            document.getElementById('officer-desk-empty').classList.remove('hidden');
+            renderAuth();
+            renderAll();
+            tab('tab-news');
+        }
+
+        function renderAuth() {
+            const p = document.getElementById('auth-panel');
+            if(!activeUser) {
+                p.innerHTML = `<button onclick="openLogin()" class="bg-amber-500 font-bold text-black px-3 py-1 rounded text-[11px] uppercase tracking-wide"><i class="fa-solid fa-lock"></i> Đăng nhập bộ ngành</button>`;
+            } else {
+                p.innerHTML = `<div class="flex items-center gap-2"><div class="text-right"><p class="font-bold text-white text-[11px]">${activeUser.displayName}</p><p class="text-[9px] text-amber-500 font-bold uppercase">${activeUser.role}</p></div><button onclick="logout()" class="text-slate-400 hover:text-red-400 text-sm"><i class="fa-solid fa-power-off"></i></button></div>`;
+            }
+        }
+
+        function init() {
+            startClock();
+            renderAuth();
+            renderAll();
+            // Lắng nghe cơ chế cập nhật tự động sau mỗi 5 giây từ máy chủ Web Service
+            setInterval(syncState, 5000);
+        }
+        window.onload = init;
+    </script>
+</body>
+</html>
