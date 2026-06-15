@@ -21,11 +21,10 @@
 
         @keyframes stampAppear { 0% { transform: scale(1.8) rotate(-20deg); opacity: 0; } 100% { transform: scale(1.05) rotate(-6deg); opacity: 1; } }
         
-        .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; background: #090d16; border-top: 1px solid #1e293b; border-bottom: 1px solid #1e293b; box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.05); }
+        .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; background: #090d16; border-top: 1px solid #1e293b; border-bottom: 1px solid #1e293b; }
         .marquee-content { display: inline-block; padding-left: 100%; animation: marquee 35s linear infinite; font-size: 12px; font-weight: 600; color: #f59e0b; text-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
         @keyframes marquee { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-
-        .bar-chart-fill { height: 100%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 3px; }
+        .bar-chart-fill { height: 100%; transition: width 0.6s ease; border-radius: 3px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -42,11 +41,15 @@
                 </div>
                 <div>
                     <span class="text-[10px] tracking-widest text-amber-500 uppercase font-extrabold font-mono-tech">Roblox Gaming Roleplay Community Platform</span>
-                    <h1 class="text-xl font-black text-white tracking-tight drop-shadow-sm flex items-center gap-2">CỔNG LIÊN THÔNG GIẢ LẬP <span class="text-[11px] font-mono bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">v4.1.0-RP</span></h1>
+                    <h1 class="text-xl font-black text-white tracking-tight drop-shadow-sm flex items-center gap-2">CỔNG LIÊN THÔNG GIẢ LẬP <span class="text-[11px] font-mono bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">v4.5.0-RP</span></h1>
                 </div>
             </div>
 
             <div class="flex items-center space-x-4 text-xs">
+                <div id="officer-alert-light" class="hidden bg-red-950/80 border border-red-500 px-3 py-1.5 rounded-lg flex items-center gap-2 animate-pulse">
+                    <span class="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]"></span>
+                    <span id="alert-light-text" class="text-red-400 font-black text-[11px] tracking-wide uppercase">CÓ ĐƠN THƯ/TIN NHẮN MỚI</span>
+                </div>
                 <div class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-800 font-mono text-amber-400 font-bold tracking-widest shadow-inner shadow-black" id="clock">00:00:00</div>
                 <div class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-800 flex items-center gap-2">
                     <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
@@ -65,7 +68,10 @@
             <button onclick="tab('tab-news')" id="btn-tab-news" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-amber-500 text-amber-500 transition-all"><i class="fa-solid fa-newspaper mr-1"></i> Trung Tâm Ấn Bản</button>
             <button onclick="tab('tab-id')" id="btn-tab-id" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-address-card mr-1"></i> Tra cứu định danh</button>
             <button onclick="tab('tab-services')" id="btn-tab-services" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-file-invoice-dollar mr-1"></i> Nộp Đơn Thủ Tục</button>
-            <button onclick="tab('tab-officer')" id="btn-tab-officer" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-emerald-500 hover:text-emerald-400 hidden"><i class="fa-solid fa-user-shield mr-1"></i> Bàn Làm Việc Bộ Ngành</button>
+            <button onclick="tab('tab-officer')" id="btn-tab-officer" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-emerald-500 hover:text-emerald-400 hidden relative">
+                <i class="fa-solid fa-user-shield mr-1"></i> Bàn Làm Việc Bộ Ngành 
+                <span id="badge-count-app" class="absolute top-1.5 right-1 bg-red-600 text-white text-[9px] px-1 rounded-full font-black hidden">0</span>
+            </button>
             <button onclick="tab('tab-admin')" id="btn-tab-admin" class="px-4 py-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-purple-400 hover:text-purple-300 hidden"><i class="fa-solid fa-crown mr-1"></i> Phòng Giám Sát Tối Cao</button>
         </nav>
 
@@ -109,6 +115,12 @@
                                     <option value="GIẤY PHÉP KINH DOANH DOANH NGHIỆP">Giấy Phép Thành Lập / Kinh Doanh Doanh Nghiệp</option>
                                     <option value="ĐĂNG KÝ KẾT HÔN / KHAI SINH">Đăng Ký Kết Hôn / Giấy Khai Sinh Cư Dân</option>
                                     <option value="CHỨNG CHỈ HÀNH NGHỀ CHUYÊN MÔN">Chứng Chỉ Hành Nghề Chuyên Môn Đặc Chủng</option>
+                                    <option value="ĐĂNG KÝ SỬ DỤNG TẦN SỐ BỘ ĐÀM MÃ HÓA">Đăng Ký Sử Dụng Tần Số Bộ Đàm Mã Hóa Quốc Gia</option>
+                                    <option value="GIẤY PHÉP VẬN TẢI LOGISTICS ĐƯỜNG BỘ">Giấy Phép Vận Tải Quốc Tế / Logistics Đường Bộ</option>
+                                    <option value="ĐƠN XIN GIA NHẬP LỰC LƯỢNG VŨ TRANG">Đơn Tuyển Dụng / Gia Nhập Lực Lượng Vũ Trang</option>
+                                    <option value="BẰNG KHAI THÁC KHOÁNG SẢN & TÀI NGUYÊN">Giấy Phép Khai Thác Tài Nguyên Môi Trường</option>
+                                    <option value="ĐƠN XIN TỔ CHỨC SỰ KIỆN QUẦN CHÚNG">Đơn Đăng Ký Tổ Chức Sự Kiện Nơi Công Cộng</option>
+                                    <option value="HỒ SƠ KHÁM SỨC KHỎE TƯ PHÁP">Hồ Sơ Chứng Nhận Y Tế & Sức Khỏe Tư Pháp</option>
                                 </select>
                             </div>
                         </div>
@@ -147,7 +159,7 @@
                     
                     <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl shadow-md">
                         <div class="flex justify-between items-center mb-3">
-                            <h3 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-folder-closed"></i> Hồ Sơ Hành Administrative Chờ Duyệt Lĩnh Vực</h3>
+                            <h3 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-folder-closed"></i> Hồ Sơ Hành Chính Chờ Duyệt Lĩnh Vực</h3>
                             <span id="office-badge" class="text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-800">Cơ Quan Tiếp Nhận</span>
                         </div>
                         <div class="overflow-x-auto text-xs">
@@ -160,8 +172,6 @@
                                         <th class="p-3">Trạng Thái</th>
                                         <th class="p-3 text-right">Hành Động</th>
                                     </tr>
-                                 Clyde</th>
-                                </tr>
                                 </thead>
                                 <tbody id="officer-table" class="divide-y divide-slate-800"></tbody>
                             </table>
@@ -210,7 +220,7 @@
                                     <option value="Đối Tượng Tình Nghi Hình Sự Khẩn Cấp">Đối Tượng Tình Nghi Hình Sự</option>
                                 </select>
                             </div>
-                            <button type="submit" class="md:col-span-3 bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-black py-2.5 rounded-lg uppercase tracking-wider hover:brightness-110 shadow-md transition-all">Lưu Thông Tin Định Định Vào Máy Chủ Quốc Gia</button>
+                            <button type="submit" class="md:col-span-3 bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-black py-2.5 rounded-lg uppercase tracking-wider hover:brightness-110 shadow-md transition-all">Lưu Thông Tin Vào Máy Chủ Quốc Gia</button>
                         </form>
                     </div>
 
@@ -232,21 +242,21 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                             <div class="md:col-span-2">
-                                <label class="block text-gray-400 mb-1">Nội dung văn bản chỉ thị chi tiết / Tội danh cụ thể đối tượng</label>
+                                <label class="block text-gray-400 mb-1">Nội dung văn bản chỉ thị chi tiết</label>
                                 <textarea id="pub-content" rows="2" placeholder="Nhập chi tiết..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white focus:outline-none"></textarea>
                             </div>
                             <div>
-                                <label class="block text-gray-400 mb-1">Cập nhật nội dung Chữ chạy động LED</label>
+                                <label class="block text-gray-400 mb-1">Cập nhật nội dung LED</label>
                                 <div class="flex gap-1.5">
                                     <textarea id="pub-ticker" rows="2" placeholder="Nhập dòng chữ chạy..." class="flex-1 bg-slate-900 border border-slate-700 p-2 rounded-lg text-white text-[11px] focus:outline-none"></textarea>
                                     <button onclick="updateTicker()" class="bg-amber-500 text-black px-2.5 rounded-lg font-black text-[11px] uppercase hover:bg-amber-600">Lưu LED</button>
                                 </div>
                             </div>
                         </div>
-                        <button onclick="publishDocument()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-black text-xs font-black py-2.5 rounded-lg uppercase tracking-widest hover:brightness-110 shadow-lg">Ký Duyệt Phát Hành Văn Bản / Lệnh Toàn Quốc</button>
+                        <button onclick="publishDocument()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-black text-xs font-black py-2.5 rounded-lg uppercase tracking-widest hover:brightness-110 shadow-lg">Ký Duyệt Phát Hành Văn Bản</button>
                         
                         <div class="mt-4 pt-4 border-t border-slate-800">
-                            <h4 class="text-[11px] font-black uppercase text-slate-400 mb-2"><i class="fa-solid fa-box-archive text-purple-400"></i> Kho Lưu Trữ Hồ Sơ Bảo Mật (Lãnh Đạo độc quyền xem)</h4>
+                            <h4 class="text-[11px] font-black uppercase text-slate-400 mb-2"><i class="fa-solid fa-box-archive text-purple-400"></i> Kho Lưu Trữ Hồ Sơ Bảo Mật (Bấm để xem lại hồ sơ đã đóng)</h4>
                             <div id="leader-archive-list" class="space-y-2 max-h-[160px] overflow-y-auto"></div>
                         </div>
                     </div>
@@ -255,7 +265,7 @@
                 <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-2xl flex flex-col h-full min-h-[580px] shadow-lg">
                     <h3 class="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-stamp text-emerald-400"></i> Phòng Thẩm Định & Đóng Dấu Số Hóa</h3>
                     <div id="officer-desk-active" class="flex-1 flex flex-col justify-between hidden mt-3 space-y-3.5"></div>
-                    <div id="officer-desk-empty" class="text-center py-24 text-slate-500 text-xs flex-1 flex flex-col justify-center items-center"><i class="fa-solid fa-stamp text-4xl mb-3 text-slate-700"></i> Vui lòng lựa chọn hồ sơ từ danh sách để thẩm định, phê duyệt và đóng hồ sơ chuyển lên trung ương lưu trữ.</div>
+                    <div id="officer-desk-empty" class="text-center py-24 text-slate-500 text-xs flex-1 flex flex-col justify-center items-center"><i class="fa-solid fa-stamp text-4xl mb-3 text-slate-700"></i> Vui lòng lựa chọn hồ sơ từ danh sách để thẩm định.</div>
                 </div>
             </section>
 
@@ -282,22 +292,23 @@
                 </div>
 
                 <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4">
-                    <h3 class="text-xs font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-chart-column text-amber-500"></i> Biểu Đồ Thống Kê Hiệu Suất Và Đánh Giá Tín Nghiệm Nhân Sự Bộ Ngành</h3>
+                    <h3 class="text-xs font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-chart-column text-amber-500"></i> Quản Lý, Sửa Đổi Dữ Liệu & Phân Quyền Tài Khoản Cán Bộ</h3>
                     <div id="admin-analytics-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
                 </div>
 
                 <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl shadow-lg space-y-3">
-                    <h3 class="text-xs font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-vault text-purple-400"></i> Kho Lưu Trữ Điện Tử Quốc Gia Tối Cao (Admin Tổng Quản Lý)</h3>
+                    <h3 class="text-xs font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-vault text-purple-400"></i> Kho Lưu Trữ Điện Tử Toàn Quốc (Admin có thể click chọn xem lại hồ sơ đã đóng)</h3>
                     <div id="admin-vault-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 text-xs"></div>
                 </div>
 
                 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
                     <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl space-y-3.5 text-xs shadow-lg">
-                        <h3 class="text-xs font-black text-purple-400 uppercase tracking-wider border-b border-slate-800 pb-2"><i class="fa-solid fa-id-card-clip"></i> Bổ Nhiệm & Cấp Chứng Thư Nhân Sự Mới</h3>
+                        <h3 id="form-provision-title" class="text-xs font-black text-purple-400 uppercase tracking-wider border-b border-slate-800 pb-2"><i class="fa-solid fa-id-card-clip"></i> Cấp Chứng Thư / Tạo Nhân Sự Mới</h3>
                         <form onsubmit="provisionAccount(event)" class="space-y-2.5">
+                            <input type="hidden" id="p-isEdit" value="false">
                             <div class="grid grid-cols-2 gap-2">
                                 <div><label class="text-gray-400 block mb-1">Tên Đăng Nhập</label><input type="text" id="p-user" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white font-mono"></div>
-                                <div><label class="text-gray-400 block mb-1">Mật Mã</label><input type="password" id="p-pass" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white"></div>
+                                <div><label class="text-gray-400 block mb-1">Mật Mã</label><input type="text" id="p-pass" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white"></div>
                             </div>
                             <div><label class="text-gray-400 block mb-1">Họ Tên / Cấp Bậc Chức Danh</label><input type="text" id="p-name" required placeholder="Thượng Tá Nguyễn Văn B" class="w-full bg-slate-900 border border-slate-700 p-2 rounded-lg text-white"></div>
                             <div class="grid grid-cols-2 gap-2">
@@ -321,12 +332,15 @@
                                     </select>
                                 </div>
                             </div>
-                            <button type="submit" class="w-full bg-purple-600 text-white font-black py-2.5 rounded-lg uppercase tracking-wider hover:bg-purple-700 transition-all shadow-md">Kích Hoạt Tài Khoản</button>
+                            <div class="flex gap-2">
+                                <button type="button" id="btn-cancel-edit" onclick="resetProvisionForm()" class="bg-slate-800 text-slate-400 font-bold px-3 rounded-lg uppercase text-[11px] hidden">Hủy</button>
+                                <button type="submit" id="btn-submit-provision" class="flex-1 bg-purple-600 text-white font-black py-2.5 rounded-lg uppercase tracking-wider hover:bg-purple-700 transition-all shadow-md">Kích Hoạt Nhân Sự</button>
+                            </div>
                         </form>
                     </div>
 
                     <div class="xl:col-span-2 bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl flex flex-col h-full shadow-lg">
-                        <h3 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-terminal mr-1 text-xs animate-pulse"></i> Trung Tâm Giám Sát Hành Vi & Nhật Ký Log Hệ Thống Quốc Gia</h3>
+                        <h3 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-terminal mr-1 text-xs animate-pulse"></i> Nhật Ký Hệ Thống Quốc Gia</h3>
                         <div id="admin-system-logs" class="flex-1 space-y-2 mt-3 font-mono text-[11px] overflow-y-auto max-h-[280px] bg-black/60 p-3 rounded-xl border border-slate-900 shadow-inner"></div>
                     </div>
                 </div>
@@ -373,6 +387,8 @@
         let registry = <%- JSON.stringify(registry) %>;
         let activeUser = null;
         let activeFileId = null;
+        let totalAppsSnapshot = 0; // Lưu số lượng đơn để theo dõi thông báo mới
+        let totalLogsLengthSnapshot = {}; // Đếm số dòng chat để nhận biết tin nhắn mới
 
         function startClock() {
             setInterval(() => {
@@ -385,7 +401,54 @@
             const data = await res.json();
             state = data.systemState;
             registry = data.citizenIdentityRegistry;
+            
+            checkNewAlertsNotifications();
             renderAll();
+        }
+
+        // KIỂM TRA ĐƠN THƯ HOẶC TIN NHẮN MỚI CỦA CÔNG DÂN GỬI ĐẾN ĐỂ BẬT ĐÈN NHẤP NHÁY
+        function checkNewAlertsNotifications() {
+            if (!activeUser) {
+                document.getElementById('officer-alert-light').classList.add('hidden');
+                return;
+            }
+
+            let currentAgencyApps = Object.values(state.applications).filter(a => a.agency === activeUser.agency || activeUser.role === 'ADMIN');
+            let currentAppCount = currentAgencyApps.length;
+            
+            // 1. Cảnh báo số lượng đơn thư thay đổi hoặc tăng
+            let hasNewMsg = false;
+            
+            // 2. Cảnh báo nếu có hội thoại chat mới từ công dân
+            currentAgencyApps.forEach(app => {
+                let lastLog = app.logs[app.logs.length - 1];
+                if (lastLog && lastLog.sender.includes('Công Dân')) {
+                    // Nếu dòng cuối cùng là của Công dân và số lượng log tăng lên so với snapshot cũ
+                    if (!totalLogsLengthSnapshot[app.id] || app.logs.length > totalLogsLengthSnapshot[app.id]) {
+                        hasNewMsg = true;
+                    }
+                }
+                // Cập nhật snapshot chiều dài hội thoại ẩn
+                totalLogsLengthSnapshot[app.id] = app.logs.length;
+            });
+
+            const alertBox = document.getElementById('officer-alert-light');
+            const alertText = document.getElementById('alert-light-text');
+            const badgeCount = document.getElementById('badge-count-app');
+
+            if (currentAppCount > 0) {
+                badgeCount.innerText = currentAppCount;
+                badgeCount.classList.remove('hidden');
+            } else {
+                badgeCount.classList.add('hidden');
+            }
+
+            if (currentAppCount > totalAppsSnapshot || hasNewMsg) {
+                alertBox.classList.remove('hidden');
+                alertText.innerText = hasNewMsg ? "CÓ TIN NHẮN MỚI TỪ CÔNG DÂN" : "CÓ HỒ SƠ MỚI CHỜ DUYỆT";
+            }
+            
+            totalAppsSnapshot = currentAppCount;
         }
 
         function tab(id) {
@@ -394,6 +457,11 @@
             document.querySelectorAll('nav button').forEach(b => b.className = b.className.replace('border-amber-500 text-amber-500', 'border-transparent text-slate-400'));
             const btn = document.getElementById(`btn-${id}`);
             if(btn) btn.className = btn.className.replace('border-transparent text-slate-400', 'border-amber-500 text-amber-500');
+
+            // Tắt đèn cảnh báo khi Cán bộ đã click vào bàn làm việc để kiểm tra đơn
+            if (id === 'tab-officer') {
+                document.getElementById('officer-alert-light').classList.add('hidden');
+            }
         }
 
         function renderAll() {
@@ -455,7 +523,7 @@
                             leadArch.innerHTML += `
                                 <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 flex justify-between items-center text-[11px]">
                                     <div><b class="text-purple-400 font-mono">${ar.id}</b> - Cư dân: @${ar.sender} (${ar.docType})</div>
-                                    <div class="text-[10px] text-slate-400 font-mono">👍 ${ar.satisfaction || 'CHƯA ĐÁNH GIÁ'}</div>
+                                    <button onclick="selectFile('${ar.id}')" class="text-[10px] bg-purple-950 text-purple-300 border border-purple-800 px-2 py-0.5 rounded hover:bg-purple-900 font-bold">Mở xem lại</button>
                                 </div>
                             `;
                         }
@@ -479,32 +547,82 @@
                 adminVault.innerHTML = '';
                 Object.values(state.archivedApplications).forEach(ar => {
                     adminVault.innerHTML += `
-                        <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl relative">
-                            <div class="absolute top-2 right-2 stamp-box stamp-archived">LƯU KHO QUỐC GIA</div>
-                            <p class="font-mono font-black text-purple-400">${ar.id}</p>
-                            <p class="text-slate-300 mt-1">Chủ quản đơn: <b>@${ar.sender}</b> gửi <b>${ar.agency}</b></p>
-                            <p class="text-[11px] text-slate-400 italic mt-1">"${ar.content}"</p>
-                            <div class="mt-2 text-[10px] bg-slate-950 p-1.5 rounded text-amber-500 font-mono">Đánh giá phục vụ: ${ar.satisfaction || 'KHÔNG ĐÁNH GIÁ'}</div>
+                        <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl flex justify-between items-start">
+                            <div>
+                                <p class="font-mono font-black text-purple-400">${ar.id}</p>
+                                <p class="text-slate-300 mt-0.5">Chủ quản: <b>@${ar.sender}</b></p>
+                                <span class="text-[10px] bg-slate-950 text-amber-500 px-1 py-0.5 rounded font-mono">${ar.docType}</span>
+                            </div>
+                            <button onclick="selectFile('${ar.id}')" class="text-[10px] bg-purple-600 text-white font-black px-2 py-1 rounded hover:bg-purple-700 uppercase">Mở xem lại</button>
                         </div>
                     `;
                 });
             }
 
+            // ADMIN ĐỘC QUYỀN SỬA, PHÂN QUYỀN VÀ XÓA TÀI KHOẢN CÁN BỘ
             const analytics = document.getElementById('admin-analytics-list');
             analytics.innerHTML = '';
             Object.values(state.authorizedPersonnel).forEach(u => {
                 if (u.username !== 'admin') {
                     let totalRatings = u.positiveRatings + u.negativeRatings;
                     let positivePercentage = totalRatings > 0 ? Math.round((u.positiveRatings / totalRatings) * 100) : 0;
+                    
                     analytics.innerHTML += `
                         <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-xs space-y-2">
-                            <div class="flex justify-between font-black text-white border-b border-slate-800 pb-1.5"><span>${u.displayName}</span><span class="text-purple-400 text-[10px] uppercase bg-purple-950 px-1.5 rounded border border-purple-800">${u.agency} - ${u.role}</span></div>
-                            <div class="flex justify-between text-[11px] text-slate-400 font-mono"><span>Tín nhiệm hài lòng: <b class="text-emerald-400">${positivePercentage}%</b></span><span>Thống kê: 👍${u.positiveRatings} | 👎${u.negativeRatings}</span></div>
-                            <div class="w-full bg-slate-950 h-3 rounded-full border border-slate-800 overflow-hidden p-[1px]"><div class="bar-chart-fill bg-gradient-to-r from-emerald-500 to-teal-400" style="width: ${positivePercentage || 1}%"></div></div>
+                            <div class="flex justify-between font-black text-white border-b border-slate-800 pb-1.5">
+                                <span>${u.displayName} <span class="text-slate-500 font-mono text-[10px]">(@${u.username})</span></span>
+                                <span class="text-purple-400 text-[10px] uppercase bg-purple-950 px-1.5 rounded border border-purple-800">${u.agency} - ${u.role}</span>
+                            </div>
+                            <div class="text-[11px] text-slate-400 font-mono">Khóa mật khẩu: <span class="text-amber-400">${u.password}</span></div>
+                            <div class="flex justify-between text-[11px] text-slate-400 font-mono"><span>Tín nhiệm: <b class="text-emerald-400">${positivePercentage}%</b></span><span>👍${u.positiveRatings} | 👎${u.negativeRatings}</span></div>
+                            
+                            <div class="flex gap-2 pt-1 border-t border-slate-800/60">
+                                <button onclick="editOfficer('${u.username}')" class="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-bold py-1 rounded text-[10px] uppercase"><i class="fa-solid fa-user-gear"></i> Chỉnh sửa/Phân quyền</button>
+                                <button onclick="deleteOfficer('${u.username}')" class="bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded text-[10px] uppercase"><i class="fa-solid fa-trash"></i> Xóa</button>
+                            </div>
                         </div>
                     `;
                 }
             });
+        }
+
+        // ĐIỀU CHỈNH ĐIỀU HƯỚNG FORM SỬA NHÂN SỰ
+        function editOfficer(username) {
+            let u = state.authorizedPersonnel[username];
+            if(!u) return;
+            document.getElementById('p-user').value = u.username;
+            document.getElementById('p-user').readOnly = true; // Không cho sửa username gốc
+            document.getElementById('p-pass').value = u.password;
+            document.getElementById('p-name').value = u.displayName;
+            document.getElementById('p-role').value = u.role;
+            document.getElementById('p-agency').value = u.agency;
+            document.getElementById('p-isEdit').value = "true";
+            
+            document.getElementById('form-provision-title').innerHTML = `<i class="fa-solid fa-user-gear text-sky-400"></i> Hiệu chỉnh & Phân Quyền Cán Bộ`;
+            document.getElementById('btn-submit-provision').innerText = "Cập Nhật Thay Đổi";
+            document.getElementById('btn-cancel-edit').classList.remove('hidden');
+        }
+
+        function resetProvisionForm() {
+            document.getElementById('p-user').value = '';
+            document.getElementById('p-user').readOnly = false;
+            document.getElementById('p-pass').value = '';
+            document.getElementById('p-name').value = '';
+            document.getElementById('p-isEdit').value = "false";
+            
+            document.getElementById('form-provision-title').innerHTML = `<i class="fa-solid fa-id-card-clip"></i> Cấp Chứng Thư / Tạo Nhân Sự Mới`;
+            document.getElementById('btn-submit-provision').innerText = "Kích Hoạt Nhân Sự";
+            document.getElementById('btn-cancel-edit').classList.add('hidden');
+        }
+
+        async function deleteOfficer(username) {
+            if(!confirm(`Bạn có chắc chắn muốn bãi nhiệm và xóa tài khoản [${username}] khỏi máy chủ quốc gia?`)) return;
+            await fetch('/api/officer/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username })
+            });
+            await syncState();
         }
 
         async function registerResidentByOfficer(e) {
@@ -531,7 +649,7 @@
             document.getElementById('res-job').value = '';
             document.getElementById('res-licenses').value = '';
             
-            alert(`Đã nhập liệu thành công dữ liệu cư dân @${username} lên máy chủ!`);
+            alert(`Đã nhập liệu định danh cư dân @${username} thành công!`);
             await syncState();
         }
 
@@ -559,12 +677,13 @@
             const area = document.getElementById('track-details');
             const empty = document.getElementById('track-empty');
 
-            if (!state.applications[id]) {
+            let app = state.applications[id] || state.archivedApplications[id];
+
+            if (!app) {
                 area.classList.add('hidden'); empty.classList.remove('hidden');
                 return;
             }
             empty.classList.add('hidden'); area.classList.remove('hidden');
-            const app = state.applications[id];
 
             let chatHtml = '';
             app.logs.forEach(l => {
@@ -610,7 +729,7 @@
             await fetch('/api/applications/action', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, action: 'chat', msg, officerName: `Công Dân (@${state.applications[id].sender})` })
+                body: JSON.stringify({ id, action: 'chat', msg, officerName: `Công Dân (@${(state.applications[id] || state.archivedApplications[id]).sender})` })
             });
             await syncState();
             trackApplication();
@@ -621,11 +740,14 @@
             document.getElementById('officer-desk-empty').classList.add('hidden');
             const desk = document.getElementById('officer-desk-active');
             desk.classList.remove('hidden');
+            
+            // Nếu bấm xem từ tab nghiệp vụ thì tự động tắt thông báo cảnh báo nhấp nháy đi
+            document.getElementById('officer-alert-light').classList.add('hidden');
             renderOfficerDesk();
         }
 
         function renderOfficerDesk() {
-            const app = state.applications[activeFileId];
+            let app = state.applications[activeFileId] || state.archivedApplications[activeFileId];
             const desk = document.getElementById('officer-desk-active');
 
             let chatHtml = '';
@@ -646,11 +768,12 @@
                     </div>
                 `;
             } else {
-                residentProfileHtml = `<div class="bg-red-950/20 border border-red-900/40 p-2.5 text-[10px] text-red-400 text-center rounded-xl font-bold">CẢNH BÁO: Cư dân chưa được định danh.</div>`;
+                residentProfileHtml = `<div class="bg-red-950/20 border border-red-900/40 p-2.5 text-[10px] text-red-400 text-center rounded-xl font-bold">CẢNH BÁO: Cư dân chưa được định danh hành chính.</div>`;
             }
 
             let actionsHtml = '';
-            if (activeUser.role === 'CÁN BỘ' || activeUser.role === 'LÃNH ĐẠO' || activeUser.role === 'ADMIN') {
+            // Cho phép hiển thị nút thao tác nếu hồ sơ chưa bị đóng hẳn hoàn toàn vào lưu trữ
+            if (state.applications[activeFileId]) {
                 let forwardLeaderBtn = (activeUser.role === 'CÁN BỘ' && app.status !== 'Đã Phê Duyệt' && app.status !== 'Bị Bác Bỏ') ? 
                     `<button onclick="sendAction('${app.id}', 'to_leader')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-1.5 rounded-lg text-[11px] uppercase shadow-md"><i class="fa-solid fa-paper-plane"></i> Trình Lên Lãnh Đạo Ký</button>` : '';
 
@@ -678,6 +801,9 @@
                         </select>
                     </div>
                 `;
+            } else {
+                // Nếu lấy ra từ Kho lưu trữ
+                actionsHtml = `<div class="bg-purple-950/40 text-purple-400 p-2.5 rounded-xl border border-purple-800 text-center font-bold uppercase text-[10px] tracking-wider"><i class="fa-solid fa-box-archive"></i> Hồ sơ đang mở xem lại từ Kho lưu trữ Quốc Gia</div>`;
             }
 
             desk.innerHTML = `
@@ -687,7 +813,6 @@
                         <p class="font-black text-amber-500">HỒ SƠ SỐ: ${app.id}</p>
                         <p class="text-slate-300 font-bold mt-1">Yêu cầu thủ tục: <span class="text-white">${app.docType}</span></p>
                         <p class="text-slate-400 italic mt-0.5">" ${app.content} "</p>
-                        ${app.satisfaction ? `<div class="mt-2 bg-purple-950/60 p-1 rounded text-purple-300 text-[10px] font-bold">ĐÁNH GIÁ TỪ CÔNG DÂN: ${app.satisfaction}</div>` : ''}
                     </div>
                     ${residentProfileHtml}
                     <div class="space-y-2 font-bold text-[9px] text-slate-400 uppercase tracking-wider">Lịch sử thẩm định đối thoại: ${chatHtml}</div>
@@ -722,8 +847,13 @@
             });
             await syncState();
             if (activeFileId === id) {
-                if (action === 'forward' || action === 'to_leader' || action === 'archive') { activeFileId = null; document.getElementById('officer-desk-active').classList.add('hidden'); document.getElementById('officer-desk-empty').classList.remove('hidden'); }
-                else { renderOfficerDesk(); }
+                if (action === 'forward' || action === 'to_leader' || action === 'archive') { 
+                    activeFileId = null; 
+                    document.getElementById('officer-desk-active').classList.add('hidden'); 
+                    document.getElementById('officer-desk-empty').classList.remove('hidden'); 
+                } else { 
+                    renderOfficerDesk(); 
+                }
             }
             if (document.getElementById('track-id').value === id) { trackApplication(); }
         }
@@ -763,8 +893,14 @@
             const displayName = document.getElementById('p-name').value.trim();
             const role = document.getElementById('p-role').value;
             const agency = document.getElementById('p-agency').value;
-            await fetch('/api/officer/provision', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password, displayName, role, agency }) });
-            document.getElementById('p-user').value = ''; document.getElementById('p-pass').value = ''; document.getElementById('p-name').value = '';
+            const isEdit = document.getElementById('p-isEdit').value === "true";
+
+            await fetch('/api/officer/save', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ username, password, displayName, role, agency, isEdit }) 
+            });
+            resetProvisionForm();
             await syncState();
         }
 
@@ -784,7 +920,7 @@
                     </div>
                 `;
             } else {
-                resArea.innerHTML = `<p class="mt-4 text-center text-red-400 text-xs font-black">KHÔNG TÌM THẤY DỮ LIỆU ĐỊNH DANH CỦA CƯ DÂN NÀY TRÊN HỆ THỐNG MÁY CHỦ.</p>`;
+                resArea.innerHTML = `<p class="mt-4 text-center text-red-400 text-xs font-black">KHÔNG TÌM THẤY DỮ LIỆU ĐỊNH DANH TRÊN MÁY CHỦ.</p>`;
             }
         }
 
