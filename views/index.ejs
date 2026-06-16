@@ -24,28 +24,28 @@
             border-bottom: 1px solid #30363d;
             font-weight: bold;
         }
-        .nav-tabs .nav-link {
-            color: #58a6ff;
-            border: none;
-        }
+        .nav-tabs .nav-link { color: #58a6ff; border: none; }
         .nav-tabs .nav-link.active {
             background-color: #161b22;
             color: #ffffff;
             border: 1px solid #30363d;
             border-bottom: none;
         }
-        /* ===== HIỆU ỨNG ĐẶC BIỆT (ANIMATIONS) ===== */
+        .style-scrollbar::-webkit-scrollbar { width: 5px; }
+        .style-scrollbar::-webkit-scrollbar-track { background: #0d1117; }
+        .style-scrollbar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 5px; }
+
+        /* ================= HIỆU ỨNG ĐẶC BIỆT KHI CÓ EVENT ================= */
         @keyframes redAlertPulse {
             0% { box-shadow: inset 0 0 40px rgba(255, 0, 0, 0.3); background-color: #150505; }
-            50% { box-shadow: inset 0 0 120px rgba(255, 0, 0, 0.7); background-color: #300505; }
+            50% { box-shadow: inset 0 0 120px rgba(255, 0, 0, 0.6); background-color: #2a0505; }
             100% { box-shadow: inset 0 0 40px rgba(255, 0, 0, 0.3); background-color: #150505; }
         }
-        .red-alert-active {
-            animation: redAlertPulse 1.6s infinite !important;
-        }
+        .red-alert-active { animation: redAlertPulse 1.5s infinite !important; }
+
         .glitch-text {
             text-shadow: 2px 2px #ff0000, -2px -2px #00ffff;
-            animation: glitch 0.4s infinite;
+            animation: glitch 0.3s infinite;
         }
         @keyframes glitch {
             0% { transform: translate(0) }
@@ -55,22 +55,23 @@
             80% { transform: translate(1px, -1px) }
             100% { transform: translate(0) }
         }
+
         .stamp-animated {
             position: absolute;
-            top: 25%; right: 8%;
-            border: 4px double #ff4d4d;
-            color: #ff4d4d;
-            font-weight: 900; font-size: 26px;
-            padding: 4px 12px; transform: rotate(-15deg);
+            top: 20%; right: 10%;
+            font-weight: 900; font-size: 28px;
+            padding: 5px 15px; transform: rotate(-15deg);
             border-radius: 4px; font-family: 'Courier New', monospace;
-            text-transform: uppercase; background: rgba(0,0,0,0.15);
+            text-transform: uppercase; background: rgba(0,0,0,0.2);
             animation: slamStamp 0.25s ease-out forwards;
+            opacity: 0;
         }
         @keyframes slamStamp {
             0% { transform: scale(5) rotate(-35deg); opacity: 0; }
             80% { transform: scale(0.95) rotate(-10deg); opacity: 1; }
-            100% { transform: scale(1) rotate(-15deg); opacity: 1; filter: drop-shadow(0 0 6px rgba(255,0,0,0.4)); }
+            100% { transform: scale(1) rotate(-15deg); opacity: 1; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
         }
+
         @keyframes screenShake {
             0%, 100% { transform: translate(0, 0); }
             20% { transform: translate(-2px, 1px); }
@@ -93,39 +94,42 @@
     <div class="container-fluid p-4">
         <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
             <div>
-                <h1 id="system-title" class="fw-bold text-success">TRUNG TÂM ĐIỀU HÀNH QUỐC GIA</h1>
-                <p class="text-muted m-0">Hệ thống xử lý hành chính trực tuyến liên thông Bộ Ngành</p>
+                <h1 id="system-title" class="fw-bold text-success">ỦY BAN ĐIỀU HÀNH HÀNH CHÍNH QUỐC GIA</h1>
+                <p class="text-muted m-0">Hệ thống xử lý trực tuyến tối mật liên thông các lực lượng vũ trang và bộ ngành</p>
             </div>
             <div class="text-end">
-                <span class="badge bg-secondary p-2 mb-1">Cấp độ an ninh:</span>
-                <div id="security-badge" class="h5 fw-bold text-info"><%= securityLevel %></div>
+                <span class="badge bg-secondary p-2 mb-1">TRẠNG THÁI AN NINH:</span>
+                <div id="security-badge" class="h5 fw-bold text-info"><%= state.securityLevel %></div>
             </div>
         </div>
 
         <div class="alert alert-dark p-2 mb-4 overflow-hidden" style="white-space: nowrap; background-color: #161b22; border-color: #30363d;">
-            <marquee behavior="scroll" direction="left" class="text-warning fw-bold"><%= tickerMessage %></marquee>
+            <marquee id="ticker-view" behavior="scroll" direction="left" class="text-warning fw-bold"><%= state.tickerMessage %></marquee>
         </div>
 
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header text-danger">⚙️ TRẠM ĐIỀU KHIỂN AN NINH TỐI CAO</div>
+                    <div class="card-header text-danger">🛡️ TRẠM ĐIỀU KHIỂN AN NINH QUỐC GIA</div>
                     <div class="card-body">
-                        <label class="form-label small">Thay đổi trạng thái quốc gia:</label>
                         <select id="select-security" class="form-select bg-dark text-white border-secondary mb-3">
-                            <option value="AN TOÀN" <%= securityLevel==='AN TOÀN'?'selected':'' %>>🟢 Mức 1: AN TOÀN TOÀN DIỆN</option>
-                            <option value="NGUY HIỂM CAO" <%= securityLevel==='NGUY HIỂM CAO'?'selected':'' %>>🟡 Mức 2: NGUY HIỂM CAO</option>
-                            <option value="BÁO ĐỘNG ĐỎ" <%= securityLevel==='BÁO ĐỘNG ĐỎ'?'selected':'' %>>🔴 Mức 3: BÁO ĐỘNG ĐỎ TOÀN QUỐC</option>
+                            <option value="AN TOÀN" <%= state.securityLevel==='AN TOÀN'?'selected':'' %>>🟢 MỨC 1: AN TOÀN TOÀN DIỆN</option>
+                            <option value="NGUY HIỂM CAO" <%= state.securityLevel==='NGUY HIỂM CAO'?'selected':'' %>>🟡 MỨC 2: CẢNH BÁO NGUY HIỂM</option>
+                            <option value="BÁO ĐỘNG ĐỎ" <%= state.securityLevel==='BÁO ĐỘNG ĐỎ'?'selected':'' %>>🔴 MỨC 3: BÁO ĐỘNG ĐỎ TOÀN LÃNH THỔ</option>
                         </select>
-                        <button onclick="changeSecurity()" class="btn btn-danger w-100 fw-bold">KÍCH HOẠT LỆNH</button>
+                        <div class="input-group mb-3">
+                            <input type="text" id="input-ticker" class="form-control bg-dark text-white border-secondary" placeholder="Nhập thông điệp chữ chạy mới...">
+                            <button onclick="updateTicker()" class="btn btn-outline-warning">Phát Tin</button>
+                        </div>
+                        <button onclick="changeSecurity()" class="btn btn-danger w-100 fw-bold">KÍCH HOẠT LỆNH KHẨN CẤP</button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-header text-success">📟 NHẬT KÝ LỆNH ĐIỆN TỬ VĂN PHÒNG</div>
-                    <div id="log-box" class="card-body small style-scrollbar" style="max-height: 300px; overflow-y: auto; font-family: monospace; background-color: #090d13;">
-                        <% systemLogs.forEach(function(log) { %>
-                            <div class="mb-1"><span class="text-muted">[<%= log.time %>]</span> <span class="log-text text-light"><%= log.text %></span></div>
+                    <div class="card-header text-success">📟 LOG ĐIỆN TỬ HỆ THỐNG LIÊN THÔNG</div>
+                    <div id="log-box" class="card-body small style-scrollbar" style="max-height: 350px; overflow-y: auto; font-family: monospace; background-color: #090d13;">
+                        <% state.systemLogs.forEach(function(log) { %>
+                            <div class="mb-1"><span class="text-muted">[<%= log.time %>]</span> <span class="text-light"><%= log.text %></span></div>
                         <% }); %>
                     </div>
                 </div>
@@ -133,24 +137,21 @@
 
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs" id="docTabs">
-                            <li class="nav-link active" style="cursor: pointer;">📂 Hồ Sơ Đang Chờ Xử Lý</li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div id="application-list">
-                            <% Object.keys(applications).forEach(function(id) { let app = applications[id]; %>
+                    <div class="card-header">📂 DANH SÁCH ĐƠN THƯ GỬI TRỰC TUYẾN</div>
+                    <div class="card-body style-scrollbar" style="max-height: 600px; overflow-y: auto;">
+                        <div id="application-container">
+                            <% Object.keys(state.applications).forEach(function(id) { let app = state.applications[id]; %>
                                 <div id="card-<%= app.id %>" class="card card-body mb-3 border-secondary">
-                                    <h5 class="text-info fw-bold"><%= app.id %> | <%= app.docType %></h5>
-                                    <p class="small m-1"><strong>Người gửi:</strong> @<%= app.sender %> | <strong>Cơ quan đích:</strong> <%= app.agency %></p>
-                                    <p class="bg-dark p-2 rounded text-light my-2 border border-secondary"><%= app.content %></p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="badge bg-warning text-dark"><%= app.status %></span>
-                                        <div>
-                                            <button onclick="approveDocument('<%= app.id %>')" class="btn btn-sm btn-success me-2">✔ Phê Duyệt</button>
-                                            <button onclick="rejectDocument('<%= app.id %>')" class="btn btn-sm btn-danger">❌ Bác Bỏ</button>
-                                        </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="text-info fw-bold m-0"><%= app.id %> | <%= app.docType %></h5>
+                                        <span class="badge bg-dark border border-warning text-warning"><%= app.agency %></span>
+                                    </div>
+                                    <p class="small text-muted my-1">Người nộp: @<%= app.sender %> | Trạng thái hiện tại: <span class="text-warning"><%= app.status %></span></p>
+                                    <div class="bg-dark p-2 rounded text-light border border-secondary my-2"><%= app.content %></div>
+                                    
+                                    <div class="d-flex justify-content-end mt-2">
+                                        <button onclick="processApp('<%= app.id %>', 'Chấp Thuận Hợp Pháp', 'ĐÃ DUYỆT', '#22c55e')" class="btn btn-sm btn-success me-2">✔ Duyệt</button>
+                                        <button onclick="processApp('<%= app.id %>', 'Bị Từ Chối', 'BÁC BỎ', '#ef4444')" class="btn btn-sm btn-danger">❌ Từ Chối</button>
                                     </div>
                                 </div>
                             <% }); %>
@@ -162,109 +163,106 @@
     </div>
 
     <script>
-        // Phát âm thanh
-        function playSnd(type) {
-            const s = document.getElementById(`snd-${type}`);
-            if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
+        // Hàm kích hoạt phát âm thanh SFX
+        function playSound(type) {
+            const audio = document.getElementById(`snd-${type}`);
+            if(audio) { audio.currentTime = 0; audio.play().catch(()=>{}); }
         }
 
-        // Tự động gán âm thanh khi bấm nút/gõ phím
-        document.querySelectorAll('button, select').forEach(b => b.addEventListener('click', () => playSnd('click')));
-        document.querySelectorAll('input, textarea').forEach(i => i.addEventListener('input', () => playSnd('key')));
+        // Tự động gán âm thanh cho các tương tác chuột và bàn phím toàn trang
+        document.querySelectorAll('button, select').forEach(el => el.addEventListener('click', () => playSound('click')));
+        document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', () => playSound('key')));
 
-        // Hiệu ứng Báo Động Đỏ toàn màn hình
-        function applySecurityVisuals(lvl) {
-            const b = document.body;
-            const t = document.getElementById('system-title');
+        // Hiệu ứng đồ họa thay đổi theo Mức Độ An Ninh Quốc Gia
+        function runSecurityVisuals(level) {
+            const body = document.body;
+            const title = document.getElementById('system-title');
             const badge = document.getElementById('security-badge');
-            badge.innerText = lvl;
+            if(badge) badge.innerText = level;
 
-            if (lvl === "BÁO ĐỘNG ĐỎ" || lvl === "NGUY HIỂM CAO") {
-                b.classList.add('red-alert-active');
-                if(t) t.classList.add('glitch-text');
-                playSnd('warn');
+            if (level === "BÁO ĐỘNG ĐỎ" || level === "NGUY HIỂM CAO") {
+                body.classList.add('red-alert-active');
+                if(title) title.classList.add('glitch-text');
+                playSound('warn');
             } else {
-                b.classList.remove('red-alert-active');
-                if(t) t.classList.remove('glitch-text');
+                body.classList.remove('red-alert-active');
+                if(title) title.classList.remove('glitch-text');
             }
         }
 
-        // Gửi lệnh đổi mức an ninh lên Server
+        // Gửi lệnh cập nhật mức an ninh sang Backend
         function changeSecurity() {
-            const lvl = document.getElementById('select-security').value;
+            const level = document.getElementById('select-security').value;
             fetch('/api/national/security', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ level: lvl })
+                body: JSON.stringify({ level })
             }).then(() => {
-                applySecurityVisuals(lvl);
-                location.reload();
+                runSecurityVisuals(level);
+                setTimeout(() => location.reload(), 800);
             });
         }
 
-        // Hiệu ứng dập dấu mộc và rung chuyển hồ sơ
-        function executeStampEffect(id, text, color) {
+        // Gửi lệnh cập nhật chữ chạy sang Backend
+        function updateTicker() {
+            const msg = document.getElementById('input-ticker').value;
+            if(!msg) return;
+            fetch('/api/national/ticker', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ message: msg })
+            }).then(() => location.reload());
+        }
+
+        // Xử lý đơn thư kèm hiệu ứng dập dấu đè lên khung
+        function processApp(id, statusText, stampText, colorCode) {
             const card = document.getElementById(`card-${id}`);
             if(!card) return;
 
-            const st = document.createElement('div');
-            st.className = 'stamp-animated';
-            st.style.borderColor = color;
-            st.style.color = color;
-            st.innerText = text;
+            // Tạo con dấu mộc động
+            const stamp = document.createElement('div');
+            stamp.className = 'stamp-animated';
+            stamp.style.border = `4px double ${colorCode}`;
+            stamp.style.color = colorCode;
+            stamp.innerText = stampText;
+            card.appendChild(stamp);
 
-            card.appendChild(st);
-            playSnd('amp'); // Tiếng bộp đóng dấu
+            // Bật tiếng bộp dập dấu và rung lắc card hồ sơ
+            playSound('stamp');
             card.classList.add('shake-element');
-            setTimeout(() => card.classList.remove('shake-element'), 150);
-        }
 
-        // Hàm Phê Duyệt Hồ Sơ
-        function approveDocument(id) {
-            executeStampEffect(id, 'ĐÃ PHÊ DUYỆT', '#00ff00');
+            // Chờ hiệu ứng hoàn tất rồi mới Reload trang để lưu dữ liệu
             setTimeout(() => {
                 fetch('/api/applications/action', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ id, action: 'status', status: 'Chấp Thuận Hợp Pháp', stamp: 'stamp-approved', officerName: 'Lãnh Đạo Tối Cao', officerRole: 'ADMIN' })
+                    body: JSON.stringify({ id, action: 'status', status: statusText, officerName: 'Hội Đồng Tối Cao' })
                 }).then(() => location.reload());
-            }, 600);
+            }, 650);
         }
 
-        // Hàm Từ Chối Hồ Sơ
-        function rejectDocument(id) {
-            executeStampEffect(id, 'BỊ BÁC BỎ', '#ff3333');
-            setTimeout(() => {
-                fetch('/api/applications/action', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ id, action: 'status', status: 'Bị Từ Chối', stamp: 'stamp-rejected', officerName: 'Lãnh Đạo Tối Cao', officerRole: 'ADMIN' })
-                }).then(() => location.reload());
-            }, 600);
-        }
-
-        // Khởi chạy nền ma trận mờ
+        // Khởi động Canvas Ma Trận mờ ảo
         const canvas = document.getElementById('matrix-bg');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const letters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ☣️⚡'.split('');
+        const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ☣️⚡⚙️'.split('');
         const fontSize = 14; const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-        
+        const rainDrops = Array(Math.floor(columns)).fill(1);
+
         function drawMatrix() {
             ctx.fillStyle = 'rgba(13, 17, 23, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#0f0'; ctx.font = fontSize + 'px monospace';
-            for(let i=0; i<drops.length; i++) {
-                const text = letters[Math.floor(Math.random()*letters.length)];
-                ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-                if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
+            ctx.fillStyle = '#10b981'; ctx.font = fontSize + 'px monospace';
+            for(let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                if(rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) rainDrops[i] = 0;
+                rainDrops[i]++;
             }
         }
         setInterval(drawMatrix, 33);
 
-        // Chạy kiểm tra đồ họa an ninh ngay khi load trang
-        applySecurityVisuals("<%= securityLevel %>");
+        // Chạy kiểm tra hiệu ứng ngay khi load trang xong
+        runSecurityVisuals("<%= state.securityLevel %>");
     </script>
 </body>
 </html>
