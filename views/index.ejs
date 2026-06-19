@@ -3,447 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CỔNG THÔNG TIN ĐIỆN TỬ CHÍNH PHỦ GIẢ LẬP - KHÔNG GIAN ROLEPLAY</title>
+    <title>CỔNG LIÊN THÔNG GIẢ LẬP QUỐC GIA - ROBLOX ROLEPLAY</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-        body { font-family: 'Space Grotesk', sans-serif; background-color: #060913; color: #cbd5e1; }
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+        
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background-color: #060913; 
+            color: #cbd5e1; 
+        }
         .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
         
-        .stamp-box { position: relative; font-size: 10px; font-weight: 900; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; border: 2.5px dashed; display: inline-block; text-align: center; letter-spacing: 1px; transform: rotate(-5deg) scale(1.05); text-shadow: none; }
+        /* Hiệu ứng Chữ chạy (Marquee) hoạt động ổn định */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+        .marquee-text {
+            display: inline-block;
+            animation: marqueeEffect 30s linear infinite;
+        }
+        @keyframes marqueeEffect {
+            0% { transform: translate3d(100%, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
 
-        /* ==========================================================================
-           HỆ THỐNG STYLE NÂNG CAO CHO KHÔNG GIAN BẢO MẬT TRÒ CHƠI
-           ========================================================================== */
-        .citizen-card-mockup {
-            background: radial-gradient(circle at top right, #111c36 0%, #0a0f1d 100%);
-            border: 2px solid #38bdf8;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.25), inset 0 0 15px rgba(56, 189, 248, 0.1);
-            position: relative; overflow: hidden;
+        /* Phôi thẻ định danh giả lập */
+        .card-mockup { 
+            position: relative; 
+            overflow: hidden; 
+            border-radius: 8px; 
+            padding: 12px; 
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .driver-card-mockup {
-            background: radial-gradient(circle at top right, #332510 0%, #120c04 100%);
-            border: 2px solid #f59e0b;
-            box-shadow: 0 0 20px rgba(245, 158, 11, 0.25), inset 0 0 15px rgba(245, 158, 11, 0.1);
-            position: relative; overflow: hidden;
-        }
-        .weapon-card-mockup {
-            background: radial-gradient(circle at top right, #3b1414 0%, #140505 100%);
-            border: 2px solid #ef4444;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.25), inset 0 0 15px rgba(239, 68, 68, 0.1);
-            position: relative; overflow: hidden;
-        }
-        .construction-card-mockup {
-            background: radial-gradient(circle at top right, #12291b 0%, #06120b 100%);
-            border: 2px solid #10b981;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.25), inset 0 0 15px rgba(16, 185, 129, 0.1);
-            position: relative; overflow: hidden;
-        }
-        .medical-card-mockup {
-            background: radial-gradient(circle at top right, #25183a 0%, #0d0817 100%);
-            border: 2px solid #a855f7;
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.25), inset 0 0 15px rgba(168, 85, 247, 0.1);
-            position: relative; overflow: hidden;
-        }
-        .card-glow-line {
+        .card-glow {
             position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
-            transform: skewX(-25deg); animation: cardGlowSwipe 4s infinite linear;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
+            transform: skewX(-25deg); animation: cardSwipe 4s infinite linear;
         }
-        @keyframes cardGlowSwipe {
-            0% { left: -100%; } 30% { left: 160%; } 100% { left: 160%; }
+        @keyframes cardSwipe { 0% { left: -100%; } 30% { left: 160%; } 100% { left: 160%; } }
+
+        .stamp-box { 
+            text-transform: uppercase; padding: 4px 10px; border-radius: 4px; 
+            border: 2px dashed; display: inline-block; font-weight: bold;
+            transform: rotate(-3deg); animation: stampSlam 0.3s ease-out both; 
         }
-        button, select, input, textarea {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-        button:hover {
-            filter: brightness(1.2); transform: translateY(-1px);
-            box-shadow: 0 0 14px var(--tw-shadow-color, rgba(245, 158, 11, 0.35));
-        }
-        button:active { transform: scale(0.97) translateY(0); }
-        
-        @keyframes stampSlamEffect {
-            0% { transform: scale(3.5) rotate(-45deg); opacity: 0; filter: blur(4px); }
-            70% { transform: scale(0.92) rotate(-8deg); opacity: 0.9; }
-            100% { transform: rotate(-5deg) scale(1.05); opacity: 1; filter: blur(0); }
-        }
-        .stamp-box-animate { animation: stampSlamEffect 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.25) both; }
-        
-        @keyframes pulseAlert {
-            0%, 100% { box-shadow: 0 0 4px rgba(239, 68, 68, 0.25); background-color: rgba(127, 29, 29, 0.2); }
-            50% { box-shadow: 0 0 16px rgba(239, 68, 68, 0.7); background-color: rgba(127, 29, 29, 0.6); }
-        }
-        .alert-active-pulse { animation: pulseAlert 1.5s infinite ease-in-out; border-color: #ef4444 !important; }
+        @keyframes stampSlam { 0% { transform: scale(2); opacity: 0; } 100% { transform: rotate(-3deg) scale(1); opacity: 1; } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between" onclick="playDigitalClick()">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <!-- HEADER TRUNG TÂM -->
-    <header class="border-b border-slate-800 bg-slate-950/70 backdrop-blur px-4 py-3.5 sticky top-0 z-50">
+    <!-- HEADER HỆ THỐNG -->
+    <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur px-4 py-3 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-amber-600 to-red-700 flex items-center justify-center text-white text-xl font-black shadow-[0_0_20px_rgba(245,158,11,0.4)]">
-                    <i class="fa-solid fa-shield-halved"></i>
+                <div class="h-9 w-9 rounded-lg bg-gradient-to-tr from-red-700 to-amber-600 flex items-center justify-center text-white text-lg font-black shadow-lg">
+                    <i class="fa-solid fa-building-shield"></i>
                 </div>
                 <div>
-                    <h1 class="font-black text-white text-sm tracking-wider uppercase">CỔNG THÔNG TIN ĐIỆN TỬ LIÊN THÔNG QUỐC GIA GIẢ LẬP</h1>
-                    <p class="text-[10px] text-slate-500 font-mono-tech uppercase tracking-widest">HỆ THỐNG QUẢN LÝ QUY CHẾ ĐÓNG VAI TRÒ / ROBLOX ROLEPLAY CENTER</p>
+                    <h1 class="font-black text-white text-xs tracking-wider uppercase">CỔNG LIÊN THÔNG GIẢ LẬP QUỐC GIA</h1>
+                    <p class="text-[9px] text-slate-500 font-mono-tech tracking-widest uppercase">HỆ THỐNG QUY CHẾ HỒ SƠ ROLEPLAY / ROBLOX</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-4">
-                <!-- ĐÈN BÁO BIẾN ĐỘNG HỒ SƠ CHUYỂN TUYẾN -->
-                <div id="national-alert-light" onclick="handleAlertLightClick()" class="hidden border border-slate-800 px-3 py-1 rounded-lg flex items-center gap-2 cursor-pointer transition-all">
-                    <span class="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] animate-ping"></span>
-                    <span class="text-red-400 font-black text-[9px] tracking-wider uppercase font-mono-tech">PHÁT HIỆN HỒ SƠ MỚI CHUYỂN TUYẾN</span>
+            <div class="flex items-center gap-3">
+                <div id="national-alert-light" class="hidden border border-red-900 px-2 py-0.5 rounded flex items-center gap-1.5 cursor-pointer bg-red-950/20">
+                    <span class="h-1.5 w-1.5 rounded-full bg-red-500 animate-ping"></span>
+                    <span class="text-red-400 font-black text-[8px] tracking-wider uppercase font-mono-tech">ĐƠN MỚI CHUYỂN TUYẾN</span>
                 </div>
-
-                <div class="border border-slate-800 px-3 py-1 rounded-lg bg-slate-900/60 text-center min-w-[110px]">
-                    <span class="text-[8px] text-slate-500 block font-mono">XUNG NHỊP LIÊN THÔNG</span>
+                <div class="border border-slate-800 px-2.5 py-0.5 rounded bg-slate-900/60 text-center">
                     <span id="live-clock" class="text-xs font-mono-tech font-bold text-amber-400">00:00:00</span>
                 </div>
-                <div class="border border-slate-800 px-3 py-1 rounded-lg bg-slate-900/60 text-center">
-                    <span class="text-[8px] text-slate-500 block font-mono">TRẠNG THÁI</span>
-                    <span class="text-xs font-mono-tech font-black text-emerald-400" id="security-level-display"><%= state.securityLevel %></span>
+                <div class="border border-slate-800 px-2.5 py-0.5 rounded bg-slate-900/60 text-center">
+                    <span class="text-[10px] font-mono-tech font-black text-emerald-400" id="security-level-display"><%= state.securityLevel %></span>
                 </div>
-                <div id="user-session-panel" class="flex items-center">
-                    <button onclick="openModal('modal-login')" class="bg-slate-900 border border-slate-700 text-slate-300 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-800 flex items-center gap-1">
-                        <i class="fa-solid fa-fingerprint"></i> XÁC THỰC CÁN BỘ
+                <div id="user-session-panel">
+                    <button onclick="openModal('modal-login')" class="bg-slate-900 border border-slate-800 text-slate-400 font-bold px-3 py-1 rounded text-[10px] hover:text-white transition">
+                        <i class="fa-solid fa-lock-open"></i> ĐĂNG NHẬP CÔNG VỤ
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- BẢNG CHỮ CHẠY THÔNG BÁO QUY CHẾ -->
-    <div class="bg-amber-500/10 border-b border-amber-500/20 py-1.5 overflow-hidden whitespace-nowrap">
-        <div class="inline-block animate-marquee font-mono-tech text-amber-400 text-xs tracking-wide" id="ticker-box">
-            <%= state.tickerMessage %>
+    <!-- THANH THÔNG BÁO KHẨN (CHỮ CHẠY ĐÃ ĐƯỢC SỬA) -->
+    <div class="bg-slate-950 border-b border-slate-900 py-1.5 flex items-center shadow-inner">
+        <span class="bg-red-900 text-white text-[9px] font-black uppercase px-2 py-0.5 ml-4 rounded shrink-0 tracking-wider">THÔNG BÁO KHẨN</span>
+        <div class="w-full marquee-container ml-3">
+            <div class="marquee-text font-mono-tech text-amber-400 text-xs" id="ticker-box">
+                <%= state.tickerMessage %>
+            </div>
         </div>
     </div>
 
-    <!-- MAIN BODY -->
-    <main class="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 flex-grow w-full">
+    <!-- THANH ĐIỀU HƯỚNG TAB CHÍNH NGANG TRÊN TRANG WEB -->
+    <nav class="bg-slate-950/40 border-b border-slate-900 sticky top-[53px] z-40 backdrop-blur-sm">
+        <div class="max-w-md mx-auto flex justify-around text-center">
+            <button id="btn-tab-services" onclick="switchTab('tab-services')" class="flex-1 py-3 text-[11px] font-black tracking-wider uppercase border-b-2 border-amber-500 text-amber-500">
+                <i class="fa-solid fa-folder-plus block mb-0.5 text-xs"></i> NỘP ĐƠN THỦ TỤC
+            </button>
+            <button id="btn-tab-id" onclick="switchTab('tab-id')" class="flex-1 py-3 text-[11px] font-black tracking-wider uppercase border-b-2 border-transparent text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-address-book block mb-0.5 text-xs"></i> TRA CỨU ĐỊNH DANH
+            </button>
+            <button id="btn-tab-track" onclick="switchTab('tab-track')" class="flex-1 py-3 text-[11px] font-black tracking-wider uppercase border-b-2 border-transparent text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-chart-line block mb-0.5 text-xs"></i> TIẾN ĐỘ HỒ SƠ
+            </button>
+        </div>
+    </nav>
+
+    <!-- KHU VỰC CHÍNH BỐ TRÍ THEO DẠNG LƯỚI KHÔNG RỐI MẮT -->
+    <main class="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-5 flex-grow w-full">
         
-        <!-- CỘT TRÁI: ZONE TÁC NGHIỆP CỦA CƯ DÂN -->
+        <!-- CỘT TRÁI (QUYẾT ĐỊNH & TRUY NÃ) -->
         <section class="lg:col-span-4 space-y-4">
-            
-            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-1.5 flex gap-1">
-                <button id="btn-tab-services" onclick="tab('tab-services')" class="flex-1 text-center py-1.5 rounded-lg font-bold text-xs bg-amber-500 text-black">
-                    <i class="fa-solid fa-file-pen"></i> ĐĂNG KÝ HỒ SƠ
-                </button>
-                <button id="btn-tab-track" onclick="tab('tab-track')" class="flex-1 text-center py-1.5 rounded-lg font-bold text-xs text-slate-400 hover:bg-slate-900">
-                    <i class="fa-solid fa-satellite-dish"></i> TIẾN ĐỘ ĐƠN
-                </button>
-                <button id="btn-tab-id" onclick="tab('tab-id')" class="flex-1 text-center py-1.5 rounded-lg font-bold text-xs text-slate-400 hover:bg-slate-900">
-                    <i class="fa-solid fa-address-card"></i> KHO ĐỊNH DANH
-                </button>
+            <!-- VĂN BẢN CHỈ THỊ FROM IMAGE_3BE3A3 -->
+            <div class="bg-slate-950/60 border border-slate-900 rounded-xl p-4 space-y-3">
+                <h3 class="text-white font-black text-xs tracking-wider uppercase flex items-center gap-2 border-b border-slate-900/60 pb-2">
+                    <i class="fa-solid fa-scroll text-amber-500"></i> VĂN BẢN CHỈ THỊ / SẮC LỆNH
+                </h3>
+                <div id="announcements-list" class="space-y-3 max-h-64 overflow-y-auto pr-1"></div>
             </div>
 
-            <!-- TAB 1: KHỞI TẠO ĐƠN THƯ - ĐÃ TÍCH HỢP ĐA DẠNG & TỰ ĐỘNG CHUYỂN TUYẾN -->
-            <div id="panel-tab-services" class="bg-slate-950/40 border border-slate-800 rounded-xl p-4 space-y-3">
-                <h3 class="text-white font-black text-xs tracking-wider uppercase border-b border-slate-800 pb-2 flex items-center gap-1.5">
-                    <i class="fa-solid fa-paper-plane text-amber-500"></i> KHỞI TẠO SỐ HÓA HỒ SƠ GIẢ LẬP
+            <!-- CƠ SỞ DỮ LIỆU TRUY NÃ FROM IMAGE_3BE3A3 -->
+            <div class="bg-slate-950/60 border border-slate-900 rounded-xl p-4 space-y-3">
+                <h3 class="text-red-400 font-black text-xs tracking-wider uppercase flex items-center gap-2 border-b border-slate-900/60 pb-2">
+                    <i class="fa-solid fa-triangle-exclamation text-red-500"></i> ĐỐI TƯỢNG TRUY NÃ QUỐC GIA
                 </h3>
-                <form id="applyForm" onsubmit="submitForm(event)" class="space-y-3">
-                    <div>
-                        <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Tên tài khoản công dân (Roblox/In-game):</label>
-                        <input type="text" id="app-name" placeholder="Ví dụ: Hoàng_Nam_RP" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500">
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Loại giấy tờ đề xuất (Đa dạng danh mục):</label>
-                        <!-- KHI THAY ĐỔI SẼ TỰ ĐỘNG LUÂN CHUYỂN CƠ QUAN THEO YÊU CẦU -->
-                        <select id="app-docType" onchange="autoRouteAgencyByDocType()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500">
-                            <option value="CĂN CƯỚC CÔNG DÂN">Thẻ Căn Cước Định Danh Cư Dân (Cơ quan Công An cấp)</option>
-                            <option value="GIẤY PHÉP LÁI XE QUỐC GIA">Giấy Phép Điều Khiển Phương Tiện Hạng B2 (Sở Giao Thông cấp)</option>
-                            <option value="GIẤY PHÉP SỬ DỤNG CÔNG CỤ HỖ TRỢ">Giấy Phép Sử Dụng Thiết Bị / Công Cụ Bảo Vệ (Cơ quan Công An cấp)</option>
-                            <option value="GIẤY PHÉP XÂY DỰNG NHÀ Ở">Giấy Phép Cải Tạo / Xây Dựng Công Trình (UBND Phường tiếp nhận)</option>
-                            <option value="CHỨNG CHỈ HÀNH NGHỀ Y TẾ">Chứng Chỉ Đủ Điều Kiện Hành Nghề Y Tế (Bệnh Viện thẩm định)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Cơ quan tiếp nhận xử lý (Luồng luân chuyển tự động):</label>
-                        <!-- Thêm disabled để đảm bảo cơ chế tự động chuyển vùng, khi submit sẽ lấy giá trị chuẩn -->
-                        <select id="app-agency" disabled class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs text-amber-500 font-bold opacity-90">
-                            <option value="CÔNG AN">CƠ QUAN CÔNG AN (Đồn / Tỉnh)</option>
-                            <option value="UBND PHƯỜNG">ỦY BAN NHÂN DÂN PHƯỜNG (Một Cửa)</option>
-                            <option value="SỞ GIAO THÔNG THÀNH PHỐ">SỞ GIAO THÔNG VẬN TẢI THÀNH PHỐ</option>
-                            <option value="BỆNH VIỆN">BỆNH VIỆN ĐA KHOA QUỐC GIA</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Cam kết nội dung lý do đóng vai trò:</label>
-                        <textarea id="app-details" rows="3" placeholder="Ghi rõ thông tin lý do, đơn vị công tác ảo, cam kết tuân thủ quy chế trò chơi..." required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-black font-black py-2 rounded-lg text-xs tracking-wider uppercase shadow-lg shadow-amber-500/10">
-                        <i class="fa-solid fa-share-from-square"></i> NỘP ĐƠN VÀO LUỒNG XỬ LÝ TỰ ĐỘNG
-                    </button>
-                </form>
-            </div>
-
-            <!-- TAB 2: ĐÀM THOẠI & TRA CỨU TIẾN ĐỘ -->
-            <div id="panel-tab-track" class="bg-slate-950/40 border border-slate-800 rounded-xl p-4 space-y-3 hidden">
-                <h3 class="text-white font-black text-xs tracking-wider uppercase border-b border-slate-800 pb-2 flex items-center gap-1.5">
-                    <i class="fa-solid fa-magnifying-glass text-sky-400"></i> TRA CỨU TIẾN ĐỘ VÀ ĐÀM THOẠI HƯỚNG DẪN
-                </h3>
-                <div class="flex gap-2">
-                    <input type="text" id="track-id" placeholder="Nhập mã hồ sơ giả lập (Ví dụ: HS-123456)" class="flex-grow bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-sky-500">
-                    <button onclick="trackApplication()" class="bg-sky-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-sky-500">
-                        TRA CỨU
-                    </button>
-                </div>
-                
-                <div id="track-result" class="border border-slate-800 rounded-xl p-3 bg-slate-950/80 hidden space-y-3">
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                        <div>
-                            <span class="text-xs font-mono-tech font-black text-white" id="res-id">HS-XXXXXX</span>
-                            <span class="text-[9px] block text-slate-500 uppercase font-bold" id="res-docType">LOẠI GIẤY TỜ</span>
-                        </div>
-                        <span id="res-status" class="text-[9px] font-black font-mono px-2 py-0.5 rounded border">TRẠNG THÁI</span>
-                    </div>
-                    
-                    <div class="text-xs space-y-1">
-                        <p><span class="text-slate-500">Chủ tài khoản:</span> <span class="text-slate-300 font-bold" id="res-name">---</span></p>
-                        <p><span class="text-slate-500">Đơn vị xử lý:</span> <span class="text-amber-500 font-bold" id="res-agency">---</span></p>
-                        <p class="bg-slate-900 p-2 rounded border border-slate-800 text-[11px] text-slate-400" id="res-details">Nội dung...</p>
-                    </div>
-
-                    <!-- HIỂN THỊ PHÔI THỂ SAU KHI ĐƯỢC DUYỆT -->
-                    <div id="res-stamp-area" class="text-center pt-1 hidden"></div>
-
-                    <div class="border-t border-slate-800 pt-3 space-y-2">
-                        <label class="text-[10px] text-slate-400 font-bold uppercase block"><i class="fa-solid fa-comments"></i> Kênh đàm thoại liên thông:</label>
-                        <div id="res-logs" class="bg-slate-900 border border-slate-800 rounded-lg p-2 h-32 overflow-y-auto font-mono text-[10px] space-y-1 text-slate-500"></div>
-                        <div class="flex gap-1.5">
-                            <input type="text" id="chat-msg" placeholder="Nhập tin nhắn phản hồi ý kiến..." class="flex-grow bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none">
-                            <button onclick="sendChatMessage('CÔNG DÂN')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1 rounded-lg text-xs font-bold">
-                                GỬI TIN
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 3: KHO DÂN CƯ ĐỊNH DANH GIẢ LẬP -->
-            <div id="panel-tab-id" class="bg-slate-950/40 border border-slate-800 rounded-xl p-4 space-y-3 hidden">
-                <h3 class="text-white font-black text-xs tracking-wider uppercase border-b border-slate-800 pb-2 flex items-center gap-1.5">
-                    <i class="fa-solid fa-id-card text-emerald-400"></i> TRA CỨU CƠ SỞ DỮ LIỆU ĐỊNH DANH GIẢ LẬP
-                </h3>
-                <div class="flex gap-2">
-                    <input type="text" id="id-search" placeholder="Nhập tên tài khoản định danh (Ví dụ: admin)" class="flex-grow bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500">
-                    <button onclick="searchCitizen()" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500">
-                        TRA CỨU
-                    </button>
-                </div>
-                <div id="id-result" class="border border-slate-800 rounded-xl p-3 bg-slate-950/80 hidden text-xs"></div>
+                <div id="wanted-list" class="space-y-2.5 max-h-56 overflow-y-auto pr-1"></div>
             </div>
         </section>
 
-        <!-- CỘT GIỮA: KHU VỰC THẨM ĐỊNH PHÊ DUYỆT CỦA BAN NGÀNH CÁN BỘ -->
-        <section class="lg:col-span-5 space-y-4">
-            <div class="bg-slate-950/40 border border-slate-800 rounded-xl p-4 space-y-3">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                    <h3 class="text-white font-black text-xs tracking-wider uppercase flex items-center gap-1.5">
-                        <i class="fa-solid fa-desktop text-amber-500"></i> BÀN LÀM VIỆC ĐIỀU PHỐI VIÊN LIÊN THÔNG
-                    </h3>
-                    <div id="officer-badge" class="text-[9px] text-slate-500 font-bold uppercase font-mono bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
-                        YÊU CẦU QUYỀN TRUY CẬP
-                    </div>
-                </div>
-
-                <div id="officer-lockout" class="text-center py-16 border border-dashed border-slate-800 rounded-xl space-y-2">
-                    <i class="fa-solid fa-fingerprint text-3xl text-slate-700 animate-pulse"></i>
-                    <p class="text-xs text-slate-500 px-4">Vui lòng đăng nhập tài khoản Cán bộ điều phối ảo để sử dụng thẩm quyền phê duyệt và đóng dấu kỹ thuật số tương ứng luồng cơ quan.</p>
-                </div>
-
-                <div id="officer-workspace" class="hidden space-y-4">
-                    <div class="space-y-2">
-                        <label class="text-[10px] text-amber-500 font-mono-tech uppercase font-bold block"><i class="fa-solid fa-folder-open"></i> Danh sách đơn thư trực tuyến đang được điều phối về đơn vị bạn:</label>
-                        <div id="officer-app-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
-                    </div>
-
-                    <!-- KHU VỰC XỬ LÝ CHI TIẾT ĐƠN ĐƯỢC CHỌN -->
-                    <div id="officer-review-panel" class="border border-slate-800 rounded-xl p-3 bg-slate-950/80 hidden space-y-3">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+        <!-- CỘT PHẢI (NỘI DUNG CHỨC NĂNG & WORKSPACE CÁN BỘ / ADMIN) -->
+        <section class="lg:col-span-8 space-y-4">
+            
+            <!-- KHU VỰC ĐỔI TAB CỦA NGƯỜI DÂN -->
+            <div class="bg-slate-950/40 border border-slate-900 rounded-xl p-4">
+                <!-- TAB 1: NỘP ĐƠN -->
+                <div id="panel-tab-services" class="space-y-3">
+                    <span class="text-amber-500 font-black text-xs uppercase tracking-wider block mb-2"><i class="fa-solid fa-file-signature"></i> Khởi tạo số hóa hồ sơ công dân ảo</span>
+                    <form id="applyForm" onsubmit="handleFormSubmit(event)" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <span class="text-xs font-mono-tech font-black text-white" id="off-id">HS-XXXXXX</span>
-                                <span class="text-[9px] block text-amber-400 font-bold uppercase" id="off-docType">LOẠI GIẤY TỜ</span>
+                                <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Tên tài khoản (Roblox Account):</label>
+                                <input type="text" id="app-name" placeholder="Ví dụ: Quang_Minh_RP" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500">
                             </div>
-                            <span id="off-status" class="text-[9px] font-mono font-black px-2 py-0.5 rounded border bg-slate-900">ĐANG THẨM ĐỊNH</span>
+                            <div>
+                                <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Loại hồ sơ đề xuất:</label>
+                                <select id="app-docType" onchange="autoRouteAgency()" class="w-full bg-slate-900 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none">
+                                    <option value="CĂN CƯỚC CÔNG DÂN">Thẻ Căn Cước Định Danh Công Dân</option>
+                                    <option value="GIẤY PHÉP LÁI XE QUỐC GIA">Giấy Phép Điều Khiển Phương Tiện Hạng B2</option>
+                                    <option value="GIẤY PHÉP SỬ DỤNG CÔNG CỤ HỖ TRỢ">Giấy Phép Sử Dụng Thiết Bị Bảo Vệ</option>
+                                    <option value="GIẤY PHÉP XÂY DỰNG NHÀ Ở">Giấy Phép Cải Tạo/Xây Dựng Đô Thị</option>
+                                    <option value="CHỨNG CHỈ HÀNH NGHỀ Y TẾ">Chứng Chỉ Đủ Điều Kiện Hành Nghề Y Tế</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Cơ quan tiếp nhận liên thông:</label>
+                            <select id="app-agency" disabled class="w-full bg-slate-950 border border-slate-900 rounded px-2.5 py-1.5 text-xs text-amber-500 font-bold opacity-80">
+                                <option value="CÔNG AN">CƠ QUAN CÔNG AN QUỐC GIA</option>
+                                <option value="UBND PHƯỜNG">ỦY BAN NHÂN DÂN PHƯỜNG SỐ HÓA</option>
+                                <option value="SỞ GIAO THÔNG THÀNH PHỐ">SỞ GIAO THÔNG VẬN TẢI THÀNH PHỐ</option>
+                                <option value="BỆNH VIỆN">BỆNH VIỆN ĐA KHOA LIÊN THÔNG</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Cam kết nội dung / Lý do xin cấp:</label>
+                            <textarea id="app-details" rows="2" placeholder="Nêu rõ mục đích sử dụng trong không gian roleplay..." required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-black py-2 rounded text-xs tracking-wider uppercase transition">
+                            <i class="fa-solid fa-paper-plane"></i> GỬI HỒ SƠ LÊN HỆ THỐNG
+                        </button>
+                    </form>
+                </div>
+
+                <!-- TAB 2: TRA CỨU ĐỊNH DANH -->
+                <div id="panel-tab-id" class="space-y-3 hidden">
+                    <span class="text-emerald-400 font-black text-xs uppercase tracking-wider block mb-2"><i class="fa-solid fa-magnifying-glass"></i> Hệ thống tra cứu dữ liệu cư dân điện tử</span>
+                    <div class="flex gap-2">
+                        <input type="text" id="id-search" placeholder="Nhập chính xác tên tài khoản định danh..." class="flex-grow bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none">
+                        <button onclick="searchCitizen()" class="bg-emerald-600 hover:bg-emerald-700 font-bold px-4 py-1.5 rounded text-xs text-white transition">TRA CỨU</button>
+                    </div>
+                    <div id="id-result" class="border border-slate-900 rounded-xl p-3 bg-slate-950/80 hidden"></div>
+                </div>
+
+                <!-- TAB 3: TIẾN ĐỘ HỒ SƠ & CHAT -->
+                <div id="panel-tab-track" class="space-y-3 hidden">
+                    <span class="text-sky-400 font-black text-xs uppercase tracking-wider block mb-2"><i class="fa-solid fa-receipt"></i> Kiểm tra luồng xử lý hành chính</span>
+                    <div class="flex gap-2">
+                        <input type="text" id="track-id" placeholder="Nhập mã hồ sơ hành chính ảo (Ví dụ: HS-123456)" class="flex-grow bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none">
+                        <button onclick="trackApplication()" class="bg-sky-600 hover:bg-sky-700 font-bold px-4 py-1.5 rounded text-xs text-white transition">KIỂM TRA</button>
+                    </div>
+                    <div id="track-result" class="border border-slate-900 rounded-xl p-3 bg-slate-950/80 hidden space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-900 pb-2">
+                            <div>
+                                <span class="text-xs font-mono-tech font-black text-white" id="res-id">HS-XXXXXX</span>
+                                <span class="text-[9px] block text-slate-500 uppercase font-black" id="res-docType">LOẠI</span>
+                            </div>
+                            <span id="res-status" class="text-[9px] font-black font-mono px-2 py-0.5 rounded border">TRẠNG THÁI</span>
                         </div>
                         <div class="text-xs space-y-1">
-                            <p><span class="text-slate-500">Tên cư dân ảo:</span> <span class="text-white font-bold" id="off-name">---</span></p>
-                            <p class="bg-slate-900 p-2 rounded border border-slate-800 text-[11px] text-slate-300" id="off-details">Nội dung chi tiết...</p>
+                            <p><span class="text-slate-500">Chủ đơn ảo:</span> <span class="text-white font-bold" id="res-name">---</span></p>
+                            <p><span class="text-slate-500">Cơ quan chuyển tuyến:</span> <span class="text-amber-500 font-bold" id="res-agency">---</span></p>
+                            <p class="bg-slate-900 p-2 border border-slate-800 rounded text-[11px] text-slate-400" id="res-details">Nội dung...</p>
                         </div>
-
-                        <!-- XEM TRƯỚC PHÔI GIẤY TỜ TRỰC QUAN TRƯỚC KHI BẤM PHÊ DUYỆT -->
-                        <div id="off-card-preview-area" class="pt-1"></div>
-
-                        <div class="flex gap-2 pt-1.5" id="off-actions"></div>
-
-                        <div class="border-t border-slate-800 pt-2.5 space-y-2">
-                            <label class="text-[10px] text-slate-400 font-bold uppercase block"><i class="fa-solid fa-comments"></i> Hướng dẫn cư dân sửa đổi hồ sơ giả lập:</label>
-                            <div id="off-logs" class="bg-slate-900 border border-slate-800 rounded-lg p-2 h-24 overflow-y-auto font-mono text-[10px] space-y-1 text-slate-500"></div>
+                        <div id="res-stamp-area" class="text-center hidden"></div>
+                        <div class="border-t border-slate-900 pt-3 space-y-2">
+                            <div id="res-logs" class="bg-slate-900/60 border border-slate-800 rounded p-2 h-28 overflow-y-auto font-mono text-[10px] text-slate-400 space-y-1"></div>
                             <div class="flex gap-1.5">
-                                <input type="text" id="off-chat-msg" placeholder="Nhập văn bản phản hồi hướng dẫn cư dân..." class="flex-grow bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none">
-                                <button onclick="sendChatMessage('CÁN BỘ')" class="bg-amber-500 text-black px-3 py-1 rounded-lg text-xs font-black">
-                                    PHẢN HỒI
-                                </button>
+                                <input type="text" id="chat-msg" placeholder="Nhập phản hồi ý kiến cư dân..." class="flex-grow bg-slate-900 border border-slate-800 rounded px-2.5 py-1 text-xs text-white focus:outline-none">
+                                <button onclick="sendChatMessage('CÔNG DÂN')" class="bg-emerald-600 text-white px-4 py-1 rounded text-xs font-bold hover:bg-emerald-700 transition">GỬI</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- QUYỀN LỰC BAN HÀNH SẮC LỆNH CỦA QUẢN TRỊ VIÊN TỐI CAO -->
-            <div id="leader-panel" class="bg-slate-950/40 border border-slate-800 rounded-xl p-4 space-y-3 hidden">
-                <h3 class="text-red-400 font-black text-xs tracking-wider uppercase border-b border-slate-800 pb-2 flex items-center gap-1.5">
-                    <i class="fa-solid fa-triangle-exclamation"></i> QUYỀN HẠN BAN HÀNH SẮC LỆNH KHÔNG GIAN ẢO
-                </h3>
-                <div class="space-y-3">
-                    <div>
-                        <label class="text-[10px] text-slate-400 font-bold block mb-1">CẬP NHẬT TRẠNG THÁI AN NINH TRÒ CHƠI:</label>
-                        <div class="grid grid-cols-3 gap-1.5">
-                            <button onclick="updateSecurity('AN TOÀN TRÒ CHƠI')" class="bg-emerald-950 text-emerald-400 border border-emerald-800 py-1 rounded-lg font-mono-tech font-bold text-xs">AN TOÀN</button>
-                            <button onclick="updateSecurity('NGUY CƠ XUNG ĐỘT')" class="bg-amber-950 text-amber-400 border border-amber-800 py-1 rounded-lg font-mono-tech font-bold text-xs">NGUY CƠ</button>
-                            <button onclick="updateSecurity('BÁO ĐỘNG KHẨN CẤP')" class="bg-red-950 text-red-400 border border-red-800 py-1 rounded-lg font-mono-tech font-bold text-xs">BÁO ĐỘNG</button>
+            <!-- BÀN LÀM VIỆC CỦA CÁN BỘ ĐIỀU PHỐI (KHÔI PHỤC) -->
+            <div class="bg-slate-950/60 border border-slate-900 rounded-xl p-4 space-y-3">
+                <div class="flex justify-between items-center border-b border-slate-900 pb-2">
+                    <h4 class="text-white font-black text-xs uppercase tracking-wider"><i class="fa-solid fa-user-gear text-amber-500"></i> BÀN THẨM ĐỊNH BAN NGÀNH LIÊN THÔNG</h4>
+                    <span id="officer-badge" class="text-[9px] font-mono font-bold bg-slate-900 px-2 py-0.5 rounded border border-slate-800 text-slate-500">CHỜ TRUY CẬP</span>
+                </div>
+                <div id="officer-lockout" class="text-center py-6 border border-dashed border-slate-800/60 rounded-xl">
+                    <p class="text-xs text-slate-500">Yêu cầu đăng nhập tài khoản công chức để thực hiện quyền hạn duyệt phê đóng dấu điện tử.</p>
+                </div>
+                <div id="officer-workspace" class="hidden space-y-3">
+                    <div id="officer-app-list" class="space-y-1.5 max-h-36 overflow-y-auto"></div>
+                    <div id="officer-review-panel" class="border border-slate-900 rounded-xl p-3 bg-slate-950 hidden space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-900 pb-1.5">
+                            <div><span class="text-xs font-mono-tech font-black text-white" id="off-id">HS-XXXXXX</span></div>
+                            <span id="off-status" class="text-[9px] font-mono font-black px-2 py-0.5 rounded bg-slate-900 text-amber-400">ĐANG DUYỆT</span>
                         </div>
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400 font-bold block mb-1">BAN HÀNH THÔNG CÁO GIẢ LẬP / TRUY NÃ ẢO:</label>
-                        <div class="grid grid-cols-2 gap-2 mb-2">
-                            <select id="pub-type" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-white">
-                                <option value="QUYẾT ĐỊNH GIẢ LẬP">QUYẾT ĐỊNH QUẢN TRỊ</option>
-                                <option value="THÔNG BÁO">THÔNG BÁO CHUNG</option>
-                                <option value="TRUY NÃ">LỆNH TRUY NÃ TRÒ CHƠI</option>
-                            </select>
-                            <input type="text" id="pub-title" placeholder="Tên đối tượng hoặc tiêu đề thông cáo" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-white">
+                        <div id="off-card-preview-area"></div>
+                        <div class="flex gap-2" id="off-actions"></div>
+                        <div class="flex gap-1.5 pt-1">
+                            <input type="text" id="off-chat-msg" placeholder="Hướng dẫn sửa đổi hồ sơ nếu từ chối..." class="flex-grow bg-slate-900 border border-slate-800 rounded px-2.5 py-1 text-xs text-white focus:outline-none">
+                            <button onclick="sendChatMessage('CÁN BỘ')" class="bg-amber-500 text-black px-4 py-1 rounded text-xs font-black hover:bg-amber-600 transition">PHẢN HỒI</button>
                         </div>
-                        <textarea id="pub-content" rows="2" placeholder="Chi tiết nội dung quyết định ban ngành ảo..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-white focus:outline-none mb-2"></textarea>
-                        <button onclick="publishNational()" class="w-full bg-red-700 hover:bg-red-600 text-white font-black py-1.5 rounded-lg text-xs tracking-wider uppercase">
-                            <i class="fa-solid fa-bullhorn"></i> PHÁT TIN TOÀN MÁY CHỦ ROBLOX
-                        </button>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- CỘT PHẢI: LOGS MÁY CHỦ,ẤN BẢN VÀ DANH SÁCH VI PHẠM TRÒ CHƠI -->
-        <section class="lg:col-span-3 space-y-4">
-            <div class="bg-red-950/20 border border-red-900/40 rounded-xl p-3 space-y-2">
-                <h3 class="text-red-400 font-black text-xs tracking-wider uppercase flex items-center gap-1.5 border-b border-red-900/30 pb-1.5">
-                    <i class="fa-solid fa-user-slash animate-pulse"></i> DANH SÁCH TRUY NÃ TRÒ CHƠI ẢO
-                </h3>
-                <div id="wanted-list" class="space-y-2 max-h-36 overflow-y-auto pr-1"></div>
+            <!-- BẢNG GIÁM SÁT TỐI CAO ADMIN (KHÔI PHỤC) -->
+            <div id="leader-panel" class="bg-slate-950/60 border border-slate-900 rounded-xl p-4 space-y-3 hidden">
+                <span class="text-red-400 font-black text-xs uppercase block tracking-wider border-b border-slate-900 pb-2"><i class="fa-solid fa-gavel"></i> BAN ĐIỀU HÀNH TỐI CAO CHÍNH PHỦ ẢO (ADMIN)</span>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="updateSecurity('AN TOÀN TRÒ CHƠI')" class="bg-emerald-950/40 text-emerald-400 border border-emerald-900 py-1.5 rounded text-xs font-bold hover:bg-emerald-900/30 transition">AN TOÀN</button>
+                    <button onclick="updateSecurity('NGUY CƠ XUNG ĐỘT')" class="bg-amber-950/40 text-amber-400 border border-amber-800 py-1.5 rounded text-xs font-bold hover:bg-amber-800/30 transition">NGUY CƠ</button>
+                    <button onclick="updateSecurity('BÁO ĐỘNG KHẨN CẤP')" class="bg-red-950/40 text-red-400 border border-red-800 py-1.5 rounded text-xs font-bold hover:bg-red-800/30 transition">BÁO ĐỘNG</button>
+                </div>
+                <div class="flex gap-2">
+                    <select id="pub-type" class="bg-slate-900 border border-slate-800 rounded text-xs text-white px-2 py-1">
+                        <option value="QUYẾT ĐỊNH GIẢ LẬP">QUYẾT ĐỊNH</option>
+                        <option value="TRUY NÃ">TRUY NÃ</option>
+                    </select>
+                    <input type="text" id="pub-title" placeholder="Tiêu đề văn bản / Tên đối tượng" class="flex-grow bg-slate-900 border border-slate-800 rounded px-2.5 py-1 text-xs text-white focus:outline-none">
+                </div>
+                <textarea id="pub-content" rows="1" placeholder="Tội danh hoặc tóm tắt chỉ thị ban hành..." class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white focus:outline-none"></textarea>
+                <button onclick="publishNational()" class="w-full bg-red-800 hover:bg-red-900 text-white font-bold py-1.5 rounded text-xs uppercase tracking-wide transition">PHÁT SẮC LỆNH SỐ HÓA TOÀN SERVER</button>
             </div>
-
-            <div class="bg-slate-950/40 border border-slate-800 rounded-xl p-3 space-y-2">
-                <h3 class="text-white font-black text-xs tracking-wider uppercase flex items-center gap-1.5 border-b border-slate-800 pb-1.5">
-                    <i class="fa-solid fa-paste text-sky-400"></i> ẤN BẢN ĐIỀU PHỐI VAI TRÒ
-                </h3>
-                <div id="announcements-list" class="space-y-2 max-h-44 overflow-y-auto pr-1"></div>
-            </div>
-
-            <div class="bg-slate-950/40 border border-slate-800 rounded-xl p-3 space-y-2">
-                <h3 class="text-slate-400 font-black text-xs tracking-wider uppercase flex items-center gap-1.5 border-b border-slate-800 pb-1.5 font-mono">
-                    <i class="fa-solid fa-code text-[10px]"></i> CONSOLE DATA LOGS SERVER
-                </h3>
-                <div id="system-logs" class="font-mono text-[9px] space-y-1.5 h-36 overflow-y-auto pr-1 text-slate-500"></div>
+            
+            <!-- XUNG NHỊP LOG HỆ THỐNG - BẢO MẬT KHÔNG HIỂN THỊ TRƯỜNG PASSWORD -->
+            <div class="border border-slate-900 rounded-xl p-3 bg-slate-950/20">
+                <span class="text-[9px] font-mono-tech text-slate-500 block mb-1">XUNG NHỊP CONSOLE SERVER DATA LOGS (MẬT KHẨU ĐÃ ĐƯỢC MÃ HÓA BẢO MẬT):</span>
+                <div id="system-logs" class="font-mono-tech text-[10px] text-slate-600 max-h-24 overflow-y-auto space-y-0.5"></div>
             </div>
         </section>
     </main>
 
-    <!-- FOOTER BIÊN BẢN GIẢ LẬP -->
-    <footer class="border-t border-slate-800 bg-slate-950/50 py-3 text-center text-[10px] text-slate-600 font-mono tracking-wide">
-        HỆ THỐNG LIÊN THÔNG ĐỊNH DANH SỐ HÓA GIẢ LẬP PHỤC VỤ MỤC ĐÍCH ĐÓNG VAI TRÒ TRÒ CHƠI ẢO (ROBLOX ROLEPLAY) © 2026.
+    <!-- FOOTER CẢNH BÁO BẢO MẬT & ĐIỀU KHOẢN PHÁP LÝ CHUẨN ĐẸP KHÔNG MẤT -->
+    <footer class="border-t border-red-950/40 bg-[#060913] pt-6 pb-8 px-4 text-center">
+        <div class="max-w-3xl mx-auto space-y-3.5">
+            <div class="flex items-center justify-center gap-2 text-red-500 font-black text-xs tracking-wider uppercase">
+                <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+                CẢNH BÁO BẢO MẬT & ĐIỀU KHOẢN PHÁP LÝ
+                <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+            </div>
+            
+            <p class="text-red-400 font-extrabold text-xs tracking-wide uppercase leading-relaxed max-w-2xl mx-auto">
+                ĐÂY LÀ TRANG WEB GIẢ LẬP KHÔNG CÓ THỰC, ĐƯỢC XÂY DỰNG ĐỘC QUYỀN PHỤC VỤ CHO CÁC KỊCH BẢN TƯƠNG TÁC NHẬP VAI (ROLEPLAY) GIẢI TRÍ TRÊN NỀN TẢNG <span class="bg-amber-500 text-black px-1 rounded font-black">ROBLOX</span>.
+            </p>
+            
+            <p class="text-slate-500 text-[11px] leading-relaxed text-justify sm:text-center px-4 font-normal">
+                Mọi thông tin, dữ liệu căn cước, văn bản số hóa, lệnh truy nã và con dấu điện tử hiển thị trên website này hoàn toàn là hư cấu do người chơi tự nhập và biên soạn, <strong>không có bất kỳ giá trị pháp lý hay giá trị sử dụng thực tế nào</strong> đối với các cơ quan ban ngành, tổ chức chính thống của <strong>nước Cộng hòa Xã hội Chủ nghĩa Việt Nam</strong>. Nghiêm cấm sử dụng trang web này vào mục đích mạo danh hoặc lừa đảo trục lợi ngoài đời thực.
+            </p>
+            
+            <div class="text-[10px] text-slate-600 font-mono-tech pt-2 border-t border-slate-900/40">
+                © 2026 Gaming Simulator Project. Powered by Co-op Coding Sandbox. All rights reserved.
+            </div>
+        </div>
     </footer>
 
-    <!-- MODAL ĐĂNG NHẬP BIÊN CHẾ GIẢ LẬP -->
-    <div id="modal-login" class="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-slate-950 border border-slate-800 w-full max-w-sm rounded-xl p-5 space-y-4 shadow-2xl">
+    <!-- MODAL ĐĂNG NHẬP (BẢO MẬT) -->
+    <div id="modal-login" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-slate-950 border border-slate-800 w-full max-w-sm rounded-xl p-5 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 class="text-white font-black text-xs tracking-wider uppercase flex items-center gap-1.5">
-                    <i class="fa-solid fa-fingerprint text-amber-500"></i> XÁC THỰC QUYỀN TRUY CẬP ĐIỀU PHỐI
-                </h3>
-                <button onclick="closeModal('modal-login')" class="text-slate-500 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+                <span class="text-white font-black text-xs uppercase tracking-wider"><i class="fa-solid fa-fingerprint text-amber-500"></i> Xác thực cán bộ liên thông</span>
+                <button onclick="closeModal('modal-login')" class="text-slate-500 hover:text-white text-sm transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Mã tài khoản điều phối ảo:</label>
-                    <input type="text" id="login-user" placeholder="ca_phuong, ubnd_phuong, sgt, admin..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none">
+                    <label class="text-[9px] text-slate-400 font-bold block mb-1 uppercase">Tài khoản công vụ:</label>
+                    <input type="text" id="login-user" placeholder="Tên cán bộ (ca_phuong, admin...)" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none">
                 </div>
                 <div>
-                    <label class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Khóa bảo mật / Mật khẩu:</label>
-                    <input type="password" id="login-pass" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none">
+                    <label class="text-[9px] text-slate-400 font-bold block mb-1 uppercase">Mật khẩu số hóa:</label>
+                    <input type="password" id="login-pass" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none">
                 </div>
-                <div class="bg-slate-900/60 p-2.5 border border-slate-800 rounded text-[9px] text-slate-500 font-mono leading-relaxed">
-                    💡 Danh sách tài khoản thử nghiệm luồng cơ quan (Mật khẩu chung: <b class="text-amber-500">123</b>):<br>
-                    - <span class="text-white">ca_phuong</span>: Điều phối luồng Giấy phép Vũ khí & Căn cước.<br>
-                    - <span class="text-white">ubnd_phuong</span>: Thẩm định hồ sơ xây dựng đô thị địa phương.<br>
-                    - <span class="text-white">sgt</span>: Quản lý cấp phôi Giấy phép lái xe hạng B2 giả lập.<br>
-                    - <span class="text-white">admin</span>: Lãnh đạo tối cao ban hành Sắc lệnh/Truy nã.
-                </div>
-                <button onclick="loginOfficer()" class="w-full bg-amber-500 text-black font-black py-2 rounded-lg text-xs tracking-wider uppercase">
-                    KẾT NỐI LIÊN THÔNG
-                </button>
+                <button onclick="loginOfficer()" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-black py-2 rounded text-xs uppercase tracking-wider transition">KẾT NỐI LIÊN THÔNG</button>
             </div>
         </div>
     </div>
 
-    <!-- CODE SCRIPT LOGIC VẬN HÀNH ĐỒNG BỘ -->
+    <!-- LOGIC VẬN HÀNH TOÀN TRANG -->
     <script>
         let state = <%- JSON.stringify(state) %>;
         let activeUser = null;
         let selectedOfficerAppId = null;
 
-        // ==========================================================================
-        // TỰ ĐỘNG CHUYỂN LUỒNG TUYẾN CƠ QUAN THEO LOẠI GIẤY TỜ ĐỀ XUẤT (THEO YÊU CẦU CỦA BẠN)
-        // ==========================================================================
-        function autoRouteAgencyByDocType() {
+        function autoRouteAgency() {
             const docType = document.getElementById('app-docType').value;
             const agencySelect = document.getElementById('app-agency');
-            
-            if (docType === 'GIẤY PHÉP LÁI XE QUỐC GIA') {
-                agencySelect.value = 'SỞ GIAO THÔNG THÀNH PHỐ';
-            } else if (docType === 'GIẤY PHÉP XÂY DỰNG NHÀ Ở') {
-                agencySelect.value = 'UBND PHƯỜNG';
-            } else if (docType === 'CHỨNG CHỈ HÀNH NGHỀ Y TẾ') {
-                agencySelect.value = 'BỆNH VIỆN';
-            } else if (docType === 'GIẤY PHÉP SỬ DỤNG CÔNG CỤ HỖ TRỢ' || docType === 'CĂN CƯỚC CÔNG DÂN') {
-                agencySelect.value = 'CÔNG AN';
-            }
+            if (docType === 'GIẤY PHÉP LÁI XE QUỐC GIA') agencySelect.value = 'SỞ GIAO THÔNG THÀNH PHỐ';
+            else if (docType === 'GIẤY PHÉP XÂY DỰNG NHÀ Ở') agencySelect.value = 'UBND PHƯỜNG';
+            else if (docType === 'CHỨNG CHỈ HÀNH NGHỀ Y TẾ') agencySelect.value = 'BỆNH VIỆN';
+            else agencySelect.value = 'CÔNG AN';
         }
 
-        function startClock() {
-            setInterval(() => {
-                document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('vi-VN');
-            }, 1000);
-        }
-
-        function tab(tabId) {
+        function switchTab(tabId) {
             ['tab-services', 'tab-track', 'tab-id'].forEach(t => {
                 document.getElementById(`panel-${t}`).classList.add('hidden');
-                document.getElementById(`btn-${t}`).classList.remove('bg-amber-500', 'text-black');
-                document.getElementById(`btn-${t}`).classList.add('text-slate-400', 'hover:bg-slate-900');
+                document.getElementById(`btn-${t}`).className = "flex-1 py-3 text-[11px] font-black tracking-wider uppercase border-b-2 border-transparent text-slate-400 hover:text-white transition";
             });
             document.getElementById(`panel-${tabId}`).classList.remove('hidden');
-            let activeBtn = document.getElementById(`btn-${tabId}`);
-            activeBtn.classList.remove('text-slate-400', 'hover:bg-slate-900');
-            activeBtn.classList.add('bg-amber-500', 'text-black');
+            document.getElementById(`btn-${tabId}`).className = "flex-1 py-3 text-[11px] font-black tracking-wider uppercase border-b-2 border-amber-500 text-amber-500";
         }
 
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-        // GỬI HỒ SƠ LÊN HỆ THỐNG
-        function submitForm(e) {
+        function handleFormSubmit(e) {
             e.preventDefault();
+            autoRouteAgency();
             const name = document.getElementById('app-name').value;
             const docType = document.getElementById('app-docType').value;
-            
-            // Kích hoạt tính năng đọc tuyến tự động từ Select trước khi gửi
-            autoRouteAgencyByDocType();
             const agency = document.getElementById('app-agency').value;
             const details = document.getElementById('app-details').value;
 
@@ -455,16 +367,15 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert(`Gửi hồ sơ thành công vào luồng tự động của đơn vị [${agency}]! Lưu mã số kiểm tra tiến độ: ${data.appId}`);
+                    alert(`Nộp đơn thành công ảo! Mã tra cứu: ${data.appId}`);
                     document.getElementById('track-id').value = data.appId;
-                    tab('tab-track');
+                    switchTab('tab-track');
                     trackApplication();
-                    syncStateFromServer();
+                    syncState();
                 }
             });
         }
 
-        // TRA CỨU TIẾN ĐỘ ĐƠN VÀ ĐÓNG DẤU
         function trackApplication() {
             const appId = document.getElementById('track-id').value.trim();
             if (!appId) return;
@@ -486,113 +397,54 @@
                     document.getElementById('res-agency').innerText = app.agency;
                     document.getElementById('res-details').innerText = app.details;
                     
-                    let statusBox = document.getElementById('res-status');
-                    statusBox.innerText = app.status;
-                    statusBox.className = "text-[9px] font-black font-mono px-2 py-0.5 rounded border ";
-                    if (app.status === 'ĐANG CHỜ TIẾP NHẬN') statusBox.className += "bg-slate-900 border-slate-700 text-slate-400";
-                    if (app.status === 'ĐANG XỬ LÝ') statusBox.className += "bg-amber-950 border-amber-800 text-amber-400";
-                    if (app.status === 'ĐÃ PHÊ DUYỆT') statusBox.className += "bg-emerald-950 border-emerald-800 text-emerald-400";
-                    if (app.status === 'BỊ TỪ CHỐI') statusBox.className += "bg-red-950 border-red-800 text-red-400";
+                    let sb = document.getElementById('res-status');
+                    sb.innerText = app.status;
+                    sb.className = "text-[9px] font-black font-mono px-2 py-0.5 rounded border ";
+                    if (app.status === 'ĐANG CHỜ TIẾP NHẬN') sb.className += "bg-slate-900 border-slate-800 text-slate-500";
+                    if (app.status === 'ĐANG XỬ LÝ') sb.className += "bg-amber-950 border-amber-900 text-amber-400";
+                    if (app.status === 'ĐÃ PHÊ DUYỆT') sb.className += "bg-emerald-950 border-emerald-900 text-emerald-400";
+                    if (app.status === 'BỊ TỪ CHỐI') sb.className += "bg-red-950 border-red-900 text-red-400";
 
                     let stampArea = document.getElementById('res-stamp-area');
                     if (app.status === 'ĐÃ PHÊ DUYỆT') {
                         stampArea.classList.remove('hidden');
                         stampArea.innerHTML = `
-                            <div class="border border-dashed border-emerald-500 rounded-lg p-2 bg-emerald-950/10 text-center relative overflow-hidden mt-2">
-                                <div class="stamp-box stamp-box-animate border-emerald-500 text-emerald-400 font-black text-[8px] tracking-wider my-2">
+                            <div class="border border-dashed border-emerald-500/20 rounded-lg p-2 bg-emerald-950/5 mt-2">
+                                <div class="stamp-box border-emerald-500 text-emerald-400 text-[9px] my-2">
                                     <i class="fa-solid fa-stamp"></i> ${app.stamp}
                                 </div>
-                                ${generateVisualDocumentMockup(app.docType, { name: app.name, username: app.name + "_Verified" })}
+                                ${renderVisualCard(app.docType, app.name)}
                             </div>`;
-                    } else {
-                        stampArea.classList.add('hidden');
-                    }
+                    } else { stampArea.classList.add('hidden'); }
 
                     let chatHtml = "";
-                    app.logs.forEach(log => {
-                        chatHtml += `<div class="border-b border-slate-900 pb-1 mb-1 last:border-0">${log}</div>`;
-                    });
+                    app.logs.forEach(log => { chatHtml += `<div class="border-b border-slate-900/40 pb-1 mb-1 last:border-0">${log}</div>`; });
                     document.getElementById('res-logs').innerHTML = chatHtml;
-                    document.getElementById('res-logs').scrollTop = document.getElementById('res-logs').scrollHeight;
-                } else {
-                    alert(data.message);
-                    resultBox.classList.add('hidden');
-                }
+                } else { alert(data.message); resultBox.classList.add('hidden'); }
             });
         }
 
-        // TRA CỨU CƠ SỞ DỮ LIỆU CƯ DÂN ẢO
         function searchCitizen() {
-            const username = document.getElementById('id-search').value.trim();
-            const resultBox = document.getElementById('id-result');
-            if(!username) return;
+            const user = document.getElementById('id-search').value.trim();
+            const box = document.getElementById('id-result');
+            if(!user) return;
 
-            if (state.authorizedPersonnel[username]) {
-                let user = state.authorizedPersonnel[username];
-                resultBox.classList.remove('hidden');
-                resultBox.innerHTML = `
-                    <div class="space-y-2 text-left">
-                        <div class="flex items-center gap-2 bg-slate-900 p-2 border border-slate-800 rounded-lg">
-                            <div class="h-8 w-8 rounded bg-emerald-600 flex items-center justify-center text-white font-black"><i class="fa-solid fa-user-shield text-sm"></i></div>
-                            <div>
-                                <h4 class="font-black text-white text-xs">${user.displayName.toUpperCase()}</h4>
-                                <p class="text-[9px] text-emerald-400 font-bold font-mono">CHỨC VỤ GIẢ LẬP: ${user.role}</p>
-                            </div>
-                        </div>
-                        <p class="text-slate-500 text-[10px]"><span class="text-slate-400 font-bold">Cơ quan phụ trách:</span> ${user.agency}</p>
-                        
-                        <div class="mt-3 border-t border-slate-800 pt-2.5 space-y-2">
-                            <h5 class="text-[9px] font-black tracking-widest text-slate-400 uppercase"><i class="fa-solid fa-wallet text-amber-400"></i> KHO PHÔI GIẤY TỜ THỦ THỤC ẢO:</h5>
-                            ${generateVisualDocumentMockup('CĂN CƯỚC CÔNG DÂN', { name: user.displayName, username: user.username })}
-                            ${generateVisualDocumentMockup('GIẤY PHÉP LÁI XE QUỐC GIA', { name: user.displayName, username: user.username })}
-                        </div>
-                    </div>`;
-                playNotificationSound();
-            } else {
-                resultBox.classList.remove('hidden');
-                resultBox.innerHTML = `
-                    <div class="space-y-2 text-left">
-                        <div class="flex items-center gap-2 bg-slate-900 p-2 border border-slate-800 rounded-lg">
-                            <div class="h-8 w-8 rounded bg-sky-600 flex items-center justify-center text-white font-black"><i class="fa-solid fa-user text-sm"></i></div>
-                            <div>
-                                <h4 class="font-black text-white text-xs">${username}</h4>
-                                <p class="text-[9px] text-sky-400 font-bold font-mono">VAI TRÒ: CƯ DÂN ĐÓNG VAI TỰ DO</p>
-                            </div>
-                        </div>
-                        <div class="mt-3 border-t border-slate-800 pt-2.5 space-y-2">
-                            <h5 class="text-[9px] font-black tracking-widest text-slate-400 uppercase"><i class="fa-solid fa-wallet text-amber-400"></i> KHO PHÔI GIẤY TỜ ĐỊNH DANH ĐỦ ĐIỀU KIỆN:</h5>
-                            ${generateVisualDocumentMockup('CĂN CƯỚC CÔNG DÂN', { name: username, username: username })}
-                        </div>
-                    </div>`;
-                playNotificationSound();
-            }
-        }
+            box.classList.remove('hidden');
+            let isOfficer = state.authorizedPersonnel[user];
+            let name = isOfficer ? isOfficer.displayName : user;
+            let role = isOfficer ? isOfficer.role : "CƯ DÂN CHƯA BIÊN CHẾ";
 
-        function sendChatMessage(role) {
-            const appId = role === 'CÁN BỘ' ? selectedOfficerAppId : document.getElementById('track-id').value.trim();
-            const msgInput = role === 'CÁN BỘ' ? document.getElementById('off-chat-msg') : document.getElementById('chat-msg');
-            const msg = msgInput.value.trim();
-            if(!appId || !msg) return;
-
-            const senderName = role === 'CÁN BỘ' ? activeUser.displayName + ` (${activeUser.role})` : "CÔNG DÂNẢO";
-
-            fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ appId, message: msg, sender: senderName })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    msgInput.value = "";
-                    if (role === 'CÁN BỘ') {
-                        reviewOfficerApplication(appId);
-                    } else {
-                        trackApplication();
-                    }
-                    syncStateFromServer();
-                }
-            });
+            box.innerHTML = `
+                <div class="space-y-2 text-left">
+                    <div class="flex items-center gap-2 bg-slate-900 p-2 border border-slate-800 rounded">
+                        <i class="fa-solid fa-id-card text-emerald-400"></i>
+                        <div>
+                            <h4 class="font-black text-white text-xs">${name.toUpperCase()}</h4>
+                            <p class="text-[9px] text-emerald-400 font-mono font-bold">${role}</p>
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-slate-900">${renderVisualCard('CĂN CƯỚC CÔNG DÂN', name)}</div>
+                </div>`;
         }
 
         function loginOfficer() {
@@ -600,137 +452,110 @@
             const pass = document.getElementById('login-pass').value.trim();
 
             if (state.authorizedPersonnel[user] && state.authorizedPersonnel[user].password === pass) {
-                activeUser = state.authorizedPersonnel[user];
-                localStorage.setItem('sessionUser', JSON.stringify({ username: user, password: pass }));
-                applyUserRoleLayout();
+                activeUser = {
+                    username: user,
+                    displayName: state.authorizedPersonnel[user].displayName,
+                    role: state.authorizedPersonnel[user].role,
+                    agency: state.authorizedPersonnel[user].agency
+                };
+                localStorage.setItem('sessionUser', JSON.stringify({ username: user, pass: pass }));
+                setupOfficerPanel();
                 closeModal('modal-login');
-                playNotificationSound();
-            } else {
-                alert("Mã khóa bảo mật công vụ không trùng khớp.");
-            }
+            } else { alert("Khóa mật khẩu điện tử sai!"); }
         }
 
-        function applyUserRoleLayout() {
+        function setupOfficerPanel() {
             if(!activeUser) return;
             document.getElementById('user-session-panel').innerHTML = `
-                <div class="flex items-center border border-slate-800 p-1 pr-3 rounded-xl bg-slate-900/50">
-                    <div class="bg-amber-500 text-black font-black p-1.5 rounded-lg text-xs mr-2"><i class="fa-solid fa-user-shield"></i></div>
-                    <div class="text-left">
-                        <p class="font-black text-white text-[11px] leading-tight">${activeUser.displayName}</p>
-                        <p class="text-[8px] text-amber-500 font-bold uppercase font-mono tracking-wider">${activeUser.role}</p>
-                    </div>
-                    <button onclick="logout()" class="text-slate-500 hover:text-red-400 text-xs ml-3"><i class="fa-solid fa-power-off"></i></button>
+                <div class="text-[10px] text-amber-500 font-black border border-amber-900 bg-amber-950/40 px-2 py-0.5 rounded flex items-center gap-2">
+                    <span>${activeUser.displayName}</span>
+                    <button onclick="logout()" class="text-slate-500 hover:text-red-400"><i class="fa-solid fa-power-off"></i></button>
                 </div>`;
             
             document.getElementById('officer-lockout').classList.add('hidden');
             document.getElementById('officer-workspace').classList.remove('hidden');
             document.getElementById('officer-badge').innerText = activeUser.agency.toUpperCase();
-            document.getElementById('officer-badge').className = "text-[9px] text-amber-400 font-bold font-mono bg-amber-950 px-2 py-0.5 rounded border border-amber-800";
 
-            if (activeUser.role === 'QUẢN TRỊ VIÊN TỐI CAO LÃNH ĐẠO' || activeUser.agency === 'TRUNG ƯƠNG') {
-                document.getElementById('leader-panel').classList.remove('hidden');
-            } else {
-                document.getElementById('leader-panel').classList.add('hidden');
-            }
-            loadOfficerDesk();
+            if (activeUser.agency === 'TRUNG ƯƠNG') document.getElementById('leader-panel').classList.remove('hidden');
+            loadOfficerList();
         }
 
-        function logout() {
-            activeUser = null;
-            localStorage.removeItem('sessionUser');
-            location.reload();
-        }
+        function logout() { localStorage.removeItem('sessionUser'); location.reload(); }
 
-        function loadOfficerDesk() {
-            if (!activeUser) return;
+        function loadOfficerList() {
             const container = document.getElementById('officer-app-list');
-            let html = "";
-            let count = 0;
+            let html = ""; let count = 0;
 
             Object.keys(state.applications).forEach(id => {
                 const app = state.applications[id];
-                if (activeUser.role === 'QUẢN TRỊ VIÊN TỐI CAO LÃNH ĐẠO' || app.agency === activeUser.agency || (activeUser.agency === 'CÔNG AN' && app.agency === 'CÔNG AN')) {
+                if (activeUser.agency === 'TRUNG ƯƠNG' || app.agency === activeUser.agency) {
                     count++;
                     html += `
-                        <div onclick="reviewOfficerApplication('${app.id}')" class="p-2 border border-slate-800 hover:border-amber-500 rounded-lg bg-slate-950/60 cursor-pointer transition-all flex justify-between items-center text-xs text-left">
-                            <div>
-                                <span class="font-mono-tech font-black text-white">${app.id}</span>
-                                <span class="text-[9px] text-slate-400 block">${app.docType} - Tài khoản: <b class="text-slate-300">@${app.name}</b></span>
-                            </div>
-                            <span class="text-[8px] px-1.5 py-0.5 rounded border font-mono ${app.status === 'ĐANG CHỜ TIẾP NHẬN' ? 'bg-slate-900 border-slate-700 text-slate-400' : 'bg-amber-950 border-amber-800 text-amber-400'}">${app.status}</span>
+                        <div onclick="reviewApp('${app.id}')" class="p-2 border border-slate-900 hover:border-amber-500 rounded bg-slate-900/20 cursor-pointer flex justify-between items-center text-xs">
+                            <span class="font-mono text-white font-bold">${app.id} [${app.name}]</span>
+                            <span class="text-[8px] px-1.5 py-0.5 bg-slate-950 text-slate-400 rounded">${app.status}</span>
                         </div>`;
                 }
             });
-
-            if(count === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-[11px] text-slate-500 border border-dashed border-slate-900 rounded-xl">⚡ Không có hồ sơ giả lập nào trong luồng tuyến của bạn.</div>`;
-            } else {
-                container.innerHTML = html;
-            }
+            container.innerHTML = count === 0 ? `<div class="text-center py-2 text-xs text-slate-600">⚡ Không có hồ sơ chuyển tuyến.</div>` : html;
         }
 
-        function reviewOfficerApplication(id) {
-            selectedOfficerAppId = id;
-            const app = state.applications[id] || state.archivedApplications[id];
+        function reviewApp(id) {
+            selectedOfficerAppId = id; const app = state.applications[id];
             if(!app) return;
 
             document.getElementById('officer-review-panel').classList.remove('hidden');
             document.getElementById('off-id').innerText = app.id;
-            document.getElementById('off-docType').innerText = app.docType;
-            document.getElementById('off-name').innerText = app.name;
-            document.getElementById('off-details').innerText = app.details;
             document.getElementById('off-status').innerText = app.status;
-
-            document.getElementById('off-card-preview-area').innerHTML = `
-                <div class="border border-slate-800 p-2 rounded-lg bg-slate-900/40">
-                    <p class="text-[8px] text-slate-500 font-bold font-mono mb-1 uppercase">BẢN MÔ PHỎNG PHÔI THẺ ĐANG XÉT DUYỆT:</p>
-                    ${generateVisualDocumentMockup(app.docType, { name: app.name, username: app.name + "_RP" })}
-                </div>`;
+            document.getElementById('off-card-preview-area').innerHTML = renderVisualCard(app.docType, app.name);
 
             let actionHtml = "";
             if (app.status === 'ĐANG CHỜ TIẾP NHẬN') {
-                actionHtml = `<button onclick="triggerOfficerAction('RECEIVE')" class="flex-1 bg-sky-600 font-bold py-1.5 rounded-lg text-white text-xs">TIẾP NHẬN HỒ SƠ ẢO</button>`;
+                actionHtml = `<button onclick="triggerAction('RECEIVE')" class="w-full bg-sky-600 py-1 rounded text-white text-xs font-bold">TIẾP NHẬN XỬ LÝ</button>`;
             } else if (app.status === 'ĐANG XỬ LÝ') {
                 actionHtml = `
-                    <button onclick="triggerOfficerAction('APPROVE')" class="flex-1 bg-emerald-600 font-black py-1.5 rounded-lg text-white text-xs tracking-wider uppercase"><i class="fa-solid fa-stamp"></i> PHÊ DUYỆT ĐÓNG DẤU</button>
-                    <button onclick="triggerOfficerAction('REJECT')" class="bg-red-600 font-bold py-1.5 px-3 rounded-lg text-white text-xs">TỪ CHỐI</button>`;
+                    <button onclick="triggerAction('APPROVE')" class="flex-1 bg-emerald-600 font-bold py-1 rounded text-white text-xs"><i class="fa-solid fa-stamp"></i> PHÊ DUYỆT</button>
+                    <button onclick="triggerAction('REJECT')" class="bg-red-700 font-bold py-1 px-3 rounded text-white text-xs">TỪ CHỐI</button>`;
             }
             document.getElementById('off-actions').innerHTML = actionHtml;
-
-            let logHtml = "";
-            app.logs.forEach(l => { logHtml += `<div class="border-b border-slate-900 pb-1 mb-1 last:border-0 text-left">${l}</div>`; });
-            document.getElementById('off-logs').innerHTML = logHtml;
-            document.getElementById('off-logs').scrollTop = document.getElementById('off-logs').scrollHeight;
         }
 
-        function triggerOfficerAction(action) {
-            if(!selectedOfficerAppId || !activeUser) return;
+        function triggerAction(action) {
             fetch('/api/action', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ appId: selectedOfficerAppId, action, officer: activeUser.displayName, agency: activeUser.agency })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('officer-review-panel').classList.add('hidden');
-                    syncStateFromServer();
-                }
+            }).then(() => {
+                document.getElementById('officer-review-panel').classList.add('hidden');
+                syncState();
             });
         }
 
-        function updateSecurity(level) {
-            fetch('/api/state').then(r=>r.json()).then(s => {
-                s.securityLevel = level;
-                syncStateFromServer();
+        function sendChatMessage(role) {
+            const appId = role === 'CÁN BỘ' ? selectedOfficerAppId : document.getElementById('track-id').value.trim();
+            const input = role === 'CÁN BỘ' ? document.getElementById('off-chat-msg') : document.getElementById('chat-msg');
+            if(!appId || !input.value.trim()) return;
+
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ appId, message: input.value.trim(), sender: role === 'CÁN BỘ' ? activeUser.displayName : "CÔNG DÂN" })
+            }).then(() => {
+                input.value = "";
+                if (role === 'CÁN BỘ') reviewApp(appId); else trackApplication();
+                syncState();
             });
+        }
+
+        function updateSecurity(lvl) {
+            fetch('/api/state').then(r=>r.json()).then(s => { s.securityLevel = lvl; syncState(); });
         }
 
         function publishNational() {
             const type = document.getElementById('pub-type').value;
             const title = document.getElementById('pub-title').value.trim();
             const content = document.getElementById('pub-content').value.trim();
-            if(!title || !content || !activeUser) return;
+            if(!title || !content) return;
 
             fetch('/api/national/publish', {
                 method: 'POST',
@@ -739,269 +564,89 @@
             }).then(() => {
                 document.getElementById('pub-title').value = "";
                 document.getElementById('pub-content').value = "";
-                syncStateFromServer();
+                syncState();
             });
         }
 
-        function deleteAnnouncement(id) {
-            fetch('/api/national/delete-announcement', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            }).then(() => syncStateFromServer());
-        }
-
-        function renderStateBoards() {
+        function renderStateUI() {
+            // RENDERING LOGS - Tuyệt đối ẩn/không in mật khẩu ra ngoài
             let logHtml = "";
-            state.systemLogs.forEach(l => {
-                logHtml += `<div class="mb-1 text-left"><span class="text-slate-600">[${l.time.split(' - ')[0]}]</span> ${l.text}</div>`;
+            state.systemLogs.forEach(l => { 
+                logHtml += `<div class="text-left text-slate-500"><span class="text-slate-700">[${l.time.split(' - ')[0]}]</span> ${l.text}</div>`; 
             });
             document.getElementById('system-logs').innerHTML = logHtml;
 
+            // RENDERING QUYẾT ĐỊNH
             let annHtml = "";
             state.announcements.forEach(a => {
                 annHtml += `
-                    <div class="p-2 border border-slate-800 rounded-lg bg-slate-900/30 text-left relative group">
-                        <div class="flex justify-between items-start text-[10px]">
-                            <span class="font-black ${a.type.includes('QUYẾT ĐỊNH')?'text-amber-500':'text-sky-400'} font-mono">${a.type}</span>
-                            <span class="text-slate-600 text-[9px]">${a.timestamp.split(' - ')[0]}</span>
-                        </div>
-                        <h4 class="font-bold text-white text-xs my-0.5">${a.title}</h4>
-                        <p class="text-slate-400 text-[11px] leading-tight">${a.content}</p>
-                        ${activeUser && activeUser.agency==='TRUNG ƯƠNG' ? `<button onclick="deleteAnnouncement('${a.id}')" class="absolute top-1 right-1 text-slate-600 hover:text-red-400 text-[9px] hidden group-hover:block"><i class="fa-solid fa-trash"></i></button>`:''}
+                    <div class="p-3 border border-slate-900 rounded-lg bg-[#0c1222]/60 text-left">
+                        <span class="bg-amber-950 text-amber-400 font-bold text-[9px] px-1.5 py-0.5 rounded uppercase block w-max mb-1">${a.type}</span>
+                        <h4 class="font-black text-white text-xs leading-snug mb-1">${a.title}</h4>
+                        <p class="text-slate-400 text-[11px] leading-normal mb-1.5">${a.content}</p>
+                        <span class="text-[9px] text-slate-500 block">Ban hành: ${a.timestamp.split(' - ')[0]}</span>
                     </div>`;
             });
-            document.getElementById('announcements-list').innerHTML = annHtml || `<div class="text-center text-slate-600 text-[10px] py-4">Chưa ban hành thông cáo ảo.</div>`;
+            document.getElementById('announcements-list').innerHTML = annHtml || `<div class="text-center text-slate-600 text-xs py-4">Chưa có chỉ thị mới.</div>`;
 
+            // RENDERING TRUY NÃ
             let wantedHtml = "";
             state.criminalWantedList.forEach(w => {
                 wantedHtml += `
-                    <div class="p-2 bg-red-950/40 border border-red-900/60 rounded-lg text-xs text-left flex justify-between items-center gap-2">
-                        <div class="flex-grow">
-                            <h4 class="font-black text-red-400 font-mono tracking-wide"><i class="fa-solid fa-triangle-exclamation"></i> @${w.name.toUpperCase()}</h4>
-                            <p class="text-[10px] text-slate-300 leading-tight mt-0.5">${w.crime}</p>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="text-[8px] block text-red-500 font-mono font-bold">${w.date}</span>
-                            <span class="text-[9px] text-amber-400 font-mono font-black">${w.bounty}</span>
-                        </div>
+                    <div class="p-3 bg-red-950/10 border border-red-900/30 rounded-xl text-left relative">
+                        <div class="font-black text-red-500 text-[10px] uppercase mb-1">TRUY NÃ: @${w.name}</div>
+                        <p class="text-[11px] text-slate-300 leading-tight mb-1"><span class="text-slate-500 font-bold">Tội danh:</span> ${w.crime}</p>
+                        <div class="text-amber-400 font-mono text-xs font-black">Bounty: <span class="text-white px-1 bg-red-950 border border-red-900/40 rounded">${w.bounty}</span></div>
                     </div>`;
             });
-            document.getElementById('wanted-list').innerHTML = wantedHtml || `<div class="text-center text-slate-600 text-[10px] py-4">Máy chủ hòa bình. Không có dữ liệu vi phạm.</div>`;
+            document.getElementById('wanted-list').innerHTML = wantedHtml || `<div class="text-center text-slate-600 text-xs py-4">Khu vực an toàn.</div>`;
         }
 
-        function syncStateFromServer() {
-            fetch('/api/state')
-                .then(res => res.json())
-                .then(newState => {
-                    state = newState;
-                    document.getElementById('security-level-display').innerText = state.securityLevel;
-                    document.getElementById('ticker-box').innerText = state.tickerMessage;
-                    renderStateBoards();
-                    loadOfficerDesk();
-                    if (selectedOfficerAppId) reviewOfficerApplication(selectedOfficerAppId);
-                });
+        function syncState() {
+            fetch('/api/state').then(res => res.json()).then(ns => {
+                state = ns;
+                document.getElementById('security-level-display').innerText = state.securityLevel;
+                document.getElementById('ticker-box').innerText = state.tickerMessage;
+                renderStateUI(); loadOfficerList();
+            });
         }
 
-        // ==========================================================================
-        // KHU VỰC HIỆU ỨNG ÂM THANH KỸ THUẬT SỐ CHUYÊN NGHIỆP (WEB AUDIO API CƠ HỌC)
-        // ==========================================================================
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        let fxCtx = null;
-        function initFxAudio() { if (!fxCtx) fxCtx = new AudioCtx(); }
-
-        // 1. Âm thanh Click chuột cơ học lách tách
-        function playDigitalClick() {
-            try {
-                initFxAudio(); if (fxCtx.state === 'suspended') fxCtx.resume();
-                let osc = fxCtx.createOscillator(); let gain = fxCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1600, fxCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(400, fxCtx.currentTime + 0.02);
-                gain.gain.setValueAtTime(0.03, fxCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, fxCtx.currentTime + 0.02);
-                osc.connect(gain); gain.connect(fxCtx.destination);
-                osc.start(); osc.stop(fxCtx.currentTime + 0.02);
-            } catch(e){}
-        }
-
-        // 2. Âm bíp thông báo kép (Double Beep) khi chuyển tuyến hoặc tra cứu thành công
-        function playNotificationSound() {
-            try {
-                initFxAudio(); if (fxCtx.state === 'suspended') fxCtx.resume();
-                let osc1 = fxCtx.createOscillator(); let gain1 = fxCtx.createGain();
-                osc1.type = 'triangle'; osc1.frequency.setValueAtTime(850, fxCtx.currentTime);
-                gain1.gain.setValueAtTime(0.1, fxCtx.currentTime);
-                gain1.gain.exponentialRampToValueAtTime(0.01, fxCtx.currentTime + 0.1);
-                osc1.connect(gain1); gain1.connect(fxCtx.destination);
-                osc1.start(); osc1.stop(fxCtx.currentTime + 0.1);
-
-                setTimeout(() => {
-                    let osc2 = fxCtx.createOscillator(); let gain2 = fxCtx.createGain();
-                    osc2.type = 'sine'; osc2.frequency.setValueAtTime(1300, fxCtx.currentTime);
-                    gain2.gain.setValueAtTime(0.07, fxCtx.currentTime);
-                    gain2.gain.exponentialRampToValueAtTime(0.001, fxCtx.currentTime + 0.15);
-                    osc2.connect(gain2); gain2.connect(fxCtx.destination);
-                    osc2.start(); osc2.stop(fxCtx.currentTime + 0.15);
-                }, 70);
-            } catch(e){}
-        }
-
-        // ==========================================================================
-        // 3. THIẾT KẾ ĐA DẠNG NĂM (05) PHÔI THẺ MÔ PHỎNG CHI TIẾT ĐẸP MẮT
-        // ==========================================================================
-        function generateVisualDocumentMockup(type, data) {
-            const nameUpper = (data.name || "MẠNH HOÀNG").toUpperCase();
-            const username = data.username || "citizen_verified";
-            const idNumber = "06809600" + Math.floor(1000 + Math.random() * 9000);
-
+        function renderVisualCard(type, name) {
+            const nameUpper = name.toUpperCase();
             if (type === 'CĂN CƯỚC CÔNG DÂN') {
-                return `
-                    <div class="citizen-card-mockup rounded-xl p-3 text-white font-mono text-[10px] relative tracking-wide mt-1.5">
-                        <div class="card-glow-line"></div>
-                        <div class="flex justify-between items-center border-b border-sky-500/30 pb-1 mb-1.5">
-                            <span class="font-black text-sky-400 text-[8px]"><i class="fa-solid fa-address-card"></i> THẺ ĐỊNH DANH CƯ DÂN ẢO</span>
-                            <span class="text-[7px] bg-sky-950 px-1 border border-sky-800 text-sky-300 font-bold font-sans">ROLEPLAY ONLY</span>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2">
-                            <div class="col-span-1 flex flex-col items-center justify-center border border-slate-800 bg-slate-900/90 rounded p-1">
-                                <i class="fa-solid fa-user text-xl text-sky-500 animate-pulse my-0.5"></i>
-                                <span class="text-[6.5px] text-sky-400 font-bold">CORE-CHIP</span>
-                            </div>
-                            <div class="col-span-3 space-y-0.5">
-                                <div><span class="text-slate-500 text-[8px]">SỐ ĐỊNH DANH:</span> <span class="text-sky-300 font-black">${idNumber}</span></div>
-                                <div><span class="text-slate-500 text-[8px]">TÊN TÀI KHOẢN:</span> <span class="text-white font-black">${nameUpper}</span></div>
-                                <div><span class="text-slate-500 text-[8px]">ĐỊNH DANH:</span> <span class="text-amber-400 font-bold">@${username}</span></div>
-                            </div>
-                        </div>
-                    </div>`;
+                return `<div class="card-mockup bg-gradient-to-r from-slate-950 to-slate-900 text-left border-sky-500/30"><div class="card-glow"></div><p class="text-sky-400 font-bold text-[9px] border-b border-sky-500/10 pb-0.5 mb-1">THẺ ĐỊNH DANH CƯ DÂN SỐ HÓA</p><p class="text-white font-bold">HỌ TÊN: ${nameUpper}</p></div>`;
             }
-
             if (type === 'GIẤY PHÉP LÁI XE QUỐC GIA') {
-                return `
-                    <div class="driver-card-mockup rounded-xl p-3 text-white font-mono text-[10px] relative tracking-wide mt-1.5">
-                        <div class="card-glow-line"></div>
-                        <div class="flex justify-between items-center border-b border-amber-500/30 pb-1 mb-1.5">
-                            <span class="font-black text-amber-400 text-[8px]"><i class="fa-solid fa-id-card-clip"></i> GIẤY PHÉP ĐIỀU KHIỂN SỐ HÓA</span>
-                            <span class="text-[7px] bg-amber-950 px-1 border border-amber-800 text-amber-300 font-bold font-sans">MÔ PHỎNG</span>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2">
-                            <div class="col-span-1 flex flex-col items-center justify-center border border-slate-800 bg-slate-900/90 rounded p-1">
-                                <i class="fa-solid fa-car text-xl text-amber-500 my-0.5"></i>
-                                <span class="text-[7.5px] text-amber-400 font-black">HẠNG B2</span>
-                            </div>
-                            <div class="col-span-3 space-y-0.5">
-                                <div><span class="text-amber-500/70 text-[8px]">HỌ TÊN:</span> <span class="text-white font-black">${nameUpper}</span></div>
-                                <div><span class="text-amber-500/70 text-[8px]">SỐ ĐĂNG KÝ:</span> <span class="text-white font-bold">GPLX-${Math.floor(100000+Math.random()*899999)}</span></div>
-                            </div>
-                        </div>
-                    </div>`;
+                return `<div class="card-mockup bg-gradient-to-r from-slate-950 to-slate-900 text-left border-amber-500/30"><div class="card-glow"></div><p class="text-amber-400 font-bold text-[9px] border-b border-amber-500/10 pb-0.5 mb-1">GIẤY PHÉP ĐIỀU KHIỂN HẠNG B2</p><p class="text-white font-bold">HỌ TÊN: ${nameUpper}</p></div>`;
             }
-
-            if (type === 'GIẤY PHÉP SỬ DỤNG CÔNG CỤ HỖ TRỢ') {
-                return `
-                    <div class="weapon-card-mockup rounded-xl p-3 text-white font-mono text-[10px] relative tracking-wide mt-1.5">
-                        <div class="card-glow-line"></div>
-                        <div class="flex justify-between items-center border-b border-red-500/30 pb-1 mb-1.5">
-                            <span class="font-black text-red-400 text-[8px] uppercase"><i class="fa-solid fa-gun"></i> CHỨNG CHỈ THIẾT BỊ BẢO VỆ</span>
-                            <span class="text-[7px] bg-red-950 px-1 border border-red-800 text-red-400 font-bold font-sans">ROLEPLAY</span>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2">
-                            <div class="col-span-1 flex flex-col items-center justify-center border border-red-950 bg-slate-900/90 rounded p-1">
-                                <i class="fa-solid fa-shield-halved text-xl text-red-500 my-0.5 animate-pulse"></i>
-                                <span class="text-[6.5px] text-red-400 font-bold text-center">AN NINH</span>
-                            </div>
-                            <div class="col-span-3 space-y-0.5">
-                                <div><span class="text-red-400/80 text-[8px]">SỞ HỮU THIẾT BỊ:</span> <span class="text-white font-black">${nameUpper}</span></div>
-                                <div><span class="text-red-400/80 text-[8px]">MÃ ĐỊNH DANH:</span> <span class="text-amber-400 font-bold">@${username}</span></div>
-                            </div>
-                        </div>
-                    </div>`;
-            }
-
-            if (type === 'GIẤY PHÉP XÂY DỰNG NHÀ Ở') {
-                return `
-                    <div class="construction-card-mockup rounded-xl p-3 text-white font-mono text-[10px] relative tracking-wide mt-1.5">
-                        <div class="card-glow-line"></div>
-                        <div class="flex justify-between items-center border-b border-emerald-500/30 pb-1 mb-1.5">
-                            <span class="font-black text-emerald-400 text-[8px] uppercase"><i class="fa-solid fa-building"></i> PHÉP CẢI TẠO CÔNG TRÌNH ẢO</span>
-                            <span class="text-[7px] bg-emerald-950 px-1 border border-emerald-800 text-emerald-300 font-bold font-sans">ĐỊA CHÍNH ĐÔ THỊ</span>
-                        </div>
-                        <div class="space-y-0.5">
-                            <div><span class="text-emerald-400/70 text-[8px]">CHỦ SỞ HỮU ĐẤT ĐAI:</span> <span class="text-white font-black">${nameUpper}</span></div>
-                            <div><span class="text-emerald-400/70 text-[8px]">MỤC ĐÍCH:</span> <span class="text-amber-400 font-bold">XÂY DỰNG KHÔNG GIAN BẢO MẬT</span></div>
-                        </div>
-                    </div>`;
-            }
-
-            if (type === 'CHỨNG CHỈ HÀNH NGHỀ Y TẾ') {
-                return `
-                    <div class="medical-card-mockup rounded-xl p-3 text-white font-mono text-[10px] relative tracking-wide mt-1.5">
-                        <div class="card-glow-line"></div>
-                        <div class="flex justify-between items-center border-b border-purple-500/30 pb-1 mb-1.5">
-                            <span class="font-black text-purple-400 text-[8px] uppercase"><i class="fa-solid fa-user-doctor"></i> CHỨNG CHỈ HÀNH NGHỀ Y TẾ</span>
-                            <span class="text-[7px] bg-purple-950 px-1 border border-purple-800 text-purple-300 font-bold font-sans">MÔ PHỎNG Y KHOA</span>
-                        </div>
-                        <div class="space-y-0.5">
-                            <div><span class="text-purple-400/70 text-[8px]">HỌ TÊN BÁC SĨ GIẢ LẬP:</span> <span class="text-white font-black">${nameUpper}</span></div>
-                            <div class="text-[7.5px] text-purple-400 font-black"><i class="fa-solid fa-heart-pulse"></i> ĐỦ TIÊU CHUẨN ĐÓNG VAI TRÒ HỖ TRỢ Y TẾ TRÒ CHƠI</div>
-                        </div>
-                    </div>`;
-            }
-            return '';
+            return `<div class="card-mockup bg-gradient-to-r from-slate-950 to-slate-900 text-left border-slate-700"><p class="text-white font-bold">CHỨNG CHỈ: ${nameUpper}</p></div>`;
         }
 
-        // ĐỒNG BỘ ĐIỀU HƯỚNG NGẦM XUNG NHỊP MÁY CHỦ
-        let trackingStateMemory = { totalApplications: 0, totalLogs: 0 };
-        function performNationalPulseCheck() {
-            fetch('/api/national/pulse-check')
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        if (trackingStateMemory.totalApplications !== 0 || trackingStateMemory.totalLogs !== 0) {
-                            if (data.totalApplications > trackingStateMemory.totalApplications || data.totalLogs > trackingStateMemory.totalLogs) {
-                                const alertLight = document.getElementById('national-alert-light');
-                                if (alertLight) {
-                                    alertLight.classList.remove('hidden');
-                                    alertLight.classList.add('alert-active-pulse');
-                                }
-                                playNotificationSound();
-                                syncStateFromServer();
-                            }
-                        }
-                        trackingStateMemory.totalApplications = data.totalApplications;
-                        trackingStateMemory.totalLogs = data.totalLogs;
-                    }
-                }).catch(() => {});
+        function initClock() {
+            setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('vi-VN'); }, 1000);
+            setInterval(() => {
+                fetch('/api/national/pulse-check').then(r=>r.json()).then(d => { if(d.success) syncState(); });
+            }, 5000);
         }
 
-        function handleAlertLightClick() {
-            const alertLight = document.getElementById('national-alert-light');
-            if (alertLight) {
-                alertLight.classList.add('hidden');
-                alertLight.classList.remove('alert-active-pulse');
-            }
-            if (activeUser) { loadOfficerDesk(); } else { tab('tab-track'); }
-        }
-
-        function init() {
-            startClock();
-            autoRouteAgencyByDocType(); // Gọi ngay khi load để select khớp luồng tự động
-            renderStateBoards();
-            
-            let savedSession = localStorage.getItem('sessionUser');
-            if(savedSession) {
+        window.onload = function() {
+            initClock(); autoRouteAgency(); renderStateUI();
+            let saved = localStorage.getItem('sessionUser');
+            if(saved) {
                 try {
-                    let creds = JSON.parse(savedSession);
-                    if (state.authorizedPersonnel[creds.username] && state.authorizedPersonnel[creds.username].password === creds.password) {
-                        activeUser = state.authorizedPersonnel[creds.username];
-                        applyUserRoleLayout();
+                    let creds = JSON.parse(saved);
+                    if(state.authorizedPersonnel[creds.username] && state.authorizedPersonnel[creds.username].password === creds.pass) {
+                        activeUser = {
+                            username: creds.username,
+                            displayName: state.authorizedPersonnel[creds.username].displayName,
+                            role: state.authorizedPersonnel[creds.username].role,
+                            agency: state.authorizedPersonnel[creds.username].agency
+                        };
+                        setupOfficerPanel();
                     }
                 } catch(e) { localStorage.removeItem('sessionUser'); }
             }
-            setInterval(performNationalPulseCheck, 3000);
-        }
-        window.onload = init;
+        };
     </script>
 </body>
 </html>
