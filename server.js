@@ -122,11 +122,9 @@ app.post('/api/applications/submit', (req, res) => {
     res.json({ success: true, id });
 });
 
-// XỬ LÝ HỒ SƠ VÀ QUY TRÌNH KHIẾU NẠI LIÊN THÔNG BỘ NGÀNH
 app.post('/api/applications/action', (req, res) => {
     const { id, action, msg, officerName, officerRole, status, stamp, targetAgency } = req.body;
     
-    // Tìm kiếm hồ sơ bao gồm cả trong kho lưu trữ hoạt động
     let app = systemState.applications[id] || systemState.archivedApplications[id];
     if (!app) return res.status(404).json({ error: "Không tìm thấy hồ sơ hành chính này." });
 
@@ -135,7 +133,6 @@ app.post('/api/applications/action', (req, res) => {
     if (action === 'chat') {
         app.logs.push({ sender: officerName, msg, time: timeNow });
     } else if (action === 'claim_packet') {
-        // NÚT TIẾP NHẬN HỒ SƠ ĐỘC QUYỀN CỦA CÁN BỘ ĐƠN VỊ
         app.status = "Đã Tiếp Nhận Xử Lý";
         app.stamp = "stamp-forwarded";
         app.handler = officerName;
@@ -150,7 +147,6 @@ app.post('/api/applications/action', (req, res) => {
         app.logs.push({ sender: "Hệ thống", msg: `Cán bộ ${officerName} cập nhật kết quả: [${status}].`, time: timeNow });
         addLog(`Hồ sơ ${id} thay đổi trạng thái thành: ${status} bởi ${officerName}.`);
     } else if (action === 'investigate') {
-        // THANH TRA YÊU CẦU ĐIỀU TRA XÁC MINH HỒ SƠ
         app.status = "Thanh Tra Đang Điều Tra";
         app.stamp = "stamp-leader";
         app.logs.push({ sender: "Thanh Tra Chính Phủ", msg: `Thanh tra viên ${officerName} phát lệnh đóng băng hồ sơ để thẩm tra, xác minh tính trung thực và chứng cứ lý lịch tư pháp.`, time: timeNow });
@@ -175,7 +171,6 @@ app.post('/api/applications/action', (req, res) => {
         delete systemState.applications[id];
         addLog(`Hồ sơ ${id} đã được đóng con dấu niêm phong chuyển vào Kho Lưu Trữ.`);
     } else if (action === 'unarchive') {
-        // TRẢ LẠI HỒ SƠ TỪ KHO LƯU TRỮ
         app.status = "Mở Lại Xử Lý Lại";
         app.stamp = "stamp-pending";
         app.logs.push({ sender: "Văn Phòng Điều Hành", msg: `Cấp cao ban sắc lệnh Khôi phục / Trả lại hồ sơ từ kho lưu trữ để tái thẩm định hoặc bổ sung chứng cứ kịch bản.`, time: timeNow });
@@ -188,7 +183,7 @@ app.post('/api/applications/action', (req, res) => {
         if (status === 'KHIẾU NẠI CẤP CAO') {
             app.status = "Đang Khiếu Nại Cấp Cao";
             app.stamp = "stamp-rejected";
-            app.agency = "THANH TRA"; // Chuyển thẳng về đơn vị Thanh Tra xử lý
+            app.agency = "THANH TRA"; 
             app.logs.push({ sender: "Công Dân", msg: "CÔNG DÂN GỬI ĐƠN KHIẾU NẠI KHẨN CẤP: Yêu cầu Thanh tra Chính phủ và lãnh đạo tối cao vào cuộc điều tra quy trình làm việc của cán bộ xử lý.", time: timeNow });
             addLog(`Công dân @${app.sender} nộp đơn KHIẾU NẠI KHẨN CẤP đối với hồ sơ ${id}.`);
         } else {
