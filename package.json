@@ -1,7 +1,7 @@
 {
   "name": "government-roleplay-service",
   "version": "9.0.0",
-  "description": "Cổng thông tin điện tử liên thông chính phủ giả lập nâng cao v9.0",
+  "description": "Cong thong tin dien tu chinh phu gia lap lien thong realtime v9.0",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
