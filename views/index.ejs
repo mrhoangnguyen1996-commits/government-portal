@@ -22,12 +22,12 @@
         }
         .hologram-card:hover { transform: translateY(-4px); border-color: #fbbf24; box-shadow: 0 0 25px rgba(251,191,36,0.15); }
         
-        /* Hiệu ứng Con dấu cơ quan ban ngành dập chìm đỏ rực cực kỳ chuyên nghiệp */
-        .red-seal-mộc {
+        /* Con dấu mộc đỏ ban ngành chìm số hóa */
+        .red-seal-moc {
             position: absolute; right: 15px; bottom: 15px;
             width: 75px; height: 75px; border: 3px double #ef4444;
             border-radius: 50%; color: #ef4444; font-size: 8px; font-weight: 900;
-            display: flex; flex-content: center; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             text-align: center; text-transform: uppercase; transform: rotate(-15deg);
             opacity: 0.75; letter-spacing: 0.5px; line-height: 1.1; pointer-events: none;
             box-shadow: 0 0 4px rgba(239, 68, 68, 0.4); text-shadow: 0 0 1px #ef4444;
@@ -67,7 +67,7 @@
                 </div>
                 <div>
                     <span class="text-[10px] tracking-widest text-amber-500 uppercase font-black font-mono-tech block">Roblox Gaming Roleplay Community Platform</span>
-                    <h1 class="text-xl font-black text-white tracking-tight flex items-center gap-2">CỔNG LIÊN THÔNG QUỐC GIA <span class="text-[11px] font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded border border-slate-700">v9.0.0-PRO COMPREHENSIVE</span></h1>
+                    <h1 class="text-xl font-black text-white tracking-tight flex items-center gap-2">CỔNG LIÊN THÔNG QUỐC GIA <span class="text-[11px] font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded border border-slate-700">v9.0.0-PRO</span></h1>
                 </div>
             </div>
 
@@ -326,7 +326,7 @@
                         </div>
                         <button onclick="publishDocument()" class="w-full bg-gradient-to-r from-purple-700 to-amber-600 text-white text-xs font-black py-2.5 rounded-lg uppercase tracking-widest shadow-lg">Ký Ban Hành Bản Tin Sắc Lệnh Quốc Gia</button>
                         <div class="mt-4 pt-4 border-t border-slate-800">
-                            <h4 class="text-[11px] font-black uppercase text-purple-400 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-box-archive"></i> Kho Lưu Trữ Đơn Thư Ban Ngành Thuộc Đơn Vị Phụ Trách (Click mở xem lại mượt mà)</h4>
+                            <h4 class="text-[11px] font-black uppercase text-purple-400 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-box-archive"></i> Kho Lưu Trữ Đơn Thư Ngành Thuộc Đơn Vị Phụ Trách</h4>
                             <div id="leader-archive-list" class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[160px] overflow-y-auto"></div>
                         </div>
                     </div>
@@ -359,7 +359,7 @@
                                 <select onchange="setSecurity(this.value)" id="adm-sec" class="bg-slate-900 border border-slate-700 rounded-lg p-1.5 mt-1.5 text-white font-black text-xs tracking-wide text-amber-500 focus:outline-none">
                                     <option value="AN TOÀN">AN TOÀN / BÌNH THƯỜNG THỰC THI</option>
                                     <option value="CAO ĐIỂM">CAO ĐIỂM QUỐC PHÒNG TUẦN TRA</option>
-                                    <option value="KHẨN CẤP">TÌNH TRẠNG KHẨN CẤP TOÀN QUỐC CAO NHẤT</option>
+                                    <option value="KHẨN CẤP">TÌNH TRẠNG KHẨF CẤP TOÀN QUỐC CAO NHẤT</option>
                                 </select>
                             </div>
                             <div class="bg-amber-950 p-2.5 rounded-xl border border-amber-900 text-amber-400"><i class="fa-solid fa-shield-cat text-xl"></i></div>
@@ -369,6 +369,7 @@
                             <div class="bg-purple-950 p-2.5 rounded-xl border border-purple-900 text-purple-400 shadow-inner"><i class="fa-solid fa-box-archive text-xl"></i></div>
                         </div>
                     </div>
+                    
                     <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl shadow-xl flex flex-col md:flex-row items-center gap-6">
                         <div class="flex-1 space-y-1.5">
                             <h4 class="text-xs font-black text-amber-500 uppercase tracking-widest"><i class="fa-solid fa-chart-simple mr-1"></i> Đồ Thị Động: Hiệu Suất Tổng Lượng Đơn Thư Hành Chính Quốc Gia</h4>
@@ -431,13 +432,13 @@
 
                 <div id="subtab-adm-vault-sanctions" class="hidden space-y-4">
                     <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl shadow-lg space-y-3">
-                        <h3 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-handcuffs"></i> Toàn Văn Toàn Bộ Biên Bản Quyết Định Xử Phạt Hành Chính Gốc Đã Lưu Kho (Mở xem lại mượt mà)</h3>
+                        <h3 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2"><i class="fa-solid fa-handcuffs"></i> Toàn Văn Toàn Bộ Biên Bản Quyết Định Xử Phạt Hành Chính Gốc Đã Lưu Kho</h3>
                         <div id="admin-vault-sanctions-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 text-xs"></div>
                     </div>
                 </div>
 
                 <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-2xl flex flex-col h-full shadow-xl">
-                    <h3 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2 flex items-center gap-1.5"><i class="fa-solid fa-terminal mr-1 text-xs animate-pulse"></i> Nhật Ký Máy Chủ Liên Thông Toàn Quốc Realtime (Thời gian đồng bộ chính xác tuyệt đối)</h3>
+                    <h3 class="text-xs font-black text-red-400 uppercase tracking-widest border-b border-slate-800 pb-2 flex items-center gap-1.5"><i class="fa-solid fa-terminal mr-1 text-xs animate-pulse"></i> Nhật Ký Máy Chủ Liên Thông Toàn Quốc Realtime</h3>
                     <div id="admin-system-logs" class="flex-1 space-y-2 mt-3 font-mono text-[11px] overflow-y-auto max-h-[280px] bg-black/60 p-3 rounded-xl border border-slate-900 shadow-inner"></div>
                 </div>
             </section>
@@ -447,7 +448,7 @@
     <footer class="mt-12 bg-[#050914] border-t-2 border-red-900/80 py-6 px-6 text-center shadow-inner relative z-50">
         <div class="max-w-6xl mx-auto space-y-3">
             <div class="flex justify-center items-center gap-2 text-red-500 font-black tracking-widest text-[11px] uppercase">
-                <i class="fa-solid fa-triangle-exclamation animate-pulse"></i> ĐIỀU KHOẢN PHÁP LÝ VÀ MIỄN TRỪ TRÁCH NHIỆM TOÀN DIỆN CHO TRANG WEB GIẢ LẬP <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+                <i class="fa-solid fa-triangle-exclamation animate-pulse"></i> ĐIỀU KHOẢN PHÁP LÝ VÀ MIỄN TRỪ TRÁCH NHIỆM TOÀN DIỆN <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
             </div>
             <p class="text-[10px] text-red-400/90 font-bold leading-relaxed tracking-wide uppercase max-w-5xl mx-auto">
                 CẢNH BÁO AN NINH PHÁP LÝ: ĐÂY LÀ TRANG WEB GIẢ LẬP HOÀN TOÀN KHÔNG CÓ THỰC NGOÀI ĐỜI THỰC, PHỤC VỤ ĐỘC QUYỀN MỤC ĐÍCH ĐỒNG BỘ CƠ SỞ DỮ LIỆU KỊCH BẢN TƯƠNG TÁC NHẬP VAI (ROLEPLAY) GIẢI TRÍ ĐĂNG KÝ THỦ TỤC TRÊN NỀN TẢNG ROBLOX GAMING COMMUNITY. NỀN TẢNG KHÔNG ĐẠI DIỆN, KHÔNG LIÊN KẾT VÀ KHÔNG CHỊU SỰ QUẢN LÝ CỦA BẤT KỲ CƠ QUAN CHỨC NĂNG CHÍNH PHỦ HAY CƠ QUAN CÔNG QUYỀN HÀNH CHÍNH NÀO CÓ THỰC CỦA NƯỚC CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM. TOÀN BỘ DANH TÁNH CƯ DÂN, SỐ THẺ ĐỊNH DANH, QUYẾT ĐỊNH XỬ PHẠT TƯ PHÁP VÀ CÁC CHỨNG CHỈ SỞ HỮU TRÊN HỆ THỐNG CHỈ LÀ SẢN PHẨM PHỤC VỤ GAME MÔ PHỎNG. NGHIÊM CẤM MỌI HÀNH VI CHỤP ẢNH, SAO CHÉP HOẶC LẠM DỤNG PHÔI THẺ TRÊN TRANG WEB NÀY ĐỂ MẠO DANH LỰC LƯỢNG CHỨC NĂNG NGOÀI ĐỜI THỰC HOẶC THỰC HIỆN CÁC HÀNH VI LỪA ĐẢO. MỌI HÀNH VI LẠM DỤNG SẼ BỊ PHỐI HỢP CUNG CẤP THÔNG TIN CHO CƠ QUAN CHỨC NĂNG THEO LUẬT AN NINH MẠNG VIỆT NAM HIỆN HÀNH.
@@ -515,9 +516,10 @@
         function adminSubTab(id) {
             document.querySelectorAll('[id^="subtab-adm-"]').forEach(s => s.classList.add('hidden'));
             document.getElementById(`subtab-${id}`).classList.remove('hidden');
+            document.querySelectorAll('#tab-admin .subtab-btn').forEach(b => b.classList.remove('active'));
+            if(document.getElementById(`btn-${id}`)) document.getElementById(`btn-${id}`).classList.add('active');
         }
 
-        /* BIỂU ĐỒ SỐ CANVAS ĐỘNG ADMIN */
         function drawAdminChart() {
             const canvas = document.getElementById('adminDynamicChart'); if (!canvas) return;
             const ctx = canvas.getContext('2d'); ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -539,7 +541,7 @@
             ctx.fillStyle = '#34d399'; ctx.fillText(staffCount, 210, 95 - b3);
 
             ctx.fillStyle = '#64748b'; ctx.font = '8px sans-serif';
-            ctx.fillText('Đơn Đang Chờ', 18, 115); ctx.fillText('Hồ Sơ Lưu Kho', 105, 115); ctx.fillText('Tổng Nhân Sự', 190, 115);
+            ctx.fillText('Đơn Chờ', 28, 115); ctx.fillText('Lưu Kho', 115, 115); ctx.fillText('Nhân Sự', 200, 115);
         }
 
         socket.on('initData', (data) => { updateDataAndRender(data); checkAndRestoreSession(); });
@@ -613,7 +615,7 @@
             });
 
             document.getElementById('vio-user').value = ''; document.getElementById('vio-clause').value = ''; document.getElementById('vio-fine').value = '';
-            soundStamp(); alert(`Đã dập phôi ban hành biên bản xử lý vi phạm liên thông!`);
+            soundStamp(); alert(`Da ban hanh bien ban va tu dong dong bo luong 3 ben ky!`);
         }
 
         async function registerResidentByOfficer(e, mode) {
@@ -627,8 +629,8 @@
             } else {
                 username = document.getElementById('doc-user').value.trim();
                 const selectedLicense = document.getElementById('doc-license-type').value;
-                if (!citizenIdentityRegistry[username]) { alert("Cư dân chưa có thẻ Căn Cước gốc!"); return; }
-                let currentRes = citizenIdentityRegistry[username];
+                if (!registry[username]) { alert("Cu dan chua lam the Can Cuoc!"); return; }
+                let currentRes = registry[username];
                 name = currentRes.name; dob = currentRes.dob; gender = currentRes.gender; pob = currentRes.pob; job = currentRes.job; status = currentRes.status;
                 let existingLicenses = currentRes.licenses || [];
                 if (!existingLicenses.includes(selectedLicense)) existingLicenses.push(selectedLicense);
@@ -639,10 +641,9 @@
             if (mode === 'cccd') {
                 document.getElementById('cccd-user').value = ''; document.getElementById('cccd-name').value = ''; document.getElementById('cccd-dob').value = ''; document.getElementById('cccd-pob').value = ''; document.getElementById('cccd-job').value = '';
             } else { document.getElementById('doc-user').value = ''; }
-            soundSuccess(); alert(`Phê chuẩn dập phôi chứng thư thành công lên cổng liên thông!`);
+            soundSuccess(); alert(`Da cap phoi van bang nghiep vu hop le!`);
         }
 
-        // BĂM SỐ THEO TÊN CỐ ĐỊNH - KHÔNG BỊ RANDOM KHI F5
         function buildCccdTemplate(username, citizen) {
             let seedVal = 0; for (let i = 0; i < username.length; i++) { seedVal += username.charCodeAt(i); }
             let constantCccdId = 12000000 + (seedVal * 4321) % 8999999;
@@ -668,7 +669,7 @@
                             <p class="text-slate-400 font-bold">Nguyên quán: <span class="text-white">${citizen.pob}</span></p>
                         </div>
                     </div>
-                    <div class="red-seal-mộc">BỘ CÔNG AN<br>ĐÃ CHỨNG THỰC</div>
+                    <div class="red-seal-moc">BỘ CÔNG AN<br>CHỨNG THỰC</div>
                 </div>
             `;
         }
@@ -701,7 +702,7 @@
                         <p class="text-[8px] font-black tracking-widest text-slate-400 uppercase"><i class="fa-solid fa-shield mr-1"></i> GIẤY PHÉP CHỨNG CHỈ QUỐC GIA BAN HÀNH</p>
                         <p class="text-[11px] text-slate-400 font-bold">Người sở hữu: <span class="text-white font-black uppercase">${citizen.name}</span></p>
                         <div class="p-2 bg-black/40 border border-slate-800 rounded-xl"><p class="text-xs font-black text-amber-400 uppercase">${lic}</p></div>
-                        <div class="red-seal-mộc">${sealName}<br>QUỐC GIA</div>
+                        <div class="red-seal-moc">${sealName}<br>QUỐC GIA</div>
                     </div>
                 `;
             });
@@ -723,7 +724,6 @@
             vioZone.innerHTML = vioHtml;
         }
 
-        // ĐÀM THOẠI TRỰC TUYẾN 2 CHIỀU KHÔNG DELAY & KÝ BIÊN BẢN CỦA CÔNG DÂN
         function trackApplication() {
             const id = document.getElementById('track-id').value.trim();
             const area = document.getElementById('track-details'); const empty = document.getElementById('track-empty');
@@ -789,7 +789,6 @@
 
         function selectFile(id) { activeFileId = id; document.getElementById('officer-desk-empty').classList.add('hidden'); document.getElementById('officer-desk-active').classList.remove('hidden'); renderOfficerDesk(); }
 
-        // BÀN LÀM VIỆC NGHIỆP VỤ CAN BỘ CHUYÊN NGHIỆP
         function renderOfficerDesk() {
             let app = state.applications[activeFileId] || state.archivedApplications[activeFileId]; if(!app) return;
             const desk = document.getElementById('officer-desk-active');
@@ -813,16 +812,16 @@
                     if(activeUser.role === 'LÃNH ĐẠO' || activeUser.role === 'ADMIN') {
                         actionsHtml = `
                             <div class="grid grid-cols-2 gap-2">
-                                <button onclick="sendAction('${app.id}', 'status', 'Đã Phê Duyệt', 'stamp-approved')" class="bg-emerald-600 text-white font-black py-1.5 rounded text-[10px] uppercase">Lãnh Đạo Ký Phê Duyệt</button>
+                                <button onclick="sendAction('${app.id}', 'status', 'Đã Phê Duyệt', 'stamp-approved')" class="bg-emerald-600 text-white font-black py-1.5 rounded text-[10px] uppercase">Lãnh Đạo Phê Duyệt</button>
                                 <button onclick="sendAction('${app.id}', 'status', 'Bị Bác Bỏ', 'stamp-rejected')" class="bg-red-600 text-white font-black py-1.5 rounded text-[10px] uppercase">Bác Bỏ Đơn</button>
                             </div>
-                            <button onclick="archiveWithCheck('${app.id}', '${activeUser.role}')" class="w-full bg-purple-600 text-white font-black py-1.5 rounded text-[11px] uppercase mt-1">Đóng & Niêm Phong Lưu Kho Quốc Gia</button>
+                            <button onclick="archiveWithCheck('${app.id}', '${activeUser.role}')" class="w-full bg-purple-600 text-white font-black py-1.5 rounded text-[11px] uppercase mt-1">Niêm Phong Lưu Kho Quốc Gia</button>
                         `;
                     } else {
                         actionsHtml = `
                             <button onclick="sendAction('${app.id}', 'to_leader')" class="w-full bg-gradient-to-r from-amber-500 to-purple-600 text-black font-black py-1.5 rounded text-[11px] uppercase">Trình Lên Cấp Lãnh Đạo Ký Duyệt</button>
                             <div class="p-1.5 bg-slate-950 border border-slate-800 rounded mt-1 text-[11px]">
-                                <select id="forward-target-agency" class="bg-slate-900 text-white border p-1 text-[11px] w-full mb-1"><option value="CÔNG AN">CÔNG AN</option><option value="QUÂN ĐỘI">QUÂN ĐỘI</option></select>
+                                <select id="forward-target-agency" class="bg-slate-900 text-white border p-1 text-[11px] w-full mb-1"><option value="CÔNG AN">BỘ CÔNG AN</option><option value="QUÂN ĐỘI">BỘ CHỈ HUY QUÂN SỰ</option></select>
                                 <button onclick="forwardAppAction('${app.id}')" class="w-full bg-sky-600 text-white py-1 rounded font-black text-[10px] uppercase">Chuyển luồng ban ngành</button>
                             </div>
                         `;
@@ -830,7 +829,7 @@
                 }
             } else {
                 actionsHtml = `<div class="text-center text-[10px] text-purple-400 font-bold bg-purple-950/20 p-2 rounded border border-purple-900 uppercase">Hồ sơ đã niêm phong lưu kho bảo mật tối cao</div>
-                ${(activeUser.role === 'ADMIN') ? `<button onclick="sendAction('${app.id}', 'unarchive')" class="w-full bg-red-700 text-white font-black py-1 rounded text-[10px] uppercase mt-1">Admin Quyền Lực: Tái Thẩm</button>`:''}`;
+                ${(activeUser.role === 'ADMIN') ? `<button onclick="sendAction('${app.id}', 'unarchive')" class="w-full bg-red-700 text-white font-black py-1 rounded text-[10px] uppercase mt-1">Admin: Tái Thẩm Phục Hồi</button>`:''}`;
             }
 
             desk.innerHTML = `
@@ -857,12 +856,12 @@
         async function archiveWithCheck(id, role) {
             let app = state.applications[id];
             if (role !== 'ADMIN' && (!app.citizenSigned || !app.officerSigned || !app.leaderSigned)) {
-                alert("Không thể đóng hồ sơ! Quy trình yêu cầu nghiêm ngặt phải thu thập đủ 3 chữ ký số điện tử của (Công dân, Cán bộ lập và Lãnh đạo phê duyệt).");
+                alert("Hồ sơ chưa đủ điều kiện! Yêu cầu phải có đủ chữ ký của cả 3 bên (Công dân, Cán bộ lập, Lãnh đạo duyệt).");
                 return;
             }
             await fetch('/api/applications/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, action: 'archive', officerName: activeUser.displayName, officerRole: role }) });
             activeFileId = null; document.getElementById('officer-desk-active').innerHTML = '';
-            alert("Niêm phong hồ sơ thành công vào kho quốc gia!");
+            alert("Niêm phong hồ sơ thành công vào kho lưu trữ quốc gia!");
         }
 
         async function forwardAppAction(id) {
@@ -920,6 +919,133 @@
         }
 
         function logout() { activeUser = null; activeFileId = null; localStorage.removeItem('sessionUser'); document.getElementById('btn-tab-officer').classList.add('hidden'); document.getElementById('btn-tab-admin').classList.add('hidden'); renderAuth(); tab('tab-news'); }
+        
+        function renderAll() {
+            if(!state.announcements) return;
+            document.getElementById('live-marquee').innerText = state.tickerMessage;
+            document.getElementById('security-txt').innerText = state.securityLevel;
+            
+            const feed = document.getElementById('news-feed'); feed.innerHTML = '';
+            state.announcements.forEach(a => {
+                // CHỈ LÃNH ĐẠO HOẶC ADMIN MỚI CÓ THỂ NHÌN THẤY VÀ ẤN NÚT XÓA ẤN BẢN SẮC LỆNH
+                let deleteBtn = '';
+                if (activeUser && (activeUser.role === 'LÃNH ĐẠO' || activeUser.role === 'ADMIN')) {
+                    deleteBtn = `<button onclick="deleteNews('${a.id}')" class="text-[10px] text-red-400 hover:underline font-bold"><i class="fa-solid fa-trash-can"></i> Gỡ ấn bản</button>`;
+                }
+                feed.innerHTML += `
+                    <div class="bg-[#0a0f1d] border border-slate-800 p-4 rounded-xl relative shadow-md">
+                        <div class="flex justify-between items-center"><span class="text-[9px] font-black text-amber-500 uppercase bg-amber-950 px-2 py-0.5 rounded border border-amber-800">${a.type}</span>${deleteBtn}</div>
+                        <h4 class="text-sm font-black text-white mt-1.5">${a.title}</h4>
+                        <p class="text-xs text-slate-400 whitespace-pre-wrap mt-1 leading-relaxed">${a.content}</p>
+                        <div class="text-[10px] text-slate-500 mt-2 font-mono">Ban hành hệ thống: ${a.timestamp}</div>
+                    </div>
+                `;
+            });
+
+            const wanted = document.getElementById('wanted-feed'); wanted.innerHTML = '';
+            state.criminalWantedList.forEach(c => {
+                wanted.innerHTML += `
+                    <div class="bg-red-950/10 border border-red-900/50 p-3 rounded-xl relative overflow-hidden">
+                        <p class="text-xs text-red-400 font-black"><i class="fa-solid fa-bullseye animate-pulse"></i> TRUY NÃ: @${c.name}</p>
+                        <p class="text-xs text-slate-300 mt-0.5">Tội danh: ${c.crime}</p>
+                        <p class="text-xs text-yellow-500 font-extrabold mt-1.5 font-mono">Bounty: ${c.bounty}</p>
+                    </div>
+                `;
+            });
+
+            if (activeUser) {
+                document.getElementById('office-badge').innerText = `ĐƠN VỊ CHỦ QUẢN: [${activeUser.agency}] — CÁN BỘ THẨM ĐỊNH: ${activeUser.displayName} [${activeUser.role}]`;
+                const tbody = document.getElementById('officer-table'); tbody.innerHTML = '';
+                Object.values(state.applications).forEach(app => {
+                    if (activeUser.role === 'ADMIN' || activeUser.role === 'THANH TRA' || activeUser.agency === 'CHÍNH PHỦ' || app.agency === activeUser.agency) {
+                        tbody.innerHTML += `
+                            <tr class="hover:bg-slate-900/60 border-b border-slate-800 text-xs transition-all">
+                                <td class="p-3 font-black font-mono text-amber-500">${app.id}</td>
+                                <td class="p-3 font-medium">@${app.sender}</td>
+                                <td class="p-3"><span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded text-[10px] font-bold">${app.docType}</span></td>
+                                <td class="p-3 font-black"><span class="text-amber-400">${app.status}</span></td>
+                                <td class="p-3 text-right"><button onclick="selectFile('${app.id}')" class="bg-emerald-600 font-bold text-white px-3 py-1 rounded-md text-[11px]">Thẩm Định</button></td>
+                            </tr>
+                        `;
+                    }
+                });
+
+                const leadArch = document.getElementById('leader-archive-list');
+                if(leadArch) {
+                    leadArch.innerHTML = '';
+                    Object.values(state.archivedApplications).forEach(ar => {
+                        if (activeUser.role === 'ADMIN' || activeUser.role === 'THANH TRA' || activeUser.agency === 'CHÍNH PHỦ' || ar.agency === activeUser.agency) {
+                            leadArch.innerHTML += `
+                                <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 flex justify-between items-center text-[11px]">
+                                    <div><b class="text-purple-400 font-mono">${ar.id}</b> - @${ar.sender}</div>
+                                    <button onclick="selectFile('${ar.id}')" class="text-[10px] bg-purple-900 text-white px-2.5 py-0.5 rounded hover:bg-purple-800 font-bold">Mở xem</button>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+            }
+
+            document.getElementById('st-staff').innerText = Object.keys(state.authorizedPersonnel).length - 1;
+            document.getElementById('st-files').innerText = Object.keys(state.archivedApplications).length;
+            
+            const logBox = document.getElementById('admin-system-logs');
+            if(logBox) {
+                logBox.innerHTML = '';
+                state.systemLogs.forEach(l => {
+                    logBox.innerHTML += `<div class="py-1 border-b border-slate-900"><span class="text-amber-400 font-bold">[${l.time}]</span> <span class="text-slate-300">${l.text}</span></div>`;
+                });
+            }
+
+            const adminAppsVault = document.getElementById('admin-vault-apps-list');
+            const adminSanctionsVault = document.getElementById('admin-vault-sanctions-list');
+            if(adminAppsVault && adminSanctionsVault) {
+                adminAppsVault.innerHTML = ''; adminSanctionsVault.innerHTML = '';
+                Object.values(state.archivedApplications).forEach(ar => {
+                    let cardHtml = `
+                        <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl flex justify-between items-start">
+                            <div>
+                                <p class="font-mono font-black text-purple-400">${ar.id}</p>
+                                <p class="text-slate-300 mt-0.5">Chủ sở hữu: <b>@${ar.sender}</b></p>
+                                <p class="text-[9px] text-slate-500 uppercase font-black">${ar.docType}</p>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <button onclick="selectFile('${ar.id}')" class="text-[10px] bg-purple-600 text-white font-black px-2 py-1 rounded hover:bg-purple-700 uppercase">Mở Xem</button>
+                                <button onclick="sendAction('${ar.id}', 'unarchive')" class="text-[10px] bg-red-700 text-white font-black px-2 py-1 rounded hover:bg-red-600 uppercase">Bác Lệnh</button>
+                            </div>
+                        </div>
+                    `;
+                    if(ar.docType.includes("BIÊN BẢN") || ar.docType.includes("XỬ PHẠT")) {
+                        adminSanctionsVault.innerHTML += cardHtml;
+                    } else {
+                        adminAppsVault.innerHTML += cardHtml;
+                    }
+                });
+            }
+
+            const analytics = document.getElementById('admin-analytics-list');
+            if (analytics) {
+                analytics.innerHTML = '';
+                Object.values(state.authorizedPersonnel).forEach(u => {
+                    if (u.username !== 'admin') {
+                        analytics.innerHTML += `
+                            <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-xs space-y-2">
+                                <div class="flex justify-between font-black text-white border-b border-slate-800 pb-1.5">
+                                    <span>${u.displayName}</span>
+                                    <span class="text-purple-400 text-[10px] uppercase bg-purple-950 px-1.5 rounded border border-purple-800">${u.role}</span>
+                                </div>
+                                <div class="text-[11px] text-slate-400 font-mono">Ban ngành: <span class="text-sky-400 font-bold">${u.agency}</span> | Mật khẩu: <span class="text-amber-400">${u.password}</span></div>
+                                <div class="flex gap-2 pt-1 border-t border-slate-800/60">
+                                    <button onclick="editOfficer('${u.username}')" class="flex-1 bg-sky-600 text-white font-bold py-1 rounded text-[10px] uppercase">Sửa</button>
+                                    <button onclick="deleteOfficer('${u.username}')" class="bg-red-600 text-white font-bold px-2 py-1 rounded text-[10px] uppercase">Xóa</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        }
+
         function renderAuth() { const p = document.getElementById('auth-panel'); if(!activeUser) { p.innerHTML = `<button onclick="openLogin()" class="bg-amber-500 text-black px-4 py-2 rounded-lg text-[11px] uppercase font-black">Đăng nhập nghiệp vụ</button>`; } else { p.innerHTML = `<div class="bg-slate-900 border p-1.5 text-xs rounded-xl flex items-center gap-2"><b class="text-white">${activeUser.displayName}</b><button onclick="logout()" class="text-red-400 ml-2 cursor-pointer"><i class="fa-solid fa-power-off"></i></button></div>`; } }
         
         startClock();
