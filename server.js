@@ -14,230 +14,248 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// CƠ SỞ DỮ LIỆU ĐIỆN TỬ TOÀN QUỐC GIẢ LẬP
+// HỆ THỐNG LƯU TRỮ DỮ LIỆU ĐỒNG BỘ REALTIME QUỐC GIA
 let systemState = {
     securityLevel: "AN TOÀN",
-    tickerMessage: "⚡ CỔNG THÔNG TIN LIÊN THÔNG QUỐC GIA v9.0: Hệ thống kiểm soát 3 bên ký nghiêm ngặt. Phôi căn cước và bằng cấp tích hợp con dấu ban ngành số hóa.",
+    tickerMessage: "⚡ HỆ THỐNG LIÊN THÔNG QUỐC GIA: Yêu cầu các đơn vị nghiêm túc thực hiện số hóa thủ tục hành chính năm 2026. Kiểm tra lý lịch cư dân nghiêm ngặt trước khi phê duyệt con dấu.",
     systemLogs: [
-        { time: new Date().toLocaleTimeString('vi-VN') + " - 2026", text: "Hệ thống lõi an ninh bảo mật v9.0.0 khởi chạy thành công." }
+        { time: new Date().toLocaleTimeString('vi-VN') + " - 20/06/2026", text: "Hệ thống máy chủ tối cao khởi động thành công cấu trúc Realtime Core." }
     ],
     announcements: [
-        { id: "NEWS-1001", type: "QUYẾT ĐỊNH", title: "Vận hành quy trình ký số liên thông 3 bên", content: "Yêu cầu tất cả biên bản xử phạt và đơn thư phải được Công dân ký nhận, Cán bộ thẩm định và Lãnh đạo phê chuẩn trước khi niêm phong lưu kho.", timestamp: "18:00:00" }
+        { id: "NEWS-1001", type: "QUYẾT ĐỊNH", title: "Số hóa quy trình tư pháp và cấp phát văn bằng liên thông toàn quốc", content: "Chuyển dịch toàn bộ luồng xử lý hồ sơ hành chính cư dân sang hệ thống đám mây giả lập.", timestamp: "20/06/2026, 08:00:00" }
     ],
-    criminalWantedList: [],
-    authorizedPersonnel: {
-        "admin": { username: "admin", password: "123", displayName: "Giám Sát Tối Cao", role: "ADMIN", agency: "CHÍNH PHỦ", positiveRatings: 0, negativeRatings: 0 }
+    criminalWantedList: [
+        { name: "Nguyen_Van_A", crime: "Tổ chức tàng trữ công cụ quân dụng trái phép sai kịch bản nhập vai", bounty: "50,000,000 VND", date: "20/06/2026" }
+    ],
+    applications: {
+        "HS-1001": {
+            id: "HS-1001", sender: "Nguyen_Manh_Hoang", agency: "CÔNG AN", docType: "CĂN CƯỚC CÔNG DÂN",
+            content: "Yêu cầu cấp lại thẻ căn cước công dân gắn chíp điện tử định danh do bị thất lạc.",
+            status: "Đang Chờ Tiếp Nhận", stamp: "stamp-pending", handler: "Chưa phân phối", handlerTitle: "Trực ban liên thông",
+            logs: [{ sender: "Hệ thống", msg: "Hồ sơ số hóa khởi tạo thành công trên cổng liên thông.", time: new Date().toLocaleTimeString('vi-VN') }],
+            satisfaction: null
+        }
     },
-    applications: {},
-    archivedApplications: {}
+    archivedApplications: {
+        "HS-1000": {
+            id: "HS-1000", sender: "Tran_Minh_Quang", agency: "CÔNG AN", docType: "BẰNG LÁI XE TẢI HẠNG C",
+            content: "Đơn xin cấp đổi giấy phép lái xe tải quân sự phục vụ hậu cần logistics đường bộ.",
+            status: "Đã Phê Duyệt", stamp: "stamp-approved", handler: "Thiếu Tá Lê Minh Tuấn", handlerTitle: "CÁN BỘ",
+            logs: [{ sender: "Hệ thống", msg: "Hồ sơ hoàn tất thẩm định, niêm phong lưu kho bảo mật.", time: "08:12:30" }],
+            satisfaction: "HÀI LÒNG"
+        }
+    },
+    authorizedPersonnel: {
+        "admin": { username: "admin", password: "123", displayName: "Văn Phòng Điều Hành Tối Cao", role: "ADMIN", agency: "HỆ THỐNG", positiveRatings: 0, negativeRatings: 0, processedCount: 0 },
+        "canbo1": { username: "canbo1", password: "123", displayName: "Thiếu Tá Lê Minh Tuấn", role: "CÁN BỘ", agency: "CÔNG AN", positiveRatings: 8, negativeRatings: 1, processedCount: 15 },
+        "lanhdao1": { username: "lanhdao1", password: "123", displayName: "Đại Tá Nguyễn Hoàng", role: "LÃNH ĐẠO", agency: "CÔNG AN", positiveRatings: 12, negativeRatings: 0, processedCount: 24 },
+        "thanhtra1": { username: "thanhtra1", password: "123", displayName: "Thanh Tra Viên Trần Lực", role: "THANH TRA", agency: "THANH TRA", positiveRatings: 4, negativeRatings: 0, processedCount: 8 }
+    }
 };
 
 let citizenIdentityRegistry = {
     "Nguyen_Manh_Hoang": {
-        username: "Nguyen_Manh_Hoang",
-        name: "Nguyễn Mạnh Hoàng",
-        dob: "18/05/1996",
-        gender: "Nam",
-        pob: "Đà Lạt, Lâm Đồng",
-        job: "Purchasing Supervisor",
-        licenses: ["Căn Cước Công Dân Gắn Chíp Số Hóa"],
-        status: "Dân Cư Hợp Pháp - Lý Lịch Trong Sạch",
-        customDocInfo: {}
+        name: "Nguyễn Mạnh Hoàng", dob: "18/05/1996", gender: "Nam",
+        pob: "Lâm Đồng, Việt Nam", job: "Chuyên Viên Thẩm Định Cung Ứng Vật Tư",
+        licenses: ["Bằng Lái Xe Ô Tô Hạng B2", "Giấy Phép Sử Dụng Công Cụ Hỗ Trợ Vũ Khí"],
+        status: "Dân Cư Hợp Pháp - Lý Lịch Trong Sạch"
+    },
+    "Tran_Minh_Quang": {
+        name: "Trần Minh Quang", dob: "12/09/1990", gender: "Nam",
+        pob: "Nha Trang, Khánh Hòa", job: "Giám Đốc Điều Hành Logistics Đường Bộ",
+        licenses: ["Bằng Lái Xe Tải Hạng C"], status: "Dân Cư Hợp Pháp"
     }
 };
 
-let criminalRecordsRegistry = {};
+let criminalRecordsRegistry = {
+    "Nguyen_Manh_Hoang": [
+        { id: "VP-501", type: "VI PHẠM GIAO THÔNG", lawClause: "Điều 5 Nghị định 100 - Vượt đèn đỏ kịch bản", fine: "4,000,000 VND", status: "Đã Nộp Phạt", officer: "Thiếu Tá Lê Minh Tuấn", date: "10/05/2026" }
+    ]
+};
 
 function addLog(text) {
-    const timeNow = new Date().toLocaleTimeString('vi-VN');
-    systemState.systemLogs.unshift({ time: timeNow, text });
-    if (systemState.systemLogs.length > 100) systemState.systemLogs.pop();
+    const timeStr = new Date().toLocaleTimeString('vi-VN');
+    systemState.systemLogs.unshift({ time: timeStr, text });
+    if(systemState.systemLogs.length > 40) systemState.systemLogs.pop();
 }
 
 function broadcastUpdate() {
-    io.emit('stateUpdate', {
-        systemState,
-        citizenIdentityRegistry,
-        criminalRecordsRegistry
-    });
+    io.emit('stateUpdate', { systemState, citizenIdentityRegistry, criminalRecordsRegistry });
 }
 
 app.get('/', (req, res) => {
-    res.render('index', {
-        state: systemState,
-        registry: citizenIdentityRegistry,
-        violations: criminalRecordsRegistry
-    });
+    res.render('index', { state: systemState, registry: citizenIdentityRegistry, violations: criminalRecordsRegistry });
 });
 
-app.post('/api/applications/submit', (req, res) => {
-    const { sender, agency, docType, content } = req.body;
-    const id = `HS-${Date.now().toString().slice(-4)}`;
-    
-    systemState.applications[id] = {
-        id, sender, agency, docType, content,
-        status: "Đang Chờ Tiếp Nhận",
-        stamp: "stamp-pending",
-        citizenSigned: false,
-        officerSigned: false,
-        leaderSigned: false,
-        satisfaction: null,
-        logs: [{ sender: "Hệ thống điện tử", msg: `Đơn thư khởi tạo thành công vào ban ngành [${agency}]. Đang chờ cán bộ tiếp nhận phân luồng.`, time: new Date().toLocaleTimeString('vi-VN') }]
-    };
-    
-    addLog(`Công dân @${sender} nộp đơn thư thủ tục: [${docType}] gửi ban ngành [${agency}].`);
-    io.emit('newApplicationAlert', systemState.applications[id]);
-    broadcastUpdate();
-    res.json({ success: true, id });
+app.get('/api/state', (req, res) => {
+    res.json({ systemState, citizenIdentityRegistry, criminalRecordsRegistry });
 });
 
+// BAN HÀNH HOẶC CẬP NHẬT BIÊN BẢN VI PHẠM CỦA CÔNG DÂN
 app.post('/api/resident/violation', (req, res) => {
-    const { username, type, lawClause, fine, status, officerName } = req.body;
-    const vId = `BB-${Date.now().toString().slice(-4)}`;
+    const { username, type, lawClause, fine, status, officerName, editRecordId } = req.body;
     
-    if (!criminalRecordsRegistry[username]) criminalRecordsRegistry[username] = [];
-    criminalRecordsRegistry[username].push({ id: vId, type, lawClause, fine, status, officer: officerName, date: new Date().toLocaleDateString('vi-VN') });
-    
-    systemState.applications[vId] = {
-        id: vId,
-        sender: username,
-        agency: type,
-        docType: "BIÊN BẢN XỬ PHẠT TƯ PHÁP",
-        content: `Cáo buộc vi phạm: ${lawClause}. Khung tiền hình phạt: ${fine}. Tiến độ sơ bộ lập bởi cán bộ: ${officerName}. Trạng thái luồng: [${status}]. Yêu cầu người vi phạm tiến hành ký nhận hoặc khiếu nại lên cấp Lãnh đạo/Admin.`,
-        status: "Chờ Công Dân Ký",
-        stamp: "stamp-pending",
-        citizenSigned: false,
-        officerSigned: true, 
-        leaderSigned: false,
-        satisfaction: null,
-        logs: [{ sender: `Cán bộ ${officerName}`, msg: `Đã lập biên bản vi phạm xử lý số hiệu ${vId}. Đang chờ tài khoản bị lập @${username} vào ký xác nhận biên bản.`, time: new Date().toLocaleTimeString('vi-VN') }]
-    };
-
-    addLog(`Cán bộ ${officerName} lập hồ sơ biên bản vi phạm hình sự ${vId} đối với @${username}.`);
-    broadcastUpdate();
-    res.json({ success: true, id: vId });
-});
-
-app.post('/api/applications/action', (req, res) => {
-    const { id, action, status, stamp, targetAgency, officerName, officerRole, msg } = req.body;
-    let app = systemState.applications[id] || systemState.archivedApplications[id];
-    
-    if (!app) return res.status(404).json({ error: "Không tìm thấy hồ sơ số." });
-
-    if (action === 'chat') {
-        app.logs.push({ sender: officerName, msg: msg, time: new Date().toLocaleTimeString('vi-VN') });
-        io.emit('newChatMessage', { fileId: id });
-    } 
-    else if (action === 'claim_packet') {
-        app.status = "Cán bộ đang thẩm định";
-        app.stamp = "stamp-forwarded";
-        app.officerSigned = true;
-        app.logs.push({ sender: officerName, msg: `Cán bộ ${officerName} đã tiếp nhận phụ trách thẩm tra hồ sơ và ký xác nhận chữ ký Cán Bộ.`, time: new Date().toLocaleTimeString('vi-VN') });
-    } 
-    else if (action === 'citizen_sign') {
-        app.citizenSigned = true;
-        app.status = "Chờ Lãnh Đạo Ký Duyệt";
-        app.stamp = "stamp-pending";
-        app.logs.push({ sender: "Hệ thống xác thực", msg: `Công dân đã hoàn tất ký tên điện tử đồng ý biên bản/đơn thư. Hồ sơ chuyển tiếp lên cấp Lãnh Đạo đơn vị.`, time: new Date().toLocaleTimeString('vi-VN') });
-    }
-    else if (action === 'citizen_reject_sign') {
-        app.citizenSigned = false;
-        app.status = "Tranh Chấp - Trình Cấp Cao";
-        app.stamp = "stamp-rejected";
-        app.logs.push({ sender: "Hệ thống xác thực", msg: `Công dân từ chối ký biên bản vi phạm! Hồ sơ chuyển lên cấp Lãnh đạo đơn vị thụ lý tranh chấp.`, time: new Date().toLocaleTimeString('vi-VN') });
-    }
-    else if (action === 'to_leader') {
-        app.status = "Trình Lãnh Đạo Ký Duyệt";
-        app.stamp = "stamp-leader";
-        app.logs.push({ sender: officerName, msg: `Cán bộ ${officerName} đã ký tên duyệt sơ bộ và đẩy hồ sơ lên danh sách chờ Lãnh Đạo ban ngành đóng dấu phê chuẩn sau cùng.`, time: new Date().toLocaleTimeString('vi-VN') });
-    } 
-    else if (action === 'forward') {
-        app.agency = targetAgency;
-        app.status = "Đang Chờ Tiếp Nhận";
-        app.stamp = "stamp-forwarded";
-        app.logs.push({ sender: officerName, msg: `Cán bộ ${officerName} thực hiện phân luồng điều chuyển hồ sơ liên thông sang ban ngành mới: [${targetAgency}].`, time: new Date().toLocaleTimeString('vi-VN') });
-    } 
-    else if (action === 'status') {
-        app.status = status;
-        app.stamp = stamp;
-        if (status === 'Đã Phê Duyệt') {
-            app.leaderSigned = true; 
+    if(editRecordId) {
+        if(criminalRecordsRegistry[username]) {
+            let record = criminalRecordsRegistry[username].find(r => r.id === editRecordId);
+            if(record) {
+                record.status = status;
+                addLog(`Cán bộ [${officerName}] cập nhật biên bản [${editRecordId}] của @${username} thành: [${status}].`);
+            }
         }
-        app.logs.push({ sender: officerName, msg: `Lãnh Đạo đơn vị (${officerName}) phê chuẩn trạng thái hồ sơ thành: [${status}].`, time: new Date().toLocaleTimeString('vi-VN') });
-    } 
-    else if (action === 'satisfaction') {
-        app.satisfaction = status;
-        app.logs.push({ sender: "Hệ thống khảo sát", msg: `Người dân phản hồi mức độ giải quyết: [${status}].`, time: new Date().toLocaleTimeString('vi-VN') });
-    } 
-    else if (action === 'archive') {
-        if ((app.citizenSigned && app.officerSigned && app.leaderSigned) || officerRole === 'ADMIN') {
-            app.status = "Đã Khóa & Lưu Kho Quốc Gia";
-            app.stamp = "stamp-archived";
-            app.logs.push({ sender: officerName, msg: `Thực hiện niêm phong mã hóa, đồng bộ hồ sơ chuyển giao vào Kho Lưu Trữ Quốc Gia Tối Cao.`, time: new Date().toLocaleTimeString('vi-VN') });
-            
-            systemState.archivedApplications[id] = app;
-            delete systemState.applications[id];
-            addLog(`Hồ sơ số ${id} đã đủ 3 chữ ký số ban ngành, niêm phong thành công vào Kho lưu trữ Quốc gia.`);
-        } else {
-            return res.json({ success: false, error: "Hồ sơ chưa đủ điều kiện lưu trữ! Yêu cầu phải có đủ chữ ký của cả 3 bên." });
-        }
-    } 
-    else if (action === 'unarchive') {
-        app.status = "Cấp Admin Phục Hồi - Tái Thẩm";
-        app.stamp = "stamp-pending";
-        app.leaderSigned = false;
-        app.logs.push({ sender: "ADMIN TỐI CAO", msg: `Kích hoạt đặc quyền Tái Thẩm Tối Cao. Trục xuất hồ sơ khỏi kho lưu trữ quốc gia để xử lý lại kịch bản nghiệp vụ.`, time: new Date().toLocaleTimeString('vi-VN') });
-        
-        systemState.applications[id] = app;
-        delete systemState.archivedApplications[id];
-        addLog(`ADMIN kích hoạt quyền lực tái thẩm, phục hồi hồ sơ lưu kho số ${id}.`);
+    } else {
+        const recordId = `VP-${Math.floor(100 + Math.random() * 900)}`;
+        const dateNow = new Date().toLocaleDateString('vi-VN');
+        if (!criminalRecordsRegistry[username]) { criminalRecordsRegistry[username] = []; }
+        criminalRecordsRegistry[username].unshift({ id: recordId, type, lawClause, fine, status, officer: officerName, date: dateNow });
+        addLog(`Cán bộ [${officerName}] ban hành quyết định xử phạt [${recordId}] đối với công dân: @${username}.`);
     }
-
+    
     broadcastUpdate();
     res.json({ success: true });
 });
 
-app.post('/api/resident/register', (req, res) => {
-    const { username, name, dob, gender, pob, job, licenses, status, officerName, customDocInfo } = req.body;
-    let licenseArray = Array.isArray(licenses) ? licenses : licenses.split(',').map(l => l.trim()).filter(Boolean);
-
-    citizenIdentityRegistry[username] = {
-        username, name, dob, gender, pob, job,
-        licenses: licenseArray,
-        status,
-        officer: officerName,
-        customDocInfo: customDocInfo || {} 
-    };
-
-    addLog(`Cán bộ ${officerName} cập nhật phôi văn bằng và thông tin lý lịch cho tài khoản cư dân @${username}.`);
-    broadcastUpdate();
-    res.json({ success: true });
-});
-
+// QUẢN LÝ / CẬP NHẬT TÀI KHOẢN CÁN BỘ CÓ UPDATE
 app.post('/api/officer/save', (req, res) => {
-    const { username, password, displayName, role, agency } = req.body;
-    systemState.authorizedPersonnel[username] = { username, password, displayName, role, agency, positiveRatings: 0, negativeRatings: 0 };
-    addLog(`ADMIN thiết lập sắc lệnh phân quyền nhân sự cấp bậc cho cán bộ: @${username} [${role}] thuộc [${agency}].`);
+    const { username, password, displayName, role, agency, isEdit } = req.body;
+    
+    if (isEdit === 'true' && systemState.authorizedPersonnel[username]) {
+        let oldData = systemState.authorizedPersonnel[username];
+        systemState.authorizedPersonnel[username] = { 
+            ...oldData, 
+            password, 
+            displayName, 
+            role, 
+            agency 
+        };
+        addLog(`ADMIN hiệu chỉnh tài khoản hệ thống của cán bộ: @${username}.`);
+    } else {
+        systemState.authorizedPersonnel[username] = { 
+            username, password, displayName, role, agency, 
+            positiveRatings: 0, negativeRatings: 0, processedCount: 0 
+        };
+        addLog(`ADMIN bổ nhiệm chứng thư cán bộ mới: ${displayName}.`);
+    }
     broadcastUpdate();
     res.json({ success: true });
 });
 
 app.post('/api/officer/delete', (req, res) => {
-    delete systemState.authorizedPersonnel[req.body.username];
-    addLog(`ADMIN trục xuất công vụ vĩnh viễn của tài khoản: @${req.body.username}.`);
+    const { username } = req.body;
+    if (username === 'admin') return res.status(400).json({ error: "Không thể xóa Admin tối cao" });
+    if (systemState.authorizedPersonnel[username]) {
+        delete systemState.authorizedPersonnel[username];
+        addLog(`ADMIN xóa quyền truy cập tài khoản cán bộ: @${username}.`);
+        broadcastUpdate();
+        res.json({ success: true });
+    } else { res.status(404).json({ error: "Không tìm thấy" }); }
+});
+
+// SỐ HÓA DÂN CƯ GỐC HOẶC PHÂN HỆ CẤP BẰNG RIÊNG BIỆT
+app.post('/api/resident/register', (req, res) => {
+    const { username, name, dob, gender, pob, job, licenses, status, officerName, mode } = req.body;
+    
+    if(mode === "licenses_only") {
+        if(citizenIdentityRegistry[username]) {
+            citizenIdentityRegistry[username].licenses = licenses ? licenses.split(',').map(l => l.trim()) : [];
+            addLog(`Cán bộ [${officerName}] cập nhật hệ thống văn bằng chứng chỉ cho: @${username}.`);
+        }
+    } else {
+        citizenIdentityRegistry[username] = {
+            name, dob, gender, pob, job,
+            licenses: citizenIdentityRegistry[username] ? citizenIdentityRegistry[username].licenses : [],
+            status
+        };
+        addLog(`Cán bộ [${officerName}] số hóa thông tin định danh dân cư gốc: @${username}.`);
+    }
+    broadcastUpdate();
+    res.json({ success: true });
+});
+
+app.post('/api/applications/submit', (req, res) => {
+    const { sender, agency, docType, content } = req.body;
+    const id = `HS-${Object.keys(systemState.applications).length + Object.keys(systemState.archivedApplications).length + 1001}`;
+    const timeNow = new Date().toLocaleTimeString('vi-VN');
+
+    systemState.applications[id] = {
+        id, sender, agency, docType, content,
+        status: "Đang Chờ Tiếp Nhận", stamp: "stamp-pending", handler: "Chưa phân phối", handlerTitle: "Hệ thống tự động",
+        logs: [{ sender: "Hệ thống", msg: `Hồ sơ nộp trực tuyến thành công vào luồng xử lý của [${agency}].`, time: timeNow }],
+        satisfaction: null
+    };
+    addLog(`Công dân @${sender} nộp đơn hồ sơ trực tuyến mang mã số [${id}].`);
+    broadcastUpdate();
+    io.emit('newApplicationAlert', { id, agency, docType });
+    res.json({ success: true, id });
+});
+
+// NGHIỆP VỤ LIÊN THÔNG QUỐC GIA: DUYỆT, CHUYỂN BAN NGÀNH, TRÌNH LÃNH ĐẠO, LƯU KHO QUỐC GIA
+app.post('/api/applications/action', (req, res) => {
+    const { id, action, msg, officerName, officerRole, status, stamp, targetAgency } = req.body;
+    let app = systemState.applications[id] || systemState.archivedApplications[id];
+    if (!app) return res.status(404).json({ error: "Không tìm thấy hồ sơ." });
+
+    const timeNow = new Date().toLocaleTimeString('vi-VN');
+
+    if(officerName && systemState.authorizedPersonnel[officerName]) {
+        systemState.authorizedPersonnel[officerName].processedCount++;
+    }
+
+    if (action === 'chat') {
+        app.logs.push({ sender: officerName, msg, time: timeNow });
+        io.emit('newChatMessage', { fileId: id });
+        return res.json({ success: true });
+    } 
+    
+    if (action === 'claim_packet') {
+        app.status = "Đã Tiếp Nhận Xử Lý"; app.stamp = "stamp-forwarded"; app.handler = officerName; app.handlerTitle = officerRole;
+        app.logs.push({ sender: "Hệ thống", msg: `Hồ sơ đã được tiếp nhận làm việc bởi Cán bộ: ${officerName}.`, time: timeNow });
+        addLog(`Hồ sơ ${id} được tiếp nhận xử lý bởi cán bộ ${officerName}.`);
+    } else if (action === 'status') {
+        app.status = status; app.stamp = stamp;
+        app.logs.push({ sender: "Hệ thống", msg: `Cập nhật kết quả thẩm định: [${status}].`, time: timeNow });
+        addLog(`Hồ sơ ${id} ban hành kết quả phê chuẩn: ${status}.`);
+    } else if (action === 'forward_agency') {
+        app.agency = targetAgency; app.status = "Đang Chờ Tiếp Nhận"; app.stamp = "stamp-pending";
+        app.logs.push({ sender: "Hệ thống", msg: `Điều chuyển hồ sơ sang cơ quan chuyên môn liên ngành: [${targetAgency}].`, time: timeNow });
+        addLog(`Hồ sơ ${id} chuyển ngành sang đơn vị [${targetAgency}].`);
+    } else if (action === 'to_leader') {
+        app.status = "Chờ Lãnh Đạo Duyệt"; app.stamp = "stamp-leader";
+        app.logs.push({ sender: "Hệ thống", msg: `Trình hồ sơ vượt thẩm quyền lên cấp Lãnh Đạo Tối Cao ký duyệt văn bản.`, time: timeNow });
+        addLog(`Hồ sơ ${id} được cán bộ điều hướng trình lên cấp lãnh đạo chỉ huy.`);
+    } else if (action === 'archive') {
+        app.status = "Đã Đóng & Lưu Kho"; app.stamp = "stamp-archived";
+        app.logs.push({ sender: "Hệ thống", msg: `Hồ sơ khép lại quy trình công vụ, chuyển lưu kho niêm phong dữ liệu quốc gia.`, time: timeNow });
+        systemState.archivedApplications[id] = app; delete systemState.applications[id];
+        addLog(`Hồ sơ ${id} đóng dấu chuyển lưu kho quốc gia.`);
+    } else if (action === 'unarchive') {
+        app.status = "Mở Lại Xử Lý Lại"; app.stamp = "stamp-pending";
+        app.logs.push({ sender: "Văn Phòng Điều Hành", msg: `Phục hồi hồ sơ từ kho quốc gia đưa về bàn làm việc bộ ngành kịch bản.`, time: timeNow });
+        systemState.applications[id] = app; delete systemState.archivedApplications[id];
+        addLog(`Hồ sơ ${id} được khôi phục ngược ra từ kho dữ liệu.`);
+    } else if (action === 'satisfaction') {
+        app.satisfaction = status;
+        if (status === 'KHIẾU NẠI CẤP CAO') {
+            app.status = "Đang Khiếu Nại Cấp Cao"; app.stamp = "stamp-rejected"; app.agency = "THANH TRA";
+            app.logs.push({ sender: "Công Dân", msg: "CÔNG DÂN KHỞI SỰ ĐƠN KHIẾU NẠI KHẨN CẤP LÊN THANH TRA CHÍNH PHỦ.", time: timeNow });
+            addLog(`Công dân gửi đơn khiếu nại khẩn cấp quy trình xử lý của đơn thư mã số: ${id}.`);
+        } else {
+            Object.values(systemState.authorizedPersonnel).forEach(u => { if (u.displayName === app.handler) { if (status === 'HÀI LÒNG') u.positiveRatings++; else u.negativeRatings++; } });
+        }
+    }
     broadcastUpdate();
     res.json({ success: true });
 });
 
 app.post('/api/national/publish', (req, res) => {
     const { type, title, content, author } = req.body;
-    const timeNow = new Date().toLocaleTimeString('vi-VN');
+    const timeNow = new Date().toLocaleTimeString('vi-VN') + " - 20/06/2026";
     if (type === 'TRUY NÃ') {
         systemState.criminalWantedList.unshift({ name: title, crime: content, bounty: "Theo khung hình sự giả lập", date: new Date().toLocaleDateString('vi-VN') });
-        addLog(`LÃNH ĐẠO (${author}) phát lệnh truy nã khẩn cấp đối tượng quốc gia: @${title}.`);
+        addLog(`Lãnh đạo phát sắc lệnh TRUY NÃ đối tượng nguy hiểm quốc gia: @${title}.`);
     } else {
         systemState.announcements.unshift({ id: `NEWS-${Date.now().toString().slice(-4)}`, type, title, content, timestamp: timeNow });
-        addLog(`LÃNH ĐẠO (${author}) ban hành chỉ thị ấn bản mới: ${title}.`);
+        addLog(`Lãnh đạo ban hành sắc lệnh chỉ thị văn bản điện tử mới: ${title}.`);
     }
     broadcastUpdate();
     res.json({ success: true });
@@ -245,16 +263,10 @@ app.post('/api/national/publish', (req, res) => {
 
 app.post('/api/national/ticker', (req, res) => { systemState.tickerMessage = req.body.message; broadcastUpdate(); res.json({ success: true }); });
 app.post('/api/national/delete-announcement', (req, res) => { systemState.announcements = systemState.announcements.filter(a => a.id !== req.body.id); broadcastUpdate(); res.json({ success: true }); });
-app.post('/api/national/security', (req, res) => { systemState.securityLevel = req.body.level; addLog(`Thay đổi mức độ cảnh báo an ninh toàn hệ thống sang: [${req.body.level}].`); broadcastUpdate(); res.json({ success: true }); });
+app.post('/api/national/security', (req, res) => { systemState.securityLevel = req.body.level; addLog(`Cảnh báo an ninh toàn hệ thống dịch chuyển sang: [${req.body.level}].`); broadcastUpdate(); res.json({ success: true }); });
 
 io.on('connection', (socket) => {
-    socket.emit('initData', {
-        systemState,
-        citizenIdentityRegistry,
-        criminalRecordsRegistry
-    });
+    socket.emit('initData', { systemState, citizenIdentityRegistry, criminalRecordsRegistry });
 });
 
-server.listen(PORT, () => {
-    console.log(`Server v9.0 dang chay tren port ${PORT}`);
-});
+server.listen(PORT, () => console.log(`SYSTEM SIMULATOR ACTIVE REALTIME PORT: ${PORT}`));
