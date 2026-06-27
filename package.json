@@ -1,7 +1,7 @@
 {
   "name": "government-roleplay-service",
-  "version": "3.0.0",
-  "description": "Cổng trục liên thông dữ liệu quốc gia đa nhiệm realtime siêu cấp v2026",
+  "version": "4.0.0",
+  "description": "Cổng trục lõi liên thông dữ liệu quốc gia siêu đa nhiệm v4.0",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
