@@ -1,7 +1,7 @@
 {
-  "name": "government-roleplay-service",
-  "version": "5.0.0",
-  "description": "Trục liên thông tối cao ma trận quốc vụ số đa nhiệm v5.0 - Khắc phục lõi xử lý hồ sơ",
+  "name": "government-roleplay-service-v6",
+  "version": "6.0.0",
+  "description": "Trục liên thông tối cao ma trận quốc vụ số đa nhiệm v6.0 - Grand Integration Cyber Matrix",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
