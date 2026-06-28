@@ -1,7 +1,7 @@
 {
-  "name": "government-roleplay-service-v6",
-  "version": "6.5.0",
-  "description": "Trục liên thông tối cao ma trận quốc vụ số đa nhiệm v6.5 - Cyber Matrix Overdrive",
+  "name": "government-roleplay-service-v7",
+  "version": "7.0.0",
+  "description": "Siêu trục ma trận quốc vụ số liên thông tối cao v7.0 - Đại tu giao diện đa nền tảng và lõi tư pháp",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
