@@ -1,7 +1,7 @@
 {
   "name": "government-roleplay-service",
-  "version": "4.0.0",
-  "description": "Cổng trục lõi liên thông dữ liệu quốc gia siêu đa nhiệm v4.0",
+  "version": "5.0.0",
+  "description": "Trục liên thông tối cao ma trận quốc vụ số đa nhiệm v5.0 - Khắc phục lõi xử lý hồ sơ",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
