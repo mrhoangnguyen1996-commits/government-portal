@@ -1,7 +1,7 @@
 {
-  "name": "government-roleplay-service-v7",
-  "version": "7.0.0",
-  "description": "Siêu trục ma trận quốc vụ số liên thông tối cao v7.0 - Đại tu giao diện đa nền tảng và lõi tư pháp",
+  "name": "government-roleplay-service",
+  "version": "5.5.0",
+  "description": "Trục liên thông tối cao ma trận quốc vụ số đa nhiệm v5.5 - Siêu cập nhật Toàn diện Nghiệp vụ Tư pháp",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
