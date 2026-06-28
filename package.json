@@ -1,7 +1,7 @@
 {
   "name": "government-roleplay-service",
-  "version": "5.0.0",
-  "description": "Trục liên thông tối cao ma trận quốc vụ số đa nhiệm v5.0 - Khắc phục lõi xử lý hồ sơ",
+  "version": "6.0.0",
+  "description": "Trục liên thông quốc gia ma trận dữ liệu tối cao v6.0 - Khóa vòng đời hồ sơ hành chính",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
