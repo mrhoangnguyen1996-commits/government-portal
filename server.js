@@ -9,10 +9,17 @@ const io = new Server(server, { cors: { origin: "*" } });
 
 const PORT = process.env.PORT || 3000;
 
+// XỬ LÝ ĐƯỜNG DẪN CONFIG BẢO MẬT TUYỆT ĐỐI CHO RENDER/GITHUB
+const ROOT_DIR = path.resolve(__dirname);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// CẤU HÌNH ĐỌC ASSET TĨNH CÔNG CỘNG (PUBLIC) - FIX LỖI 100%
+app.use(express.static(path.join(ROOT_DIR, 'public')));
+
+// CẤU HÌNH ENGINE VIEW EJS ĐƯỜNG DẪN TUYỆT ĐỐI
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(ROOT_DIR, 'views'));
 
 // CORE STATE MATRIX - KHO DỮ LIỆU LIÊN THÔNG QUỐC GIA TOÀN DIỆN
 let systemState = {
@@ -70,7 +77,6 @@ function broadcastUpdate() {
 function processBotAI(msg) {
     const text = msg.toUpperCase();
     
-    // 1. Kiểm tra cứu hồ sơ trực tiếp
     if (text.includes("HS-") || text.includes("HỒ SƠ")) {
         const match = text.match(/HS-\d+/);
         if (match) {
@@ -82,7 +88,6 @@ function processBotAI(msg) {
         }
     }
     
-    // 2. Kiểm tra tư pháp cư dân tự động
     for (let username in citizenIdentityRegistry) {
         if (text.includes(username.toUpperCase()) || text.includes(citizenIdentityRegistry[username].name.toUpperCase())) {
             const citizen = citizenIdentityRegistry[username];
@@ -98,11 +103,15 @@ function processBotAI(msg) {
     return "Tôi là Tuệ Đức v4 - Trợ lý trí tuệ nhân tạo lõi. Tôi đã đồng bộ với DB quốc gia. Hãy hỏi về mã hồ sơ, tên cư dân hoặc thủ tục hành chính trực tuyến.";
 }
 
+// ROUTER GET CHÍNH - KHẮC PHỤC LỖI CANNOT GET /
+app.get('/', (req, res) => {
+    res.render('index', { state: systemState, registry: citizenIdentityRegistry, violations: criminalRecordsRegistry });
+});
+
 app.post('/api/bot/chat', (req, res) => {
     res.json({ reply: processBotAI(req.body.message) });
 });
 
-// ROUTE TƯƠNG TÁC HỒ SƠ ĐA CHIỀU & LUÂN CHUYỂN LIÊN NGÀNH
 app.post('/api/applications/action', (req, res) => {
     const { id, action, msg, officerName, officerRole, status, stamp, targetAgency } = req.body;
     let app = systemState.applications[id] || systemState.archivedApplications[id];
@@ -118,7 +127,7 @@ app.post('/api/applications/action', (req, res) => {
     } else if (action === 'status') {
         app.status = status; app.stamp = stamp;
         app.logs.push({ sender: "Thẩm định", msg: `Cán bộ ${officerName} duyệt thay đổi trạng thái sang: [${status}].`, time: timeNow });
-    } else if (action === 'forward') { // ĐIỀU CHUYỂN LIÊN NGÀNH KHÔNG CHẬM TRỄ
+    } else if (action === 'forward') {
         app.logs.push({ sender: "Hệ thống", msg: `Thủ trưởng ${officerName} ký lệnh điều chuyển hồ sơ liên ngành vượt thẩm quyền sang Bộ phận: [${targetAgency}].`, time: timeNow });
         app.agency = targetAgency; app.status = "Đang Chờ Tiếp Nhận"; app.stamp = "stamp-pending";
         addLog(`Hồ sơ ${id} được chuyển ngành từ đơn vị cũ sang cơ quan [${targetAgency}].`);
@@ -139,7 +148,6 @@ app.post('/api/applications/action', (req, res) => {
     res.json({ success: true });
 });
 
-// CÁC ROUTE CƠ SỞ DỮ LIỆU CHUẨN CẤP PHÔI VÀ BÁO CÁO CA TRỰC
 app.post('/api/resident/violation', (req, res) => {
     const { username, type, lawClause, fine, status, officerName } = req.body;
     const recordId = `VP-${Math.floor(100 + Math.random() * 900)}`;
@@ -158,7 +166,7 @@ app.post('/api/resident/register', (req, res) => {
     res.json({ success: true });
 });
 
-app.post('/api/resident/add-license', (req, res) => { // CẤP VĂN BẰNG ĐỘC LẬP TẠI BÀN LÀM VIỆC
+app.post('/api/resident/add-license', (req, res) => {
     const { username, license, officerName } = req.body;
     if (citizenIdentityRegistry[username]) {
         citizenIdentityRegistry[username].licenses.push(license);
@@ -230,4 +238,4 @@ io.on('connection', (socket) => {
     socket.emit('initData', { systemState, citizenIdentityRegistry, criminalRecordsRegistry });
 });
 
-server.listen(PORT, () => console.log(`[REALTIME CORE] SERVER RUNNING SMOOTHLY ON PORT: ${PORT}`));
+server.listen(PORT, () => console.log(`[REALTIME CORE] SERVER RUNNING ON PORT: ${PORT}`));
