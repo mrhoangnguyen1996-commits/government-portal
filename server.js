@@ -8,51 +8,46 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
 const PORT = process.env.PORT || 3000;
-
-// CHỐ SỬA LỖI QUAN TRỌNG: ĐỊNH VỊ ĐƯỜNG DẪN GỐC AN TOÀN CHO RENDER/GITHUB
 const ROOT_DIR = path.resolve(__dirname);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// KHẮC PHỤC LỖI THIẾU ASSET: CẤU HÌNH ĐỌC THƯ MỤC TĨNH PUBLIC
 app.use(express.static(path.join(ROOT_DIR, 'public')));
 
-// CẤU HÌNH ĐƯỜNG DẪN VIEW ENGINE EJS CHUẨN TUYỆT ĐỐI
 app.set('view engine', 'ejs');
 app.set('views', path.join(ROOT_DIR, 'views'));
 
-// KHO DỮ LIỆU LIÊN THÔNG QUỐC GIA (REALTIME STATE CORE)
+// HỆ THỐNG STATE MATRIX TOÀN QUỐC BẢO MẬT v5.0
 let systemState = {
     securityLevel: "AN TOÀN",
-    tickerMessage: "⚡ CHÍNH PHỦ SỐ HÓA 2026: Hệ thống liên thông vận hành trực tuyến. Khóa luồng đàm thoại khi công dân bấm HÀI LÒNG để tiến hành phê duyệt niêm phong lưu kho.",
+    tickerMessage: "⚡ HỆ THỐNG LIÊN THÔNG QUỐC GIA CHÍNH PHỦ SỐ: Yêu cầu các bộ phận xử lý hồ sơ cư dân đúng quy trình kịch bản. Chú ý theo dõi bảng báo cáo ca trực và luân chuyển đơn thư vượt thẩm quyền kịp thời.",
     systemLogs: [
-        { time: new Date().toLocaleTimeString('vi-VN') + " - 28/06/2026", text: "Hệ thống trục lõi v6.1 sửa lỗi định tuyến tĩnh khởi động thành công." }
+        { time: new Date().toLocaleTimeString('vi-VN') + " - 28/06/2026", text: "Trục cơ sở dữ liệu số hóa quốc gia v5.0 chính thức vận hành." }
     ],
     announcements: [
-        { id: "NEWS-601", type: "QUYẾT ĐỊNH", title: "Áp dụng cơ chế đóng băng đơn thư hành chính trực tuyến", content: "Hệ thống tự động khóa luồng khi công dân bấm hài lòng để cán bộ tiến hành nộp trình tấu cấp trên phê duyệt.", timestamp: "28/06/2026, 08:00:00" }
+        { id: "AN-101", type: "QUYẾT ĐỊNH", title: "Áp dụng Luật số hóa hồ sơ kịch bản và phân tầng quyền tư pháp 2026", content: "Đồng bộ hóa phôi con dấu điện tử, tách biệt cổng cấp phôi độc lập và nâng cấp Trợ lý AI Tuệ Đức đọc trạng thái lõi.", timestamp: "28/06/2026, 08:00:00" }
     ],
     criminalWantedList: [
-        { name: "Nguyen_Van_A", crime: "Tổ chức đua xe trái phép kịch bản và chống người thi hành công vụ", bounty: "20,000,000 VND", date: "25/06/2026" }
+        { name: "Nguyen_Van_A", crime: "Tổ chức đua xe kịch bản và chống người thi hành công vụ", bounty: "20,000,000 VND", date: "25/06/2026" }
     ],
     applications: {
         "HS-1001": {
-            id: "HS-1001", sender: "Nguyen_Manh_Hoang", agency: "CÔNG AN", docType: "CĂN CƯỚC CÔNG DÂN GẮN CHÍP",
-            content: "Xin cấp lại thẻ căn cước công dân gắn chíp điện tử định danh cá nhân do bị thất lạc khi di chuyển kịch bản.",
+            id: "HS-1001", sender: "Nguyen_Manh_Hoang", agency: "CÔNG AN", docType: "CĂN CƯỚC CÔNG DÂN",
+            content: "Xin cấp lại thẻ căn cước công dân gắn chíp điện tử do bị thất lạc trong quá trình làm việc kịch bản.",
             status: "Đang Chờ Tiếp Nhận", stamp: "stamp-pending", handler: "Chưa phân phối", handlerTitle: "Trực ban liên thông",
-            logs: [{ sender: "Hệ thống", msg: "Hồ sơ số hóa khởi tạo thành công.", time: new Date().toLocaleTimeString('vi-VN') }],
-            satisfaction: null, priority: "BÌNH THƯỜNG", isLocked: false
+            logs: [{ sender: "Hệ thống", msg: "Khởi tạo thành công hồ sơ trên cổng liên thông.", time: new Date().toLocaleTimeString('vi-VN') }],
+            satisfaction: null, priority: "BÌNH THƯỜNG"
         }
     },
     archivedApplications: {},
     shiftReports: [
-        { id: "RP-77", date: "28/06/2026", officer: "Thiếu Tá Lê Minh Tuấn", agency: "CÔNG AN", taskStatus: "HOÀN THÀNH XUẤT SẮC CA TRỰC", content: "Tình hình ca trực ổn định, xử lý lưu kho bảo mật an toàn 2 hồ sơ công dân kịch bản.", status: "ĐÃ PHÊ DUYỆT", feedback: "Lãnh đạo đã phê duyệt lưu trữ." }
+        { id: "RP-99", date: "28/06/2026", officer: "Thiếu Tá Lê Minh Tuấn", agency: "CÔNG AN", taskStatus: "HOÀN THÀNH XUẤT SẮC", content: "Hoàn tất tuần tra quảng trường kịch bản, xử lý 4 biên bản giao thông, quân số trực ban đầy đủ.", status: "ĐÃ PHÊ DUYỆT", feedback: "Rất tốt." }
     ],
     authorizedPersonnel: {
-        "admin": { username: "admin", password: "123", displayName: "Văn Phòng Trung Ương Điều Hành", role: "ADMIN", agency: "HỆ THỐNG", positiveRatings: 2, negativeRatings: 0 },
-        "canbo1": { username: "canbo1", password: "123", displayName: "Thiếu Tá Lê Minh Tuấn", role: "CHUYÊN VIÊN", agency: "CÔNG AN", positiveRatings: 15, negativeRatings: 1 },
-        "lanhdao1": { username: "lanhdao1", password: "123", displayName: "Đại Tá Nguyễn Hoàng", role: "LÃNH ĐẠO", agency: "CÔNG AN", positiveRatings: 24, negativeRatings: 0 },
-        "thanhtra1": { username: "thanhtra1", password: "123", displayName: "Thanh Tra Viên Trần Lực", role: "THANH TRA", agency: "THANH TRA", positiveRatings: 7, negativeRatings: 0 }
+        "admin": { username: "admin", password: "123", displayName: "Văn Phòng Trung Ương Điều Hành", role: "ADMIN", agency: "HỆ THỐNG", positiveRatings: 0, negativeRatings: 0 },
+        "canbo1": { username: "canbo1", password: "123", displayName: "Thiếu Tá Lê Minh Tuấn", role: "CHUYÊN VIÊN", agency: "CÔNG AN", positiveRatings: 5, negativeRatings: 1 },
+        "lanhdao1": { username: "lanhdao1", password: "123", displayName: "Đại Tá Nguyễn Hoàng", role: "LÃNH ĐẠO", agency: "CÔNG AN", positiveRatings: 8, negativeRatings: 0 },
+        "thanhtra1": { username: "thanhtra1", password: "123", displayName: "Thanh Tra Viên Trần Lực", role: "THANH TRA", agency: "THANH TRA", positiveRatings: 2, negativeRatings: 0 }
     }
 };
 
@@ -73,7 +68,7 @@ function broadcastUpdate() {
     io.emit('stateUpdate', { systemState, citizenIdentityRegistry, criminalRecordsRegistry });
 }
 
-// AI ENGINE BOT TRA CỨU QUÉT STATE
+// AI ENGINE BOT V5 - TRUY XUẤT TRẠNG THÁI LÕI CỰC MẠNH
 function processBotAI(msg) {
     const text = msg.toUpperCase();
     if (text.includes("HS-") || text.includes("HỒ SƠ")) {
@@ -81,83 +76,88 @@ function processBotAI(msg) {
         if (match) {
             const appId = match[0];
             const app = systemState.applications[appId] || systemState.archivedApplications[appId];
-            if (app) return `[Hệ thống AI] Hồ sơ ${appId} trạng thái: "${app.status}". Khóa đàm thoại: ${app.isLocked ? 'ĐÃ KHÓA VÌ DÂN HÀI LÒNG' : 'ĐANG MỞ'}.`;
+            if (app) return `[Hệ thống quét tự động] Hồ sơ mang mã số ${appId} thuộc đơn vị [${app.agency}] hiện có trạng thái: "${app.status}". Cán bộ thụ lý: ${app.handler}.`;
         }
     }
-    for (let key in citizenIdentityRegistry) {
-        if (text.includes(key.toUpperCase()) || text.includes(citizenIdentityRegistry[key].name.toUpperCase())) {
-            let c = citizenIdentityRegistry[key];
-            return `[AI Quét] Cư dân ${c.name} | Chức vụ: ${c.job} | Trạng thái tư pháp: ${c.status}.`;
+    for (let username in citizenIdentityRegistry) {
+        if (text.includes(username.toUpperCase()) || text.includes(citizenIdentityRegistry[username].name.toUpperCase())) {
+            const citizen = citizenIdentityRegistry[username];
+            const v = criminalRecordsRegistry[username] || [];
+            return `[Cơ sở dữ liệu cư dân] Công dân: ${citizen.name} | Ngày sinh: ${citizen.dob} | Trạng thái kịch bản: ${citizen.status}. Vi phạm ghi nhận: ${v.length} lần.`;
         }
     }
-    return "Tôi là Tuệ Đức v6.1. Hệ thống trợ lý công vụ tự động quét dữ liệu và hỗ trợ công dân xử lý phôi hành chính.";
+    if (text.includes("CĂN CƯỚC")) return "Thủ tục Cấp mới/Cấp đổi thẻ căn cước công dân gắn chíp yêu cầu nộp đơn trực tuyến về BỘ CÔNG AN thẩm định phôi.";
+    if (text.includes("BÁO CÁO")) return "Hệ thống báo cáo ca trực liên ngành dùng để ghi nhận tiến độ công việc hàng ngày của cán bộ trực ban kịch bản.";
+    return "Tôi là Tuệ Đức v5 - Hệ thống trợ lý ảo liên thông quốc gia. Tôi nắm toàn bộ cơ sở dữ liệu trên trang web. Hãy cung cấp mã hồ sơ hoặc tên tài khoản để tôi truy quét.";
 }
 
-// CHỖ SỬA LỖI QUAN TRỌNG: ĐỊNH NGHĨA ROUTE GET PHƯƠNG THỨC GỐC ĐỂ TRANH LỖI CANNOT GET /
 app.get('/', (req, res) => {
     res.render('index', { state: systemState, registry: citizenIdentityRegistry, violations: criminalRecordsRegistry });
 });
 
-app.post('/api/bot/chat', (req, res) => { res.json({ reply: processBotAI(req.body.message) }); });
+app.post('/api/bot/chat', (req, res) => {
+    res.json({ reply: processBotAI(req.body.message) });
+});
 
-// LUỒNG TƯƠNG TÁC VÒNG ĐỜI HỒ SƠ 2 CHIỀU
+// VÁ LỖI VÀ ĐA DẠNG HÓA MA TRẬN LUỒNG XỬ LÝ HỒ SƠ TƯ PHÁP
 app.post('/api/applications/action', (req, res) => {
     const { id, action, msg, officerName, officerRole, status, stamp, targetAgency } = req.body;
     let app = systemState.applications[id] || systemState.archivedApplications[id];
-    if (!app) return res.status(404).json({ error: "Không tìm thấy hồ sơ." });
+    if (!app) return res.status(404).json({ error: "Không tìm thấy hồ sơ hành chính trên trục liên thông." });
     const timeNow = new Date().toLocaleTimeString('vi-VN');
-
-    if (app.isLocked && action === 'chat' && officerName.includes("Công Dân")) {
-        return res.status(400).json({ error: "Hồ sơ đã được đóng băng đàm thoại." });
-    }
 
     if (action === 'chat') {
         app.logs.push({ sender: officerName, msg, time: timeNow });
         io.emit('newChatMessage', { fileId: id });
     } else if (action === 'claim_packet') {
         app.status = "Đã Tiếp Nhận Xử Lý"; app.stamp = "stamp-forwarded"; app.handler = officerName; app.handlerTitle = officerRole;
-        app.logs.push({ sender: "Hệ thống", msg: `Cán bộ ${officerName} nhận quyền phụ trách hồ sơ kịch bản.`, time: timeNow });
+        app.logs.push({ sender: "Hệ thống số hóa", msg: `Cán bộ nghiệp vụ ${officerName} đã ký số tiếp nhận phụ trách hồ sơ này.`, time: timeNow });
+        addLog(`Hồ sơ ${id} đã được phân phối thụ lý cho cán bộ ${officerName}.`);
     } else if (action === 'status') {
         app.status = status; app.stamp = stamp;
-        app.logs.push({ sender: "Thẩm định viên", msg: `Cập nhật trạng thái luồng hồ sơ sang: [${status}].`, time: timeNow });
-    } else if (action === 'forward') {
-        app.logs.push({ sender: "Hệ thống liên ngành", msg: `${officerName} luân chuyển hồ sơ sang cơ quan bộ phận: [${targetAgency}].`, time: timeNow });
+        app.logs.push({ sender: "Hội đồng thẩm định", msg: `Cán bộ quyền hạn ${officerName} thay đổi trạng thái hồ sơ sang: [${status}].`, time: timeNow });
+        addLog(`Hồ sơ mang mã số ${id} thay đổi trạng thái xử lý sang: ${status} bởi ${officerName}.`);
+    } else if (action === 'forward') { 
+        app.logs.push({ sender: "Hệ thống điều phối", msg: `Hồ sơ vượt thẩm quyền, cán bộ ${officerName} ký chuyển ngành liên thông sang đơn vị bộ phận: [${targetAgency}].`, time: timeNow });
         app.agency = targetAgency; app.status = "Đang Chờ Tiếp Nhận"; app.stamp = "stamp-pending";
-        addLog(`Hồ sơ ${id} luân chuyển sang bộ phận [${targetAgency}].`);
+        addLog(`Hồ sơ ${id} được điều chuyển phân luồng nghiệp vụ sang cơ quan ban ngành [${targetAgency}].`);
     } else if (action === 'archive') {
-        app.status = "Đã Niêm Phong Lưu Kho Tối Cao"; app.stamp = "stamp-archived";
+        app.status = "Đã Đóng & Lưu Kho Mật"; app.stamp = "stamp-archived";
         systemState.archivedApplications[id] = app; delete systemState.applications[id];
-        addLog(`Hồ sơ ${id} chính thức chuyển vào Kho bảo mật quốc gia.`);
+        addLog(`Niêm phong vĩnh viễn hồ sơ ${id} chuyển lưu kho dữ liệu quốc gia.`);
     } else if (action === 'satisfaction') {
         app.satisfaction = status;
-        if (status === 'HÀI LÒNG') {
-            app.isLocked = true; // KHÓA VĨNH VIỄN LUỒNG ĐÀM THOẠI CỦA DÂN CƯ TRÊN FILE NÀY
-            app.logs.push({ sender: "Hệ thống tự động", msg: "🔒 Công dân chấm điểm HÀI LÒNG. Luồng đàm thoại của cư dân trên hồ sơ này chính thức khóa.", time: timeNow });
-        } else if (status === 'KHIẾU NẠI CẤP CAO') {
-            app.status = "Đang Khiếu Nại Khẩn Cấp"; app.stamp = "stamp-rejected"; app.agency = "THANH TRA";
-            app.logs.push({ sender: "Thanh tra hệ thống", msg: "🚨 Công dân gửi đơn KHIẾU NẠI KHẨN CẤP quy trình lên Thanh Tra Chính Phủ.", time: timeNow });
+        if (status === 'KHIẾU NẠI CẤP CAO') {
+            app.status = "Đang Khiếu Nại Cấp Cao"; app.stamp = "stamp-rejected"; app.agency = "THANH TRA";
+            app.logs.push({ sender: "Hệ thống tự động", msg: "🚨 CÔNG DÂN CHÍNH THỨC PHÁT LỆNH KHIẾU NẠI KHẨN CẤP VỀ QUY TRÌNH HÀNH CHÍNH LÊN THANH TRA CHÍNH PHỦ.", time: timeNow });
+        } else {
+            Object.values(systemState.authorizedPersonnel).forEach(u => { if (u.displayName === app.handler) { if (status === 'HÀI LÒNG') u.positiveRatings++; else u.negativeRatings++; } });
         }
     }
     broadcastUpdate();
     res.json({ success: true });
 });
 
+// ROUTE CẤP VĂN BẰNG PHÔI BẰNG CHUYÊN SÂU (ĐA TRƯỜNG THÔNG TIN)
 app.post('/api/resident/add-license', (req, res) => {
     const { username, licenseName, issueAgency, signOfficer, duration } = req.body;
     if (citizenIdentityRegistry[username]) {
-        const phoi = `Giấy tờ: ${licenseName} | Cơ quan: ${issueAgency} | Ấn ký: ${signOfficer} | Thời hạn kịch bản: ${duration}`;
-        citizenIdentityRegistry[username].licenses.push(phoi);
-        addLog(`Cán bộ [${signOfficer}] cấp phôi giấy phép [${licenseName}] cho cư dân @${username}.`);
-        broadcastUpdate(); res.json({ success: true });
-    } else { res.status(404).json({ error: "Không tìm thấy cư dân" }); }
+        const phoiData = `Văn bằng: ${licenseName} | Đơn vị cấp: ${issueAgency} | Ấn ký: ${signOfficer} | Thời hạn kịch bản: ${duration}`;
+        citizenIdentityRegistry[username].licenses.push(phoiData);
+        addLog(`Cán bộ cấp phôi giấy tờ nghiệp vụ nâng cao cho cư dân @${username}: [${licenseName}].`);
+        broadcastUpdate();
+        res.json({ success: true });
+    } else { res.status(404).json({ error: "Không tồn tại tài khoản công dân." }); }
 });
 
+// ROUTE BÁO CÁO CÔNG VIỆC HÀNG NGÀY / CA TRỰC NÂNG CAO
 app.post('/api/officer/report', (req, res) => {
     const { officer, agency, taskStatus, content } = req.body;
     const id = `RP-${Math.floor(100 + Math.random() * 900)}`;
     systemState.shiftReports.unshift({ id, date: new Date().toLocaleDateString('vi-VN'), officer, agency, taskStatus, content, status: "CHỜ PHÊ DUYỆT", feedback: "" });
-    addLog(`Cán bộ [${officer}] gửi báo cáo ca trực hàng ngày [${id}] - Tình trạng: [${taskStatus}].`);
-    broadcastUpdate(); res.json({ success: true });
+    addLog(`Cán bộ trực ban [${officer}] nộp báo cáo tình trạng công việc hàng ngày [${id}]: [${taskStatus}].`);
+    broadcastUpdate();
+    res.json({ success: true });
 });
 
 app.post('/api/officer/report-action', (req, res) => {
@@ -169,21 +169,44 @@ app.post('/api/officer/report-action', (req, res) => {
 
 app.post('/api/resident/violation', (req, res) => {
     const { username, type, lawClause, fine, status, officerName } = req.body;
+    const recordId = `VP-${Math.floor(100 + Math.random() * 900)}`;
     if (!criminalRecordsRegistry[username]) criminalRecordsRegistry[username] = [];
-    criminalRecordsRegistry[username].unshift({ id: `VP-${Math.floor(100 + Math.random() * 900)}`, type, lawClause, fine, status, officer: officerName, date: new Date().toLocaleDateString('vi-VN') });
-    broadcastUpdate(); res.json({ success: true });
+    criminalRecordsRegistry[username].unshift({ id: recordId, type, lawClause, fine, status, officer: officerName, date: new Date().toLocaleDateString('vi-VN') });
+    addLog(`Lập biên bản xử lý kỷ luật vi phạm [${recordId}] áp dụng cho công dân @${username}.`);
+    broadcastUpdate();
+    res.json({ success: true });
 });
 
 app.post('/api/resident/register', (req, res) => {
-    const { username, name, dob, gender, pob, job, licenses, status } = req.body;
+    const { username, name, dob, gender, pob, job, licenses, status, officerName } = req.body;
     citizenIdentityRegistry[username] = { name, dob, gender, pob, job, licenses: licenses ? licenses.split(',').map(l => l.trim()) : [], status };
-    broadcastUpdate(); res.json({ success: true });
+    addLog(`Đồng bộ dữ liệu số hóa định danh công dân mới: @${username} (${name}).`);
+    broadcastUpdate();
+    res.json({ success: true });
 });
 
+app.post('/api/applications/submit', (req, res) => {
+    const { sender, agency, docType, content, priority } = req.body;
+    const id = `HS-${Math.floor(1000 + Math.random() * 9000)}`;
+    systemState.applications[id] = {
+        id, sender, agency, docType, content, priority,
+        status: "Đang Chờ Tiếp Nhận", stamp: "stamp-pending", handler: "Chưa phân phối", handlerTitle: "Hệ thống tự động",
+        logs: [{ sender: "Hệ thống", msg: "Đơn thư số hóa truyền tải lên trục liên thông thành công.", time: new Date().toLocaleTimeString('vi-VN') }],
+        satisfaction: null
+    };
+    addLog(`Công dân @${sender} nộp thủ tục hành chính trực tuyến [${id}] sang đơn vị [${agency}].`);
+    broadcastUpdate();
+    io.emit('newApplicationAlert', { id, agency, docType, priority });
+    res.json({ success: true, id });
+});
+
+// ROUTE GIÁM SÁT ADMIN / ĐIỀU CHỈNH PHÂN QUYỀN
 app.post('/api/officer/save', (req, res) => {
     const { username, password, displayName, role, agency } = req.body;
     systemState.authorizedPersonnel[username] = { username, password, displayName, role, agency, positiveRatings: 0, negativeRatings: 0 };
-    broadcastUpdate(); res.json({ success: true });
+    addLog(`Cấp điều chỉnh chứng thư quyền hạn nhân sự quốc gia: @${username} (${displayName}).`);
+    broadcastUpdate();
+    res.json({ success: true });
 });
 
 app.post('/api/officer/delete', (req, res) => {
@@ -194,4 +217,8 @@ app.post('/api/officer/delete', (req, res) => {
 app.post('/api/national/ticker', (req, res) => { systemState.tickerMessage = req.body.message; broadcastUpdate(); res.json({ success: true }); });
 app.post('/api/national/security', (req, res) => { systemState.securityLevel = req.body.level; broadcastUpdate(); res.json({ success: true }); });
 
-server.listen(PORT, () => console.log(`[CORE] SERVER LISTENING ON PORT: ${PORT}`));
+io.on('connection', (socket) => {
+    socket.emit('initData', { systemState, citizenIdentityRegistry, criminalRecordsRegistry });
+});
+
+server.listen(PORT, () => console.log(`[REALTIME CENTRAL V5] RUNNING PERFECTLY ON PORT ${PORT}`));
