@@ -1,10 +1,10 @@
 /**
- * ENGINE HIỆU ỨNG ĐỒ HỌA ĐA SẮC & ĐA CHÂN THỰC V7.0
+ * MA TRẬN ĐỒ HỌA & ÂM THANH NÂNG CAO v6.5 - CENTRAL CORE SYSTEM
  */
 
-function startMatrixCyberRain() {
+function initCyberBackground() {
     const canvas = document.createElement('canvas');
-    canvas.id = 'cyber-matrix-canvas';
+    canvas.id = 'cyber-matrix-bg';
     canvas.style.position = 'fixed';
     canvas.style.top = '0';
     canvas.style.left = '0';
@@ -12,84 +12,70 @@ function startMatrixCyberRain() {
     canvas.style.height = '100vh';
     canvas.style.zIndex = '-1';
     canvas.style.pointerEvents = 'none';
-    canvas.style.opacity = '0.07';
+    canvas.style.opacity = '0.05';
     document.body.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
-    const columns = Math.floor(w / 24);
-    const yPositions = Array(columns).fill(1);
-    const symbols = "010101METADATASECURITYGOVERNMENTROBLOXV7";
+    const columns = Math.floor(width / 20);
+    const drops = Array(columns).fill(1);
+    const chars = "010101ABCDEFGHIJKLMNOPQRSTUVWXYZ全国務デジタル";
 
     function draw() {
-        ctx.fillStyle = 'rgba(2, 5, 14, 0.18)';
-        ctx.fillRect(0, 0, w, h);
-        ctx.fillStyle = '#06b6d4';
-        ctx.font = '12px Courier New';
+        ctx.fillStyle = 'rgba(2, 5, 14, 0.1)';
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = '#00ffcc';
+        ctx.font = '14px monospace';
 
-        for (let i = 0; i < yPositions.length; i++) {
-            const character = symbols[Math.floor(Math.random() * symbols.length)];
-            ctx.fillText(character, i * 24, yPositions[i] * 24);
-            if (yPositions[i] * 24 > h && Math.random() > 0.98) {
-                yPositions[i] = 0;
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * 20, drops[i] * 20);
+            if (drops[i] * 20 > height && Math.random() > 0.975) {
+                drops[i] = 0;
             }
-            yPositions[i]++;
+            drops[i]++;
         }
     }
-    setInterval(draw, 35);
+
+    setInterval(draw, 33);
     window.addEventListener('resize', () => {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
     });
 }
 
-const MatrixAudio = {
+const AudioCentral = {
     ctx: null,
-    initCtx() {
-        if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    init() {
+        if (!this.ctx) {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
     },
-    beep(freq, type, duration, vol) {
-        this.initCtx();
+    play(freq, type, duration, vol) {
+        this.init();
         try {
             const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
+            const gainNode = this.ctx.createGain();
             osc.type = type;
             osc.frequency.value = freq;
-            gain.gain.setValueAtTime(vol, this.ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.00001, this.ctx.currentTime + duration);
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
+            gainNode.gain.setValueAtTime(vol, this.ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, this.ctx.currentTime + duration);
+            osc.connect(gainNode);
+            gainNode.connect(this.ctx.destination);
             osc.start();
             osc.stop(this.ctx.currentTime + duration);
-        } catch(e) {}
+        } catch (e) { console.log("Audio Central context integration skipped."); }
     },
-    click() { this.beep(800, 'sine', 0.05, 0.04); },
-    success() {
-        this.beep(523.25, 'sine', 0.08, 0.1);
-        setTimeout(() => this.beep(659.25, 'sine', 0.08, 0.1), 50);
-        setTimeout(() => this.beep(783.99, 'sine', 0.12, 0.1), 100);
-    },
-    alert() {
-        this.beep(950, 'sawtooth', 0.15, 0.05);
-        setTimeout(() => this.beep(950, 'sawtooth', 0.15, 0.05), 150);
-    },
-    stamp() {
-        this.beep(100, 'triangle', 0.25, 0.5);
-        this.beep(300, 'sawtooth', 0.06, 0.15);
-    },
-    lock() {
-        this.beep(400, 'square', 0.12, 0.1);
-        setTimeout(() => this.beep(250, 'square', 0.2, 0.1), 120);
-    }
+    click() { this.play(700, 'sine', 0.05, 0.05); }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    startMatrixCyberRain();
+    initCyberBackground();
     document.addEventListener('click', (e) => {
-        if(e.target.closest('button') || e.target.closest('select') || e.target.closest('nav button')) {
-            MatrixAudio.click();
+        if (e.target.closest('button') || e.target.closest('select')) {
+            AudioCentral.click();
         }
     });
 });
